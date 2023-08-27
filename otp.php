@@ -4,10 +4,10 @@ if (isset($_POST['otpVerify'])) {
   
   $mobile = $_POST['mobile'];
   $otp = $_POST['otp'];
- 
+  $submittedOTP = implode('', $otp);
 // Check if user exists
  
-$query = "SELECT * FROM users WHERE mobile = '$mobile' AND otp = '$otp'";
+$query = "SELECT * FROM users WHERE mobile = '$mobile' AND otp = '$submittedOTP'";
 $result = $connection->query($query);
 
 if ($result->num_rows > 0) {
