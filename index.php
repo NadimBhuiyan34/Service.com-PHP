@@ -1,12 +1,7 @@
 <?php
 session_start(); // Start the session
 
-if (strlen($_SESSION['user_id']==0)) {
-      echo "madim";
-   } else{
-    echo "madim";
-   }
- ?>
+?>
 
 <!-- Your HTML content here -->
 
@@ -34,7 +29,7 @@ if (strlen($_SESSION['user_id']==0)) {
 <body class="sb-nav-fixed">
   <!-- header -->
 
-<?php include_once("includes/layouts/header.php") ?>
+  <?php include_once("includes/layouts/header.php") ?>
 
 
   <div class="" style="margin-top:70px;">
@@ -46,11 +41,19 @@ if (strlen($_SESSION['user_id']==0)) {
 
           <div class="row justify-content-center pt-2" style="padding-bottom:100px;">
             <div class="col-md-4 col-10">
-              <button class="btn btn-primary mb-2" type="button"><i class="fa-solid fa-location-dot"></i> Gulsan</button>
+            <?php
+          if (!isset($_SESSION['user_id'])) {
+          ?>
+              <button class="btn btn-primary btn-sm mb-2" type="button">Register <i class="fa-solid fa-user-plus"></i>
+
+              </button>
+              <button class="btn btn-success btn-sm mb-2" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">Login <i class="fa-solid fa-right-to-bracket"></i></button>
+            <?php } ?>
               <div class="input-group mb-3 input-group-lg">
 
                 <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
                 <button class="btn btn-danger" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+
               </div>
             </div>
           </div>
@@ -60,9 +63,9 @@ if (strlen($_SESSION['user_id']==0)) {
     </div>
 
   </div>
- 
- 
- <div class="container">
+
+
+  <div class="container">
     <div class="row mt-3">
       <div class="col-4 col-md-2 text-center border">
         <div class="p-2">
@@ -187,8 +190,8 @@ if (strlen($_SESSION['user_id']==0)) {
     </div>
 
   </div>
- 
- 
+
+
 
 
 

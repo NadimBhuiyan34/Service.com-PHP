@@ -52,18 +52,23 @@ if ('OTPCredential' in window) {
     const input = document.querySelector('input[autocomplete="one-time-code"]');
     
     navigator.credentials.get({
-      otp: {transport:['sms']}
+      otp: { transport: ['sms'] }
     }).then(otp => {
       if (otp && otp.code) {
         input.value = otp.code;
-        // Find the form and submit it
-        const form = input.closest('form');
+        
+        const form = document.getElementById('otpForm');
         if (form) {
-          form.submit();
+          // Programmatically trigger click event on the submit button
+          const submitButton = form.querySelector('button[type="submit"]');
+          if (submitButton) {
+            submitButton.click();
+          }
         }
       }
     });
   });
 }
+
 </script>
 
