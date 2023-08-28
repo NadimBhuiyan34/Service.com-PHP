@@ -41,14 +41,16 @@ session_start(); // Start the session
 
           <div class="row justify-content-center pt-2" style="padding-bottom:100px;">
             <div class="col-md-4 col-10">
-            <?php
-          if (!isset($_SESSION['user_id'])) {
-          ?>
-              <button class="btn btn-primary btn-sm mb-2" type="button">Register <i class="fa-solid fa-user-plus"></i>
+              <?php
+              if (!isset($_SESSION['user_id'])) {
+              ?>
+                <div class="d-lg-none">
+                  <button class="btn btn-primary btn-sm mb-2" type="button">Register <i class="fa-solid fa-user-plus"></i>
 
-              </button>
-              <button class="btn btn-success btn-sm mb-2" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">Login <i class="fa-solid fa-right-to-bracket"></i></button>
-            <?php } ?>
+                  </button>
+                  <button class="btn btn-success btn-sm mb-2" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">Login <i class="fa-solid fa-right-to-bracket"></i></button>
+                </div>
+              <?php } ?>
               <div class="input-group mb-3 input-group-lg">
 
                 <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
