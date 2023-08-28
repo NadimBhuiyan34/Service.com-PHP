@@ -63,9 +63,20 @@
           } else {
           ?>
             <!-- if is not login -->
-            <li class="nav-item">
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fw-bold" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Registration <i class="fa-solid fa-user-plus"></i>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+              <li><a class="dropdown-item fw-bold" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Survicer</a></li>
+              <li><a class="dropdown-item fw-bold" href="#">Users</a></li>
+               
+              
+            </ul>
+          </li>
+            <!-- <li class="nav-item">
               <a class="nav-link fw-bold" href="">Registration <i class="fa-solid fa-user-plus"></i></a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link fw-bold" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login <i class="fa-solid fa-right-to-bracket"></i></a>
             </li>

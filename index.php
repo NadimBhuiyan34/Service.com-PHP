@@ -35,7 +35,7 @@ session_start(); // Start the session
   <div class="" style="margin-top:70px;">
     <div class="row">
       <div class=" text-center w-100">
-        <div class="bg-image h-100" style="background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20230616/pngtree-digital-delivery-3d-smartphone-rendering-with-hand-holding-online-package-and-image_3614126.png');">
+        <div class="bg-image h-100" style="background-image: url('https://img.freepik.com/free-vector/neon-light-background_53876-67443.jpg?w=360');">
           <h1 class="text-white" style="padding-top: 50px;"><strong>Your Personal Assistant</strong></h1>
           <h4 class="text-white">One-stop solution for your services. Order any service, anytime.</h4>
 
@@ -44,11 +44,22 @@ session_start(); // Start the session
               <?php
               if (!isset($_SESSION['user_id'])) {
               ?>
-                <div class="d-lg-none">
-                  <button class="btn btn-primary btn-sm mb-2" type="button">Register <i class="fa-solid fa-user-plus"></i>
-
-                  </button>
-                  <button class="btn btn-success btn-sm mb-2" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">Login <i class="fa-solid fa-right-to-bracket"></i></button>
+                <div class="d-lg-none d-flex gap-2">
+                  <div class="mx-auto d-flex gap-2">
+                  <div class="">
+                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                      Register <i class="fa-solid fa-user-plus"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item fw-bold" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Survicer</a></li>
+                      <li><a class="dropdown-item fw-bold" href="#">Users</a></li>
+                    </ul>
+                  </div>
+                    <div class="text-center">
+                    <button class="btn btn-success btn-sm mb-2" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">Login <i class="fa-solid fa-right-to-bracket"></i></button>
+                    </div>
+                  </div>
+                 
                 </div>
               <?php } ?>
               <div class="input-group mb-3 input-group-lg">
