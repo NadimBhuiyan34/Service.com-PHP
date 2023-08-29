@@ -1,6 +1,6 @@
 <?php
 session_start(); // Start the session
-
+include($_SERVER['DOCUMENT_ROOT'].'/Service.com-PHP/config.php');
 ?>
 
 <!-- Your HTML content here -->
@@ -29,7 +29,10 @@ session_start(); // Start the session
 <body class="sb-nav-fixed">
   <!-- header -->
 
-  <?php include_once("includes/layouts/header.php") ?>
+  <?php 
+     
+     include_once($documentRoot."/frontend/includes/layouts/header.php");
+   ?>
 
 
   <div class="" style="margin-top:70px;">
@@ -80,48 +83,23 @@ session_start(); // Start the session
 
   <div class="container">
     <div class="row mt-3">
-      <div class="col-4 col-md-2 text-center border">
+    <?php 
+                     $query = "SELECT * FROM categories ORDER BY id DESC";
+                     $categories = mysqli_query($connection, $query);
+                     while ($category = mysqli_fetch_assoc($categories)) {
+                        ?>
+       
+        <div class="col-4 col-md-2 text-center border">
         <div class="p-2">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/icons_png/1583681524_tiwnn_52x52.webp" alt="">
-          <span class="d-block d-md-inline fw-bold d-md-block">Appliance Repair</span>
+        <img src="admin/public/category/<?php echo $category['banner_image']; ?>" alt="" style="width:100px;height:100px">
+
+          <span class="d-block d-md-inline fw-bold d-md-block"><?php echo $category['title'] ?></span>
         </div>
       </div>
-      <div class="col-4 col-md-2 text-center border">
-        <div class="p-2">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/v4_uploads/category_icons/226/default_52x52.webp" alt="">
-          <span class="d-block d-md-inline fw-bold d-md-block">Painting & Renovation</span>
-        </div>
-      </div>
-      <div class="col-4 text-center border col-md-2">
-        <div class="p-2">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/v4_uploads/category_icons/236/default_52x52.webp" alt="">
-          <span class="d-block d-md-inline fw-bold d-md-block">Trips & Travels</span>
-        </div>
-      </div>
-      <div class="col-4 text-center border col-md-2">
-        <div class="p-2">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/icons_png/1583681093_tiwnn_52x52.webp" alt="">
-          <span class="d-block d-md-inline fw-bold d-md-block">Shifting</span>
-        </div>
-      </div>
-      <div class="col-4 text-center border col-md-2">
-        <div class="p-2">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/icons_png/1583681093_tiwnn_52x52.webp" alt="">
-          <span class="d-block d-md-inline fw-bold d-md-block">Shifting</span>
-        </div>
-      </div>
-      <div class="col-4 text-center border col-md-2">
-        <div class="p-2">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/icons_png/1583681093_tiwnn_52x52.webp" alt="">
-          <span class="d-block d-md-inline fw-bold d-md-block">Shifting</span>
-        </div>
-      </div>
-      <div class="col-4 text-center border col-md-2">
-        <div class="p-2">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/icons_png/1583681093_tiwnn_52x52.webp" alt="">
-          <span class="d-block d-md-inline fw-bold d-md-block">Shifting</span>
-        </div>
-      </div>
+       
+      <?php
+                     }
+      ?>
     </div>
     <!-- first content -->
     <div class="mt-5">

@@ -1,3 +1,6 @@
+<?php
+   include($_SERVER['DOCUMENT_ROOT'].'/Service.com-PHP/config.php');
+?>
 <header>
   <nav class="navbar navbar-expand-lg navbar-light bg-white" style="position: fixed;top:0;z-index:1000;width:100%">
     <div class="container">
@@ -90,11 +93,13 @@
   </nav>
 </header>
 <!-- modal include -->
-<?php include("includes/modals/login.php") ?>
-<?php include("includes/modals/register.php") ?>
+<?php include($documentRoot."/frontend/includes/modals/login.php") ?>
+ 
+
+<?php include($documentRoot."/frontend/includes/modals/register.php") ?>
 
 <!-- ajax include -->
-<?php include("includes/ajax/login.php") ?>
+<?php include($documentRoot."/frontend/includes/ajax/login.php") ?>
 
 
 <!-- <x-auth.modal.login/>

@@ -194,6 +194,12 @@
       <span>Category</span>
     </a>
   </li><!-- End Category Page Nav -->
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="service.php">
+      <i class="bi bi-card-list"></i>
+      <span>Service</span>
+    </a>
+  </li><!-- End Service Page Nav -->
 
   <li class="nav-item">
     <a class="nav-link collapsed" href="pages-faq.html">

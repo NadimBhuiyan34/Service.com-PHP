@@ -9,11 +9,11 @@ $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $items_per_page = 10;
 $offset = ($current_page - 1) * $items_per_page;
 
-$query = "SELECT * FROM categories ORDER BY id DESC LIMIT $items_per_page OFFSET $offset";
-$result = mysqli_query($connection, $query);
+$query = "SELECT * FROM services ORDER BY id DESC LIMIT $items_per_page OFFSET $offset";
+$services = mysqli_query($connection, $query);
 
 // Calculate total pages for pagination
-$total_rows_query = "SELECT COUNT(*) AS total FROM categories";
+$total_rows_query = "SELECT COUNT(*) AS total FROM services";
 $total_rows_result = mysqli_query($connection, $total_rows_query);
 $total_rows = mysqli_fetch_assoc($total_rows_result)['total'];
 $total_pages = ceil($total_rows / $items_per_page);
@@ -23,35 +23,26 @@ $total_pages = ceil($total_rows / $items_per_page);
 //  insert category
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    if (isset($_POST['addCategory'])) {
-        include_once('config.php');
-        // $documentRoot = $_SERVER['DOCUMENT_ROOT'];
-        //     echo "Document Root: $documentRoot"; 
-
-        $uploadDir = 'public/category/';
-
-        $uploadedFile = $_FILES['bannerImage']['tmp_name'];
-        $imageName = $_FILES['bannerImage']['name'];
-        $imagePath = $uploadDir . $imageName;
+    if (isset($_POST['addService'])) {
 
 
-        move_uploaded_file($uploadedFile, $imagePath);
-
+        $categoryId = $_POST['categoryId'];
         $title = $_POST['title'];
         $type = $_POST['type'];
         $description = $_POST['description'];
         $included = $_POST['included'];
         $excluded = $_POST['excluded'];
+        $charge = $_POST['charge'];
         $status = $_POST['status'];
 
-        $Insertquery = "INSERT INTO `categories`(`title`, `type`, `description`, `included`, `excluded`, `banner_image`, `status`) VALUES ('$title','$type','$description','$included','$excluded','$imageName','$status')";
+        $Insertquery = "INSERT INTO `services`(`category_id`,`title`, `type`, `description`, `included`, `excluded`, `charge`, `status`) VALUES ('$categoryId','$title','$type','$description','$included','$excluded','$charge','$status')";
 
 
         if ($connection->query($Insertquery)) {
             $message = "Record inserted successfully.";
 
 
-            header("Location:category.php?message=" . urlencode($message));
+            header("Location:service.php?message=" . urlencode($message));
             exit;
         } else {
             $message = "Something is wrong.";
@@ -62,31 +53,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     // edit Data
-    if (isset($_POST["editCategory"])) {
-
-        if (isset($_FILES['bannerImage']) && $_FILES['bannerImage']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = 'public/category/';
-
-        $uploadedFile = $_FILES['bannerImage']['tmp_name'];
-        $imageName = $_FILES['bannerImage']['name'];
-        $imagePath = $uploadDir . $imageName;
+    if (isset($_POST["editService"])) {
 
 
-        move_uploaded_file($uploadedFile, $imagePath);
-        }
-
-        $id = $_POST["categoryId"];
+        $id = $_POST["serviceId"];
+        $category_id = $_POST["categoryId"];
         $title = $_POST['title'];
         $type = $_POST['type'];
         $description = $_POST['description'];
         $included = $_POST['included'];
         $excluded = $_POST['excluded'];
+        $charge = $_POST['charge'];
         $status = $_POST['status'];
-        $banner_image = $imageName ??  $_POST['banner_image'];
-        
+
+
 
         mysqli_set_charset($connection, "utf8");
-        $updateQuery = "UPDATE categories SET title='$title', type='$type', description='$description', included='$included', excluded='$excluded', status='$status', banner_image='$banner_image' WHERE id='$id'";
+        $updateQuery = "UPDATE services SET category_id='$category_id',title='$title', type='$type', description='$description', included='$included', excluded='$excluded', status='$status', charge='$charge' WHERE id='$id'";
 
         if (mysqli_query($connection, $updateQuery)) {
             $message = "Record updated successfully.";
@@ -94,40 +77,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_close($connection);
 
             // Redirect to the index.php page with the message
-            header("Location: category.php?message=" . urlencode($message));
+            header("Location: service.php?message=" . urlencode($message));
             exit;
         } else {
             echo "Error: " . mysqli_error($connection);
         }
     }
-        // Delete data
-        if (isset($_POST['categoryId']) && !empty($_POST['categoryId'])) {
+    // Delete data
+    if (isset($_POST['serviceId']) && !empty($_POST['serviceId'])) {
 
-            $categoryId = mysqli_real_escape_string($connection, $_POST['categoryId']);
-    
-            // SQL query to delete the question
-            $deleteQuery = "DELETE FROM categories WHERE id = '$categoryId'";
-    
-            // Execute the query
-            if (mysqli_query($connection, $deleteQuery)) {
-                $message = "Record deleted successfully.";
-    
-                // Redirect to the index.php page with the message
-                header("Location: category.php?message=" . urlencode($message));
-                exit;
-            } else {
-                echo "Error deleting question: " . mysqli_error($connection);
-            }
-    
-            // Close the database connection
-            mysqli_close($connection);
-        } else {
-            $message = "This data not found";
-    
+        $serviceId = mysqli_real_escape_string($connection, $_POST['serviceId']);
+
+        // SQL query to delete the question
+        $deleteQuery = "DELETE FROM services WHERE id = '$serviceId'";
+
+        // Execute the query
+        if (mysqli_query($connection, $deleteQuery)) {
+            $message = "Record deleted successfully.";
+
             // Redirect to the index.php page with the message
-            header("Location: category.php?message=" . urlencode($message));
+            header("Location: service.php?message=" . urlencode($message));
             exit;
+        } else {
+            echo "Error deleting question: " . mysqli_error($connection);
         }
+
+        // Close the database connection
+        mysqli_close($connection);
+    } else {
+        $message = "This data not found";
+
+        // Redirect to the index.php page with the message
+        header("Location: category.php?message=" . urlencode($message));
+        exit;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -137,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Admin-Category</title>
+    <title>Admin-Service</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -190,11 +173,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         ?>
         <div class="pagetitle">
-            <h1>Category</h1>
+            <h1>Service</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                    <li class="breadcrumb-item active">Category</li>
+                    <li class="breadcrumb-item active">Service</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -215,10 +198,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <thead>
                             <tr>
                                 <th>Sl No</th>
-                                <th>Category Title</th>
+                                <th>Service Title</th>
                                 <th>Description</th>
+                                <th>Charge</th>
                                 <th>Status</th>
-
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -226,12 +209,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <?php
                             $serialNumber = 1;
 
-                            while ($row = mysqli_fetch_assoc($result)) { ?>
+                            while ($service = mysqli_fetch_assoc($services)) { ?>
                                 <tr>
                                     <td><?php echo $serialNumber++; ?></td>
-                                    <td><?php echo $row['title']; ?></td>
-                                    <td><?php echo $row['description']; ?></td>
-                                    <td><span class="badge <?php echo $row['status'] == 'Active' ? 'bg-success' : 'bg-danger'; ?>"><?php echo $row['status']; ?></span></td>
+                                    <td><?php echo $service['title']; ?></td>
+                                    <td><?php echo $service['description']; ?></td>
+                                    <td><?php echo $service['charge']; ?></td>
+                                    <td><span class="badge <?php echo $service['status'] === 'Active' ? 'bg-success' : 'bg-danger'; ?>"><?php echo $service['status']; ?></span></td>
 
                                     <!-- Action row -->
                                     <td class="d-flex gap-2">
@@ -241,8 +225,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#showModal">
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
-                                        <form action="category.php" method="POST" class="deleteForm">
-                                            <input type="hidden" value="<?php echo $row['id']; ?>" name="categoryId">
+                                        <form action="service.php" method="POST" class="deleteForm">
+                                            <input type="hidden" value="<?php echo $service['id']; ?>" name="serviceId">
                                             <button type="submit" class="btn btn-outline-danger btn-sm" name="deleteData">
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </button>
@@ -255,45 +239,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Edit Question</h5>
+                                                    <h5 class="modal-title" id="exampleModalLabel">Edit Service</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form id="offerForm" action="category.php" enctype="multipart/form-data" method="POST">
-                                                        <input type="hidden" name="categoryId" value="<?php echo $row['id']; ?>">
-                                                        <input type="hidden" name="banner_image" value="<?php echo $row['banner_image']; ?>">
+                                                    <form id="offerForm" action="service.php" enctype="multipart/form-data" method="POST">
+                                                        <input type="hidden" name="serviceId" value="<?php echo $service['id']; ?>">
+                                                        <div class="mb-3">
+                                                            <label for="category" class="form-label">Category</label>
+                                                            <select class="form-select" id="category" name="categoryId" required>
+                                                                <option value="">Select Category</option>
+                                                                <?php
+                                                                $query = "SELECT * FROM categories ORDER BY id DESC";
+                                                                $categories = mysqli_query($connection, $query);
+                                                                while ($category = mysqli_fetch_assoc($categories)) {
+                                                                ?>
+                                                                    <option value="<?php echo $category['id']; ?>" <?php echo $category['id'] == $service['category_id'] ? 'selected' : ''; ?>>
+                                                                        <?php echo $category['title']; ?>
+                                                                    </option>
+
+                                                                <?php
+                                                                }
+                                                                ?>
+
+                                                            </select>
+                                                        </div>
                                                         <div class="mb-3">
                                                             <label for="title" class="form-label">Title</label>
-                                                            <input type="text" class="form-control" id="title" name="title" value="<?php echo $row['title']; ?>" required>
+                                                            <input type="text" class="form-control" id="title" name="title" value="<?php echo $service['title']; ?>" required>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="type" class="form-label">Type</label>
-                                                            <input type="text" class="form-control" id="type" name="type" value="<?php echo $row['type']; ?>" required>
+                                                            <input type="text" class="form-control" id="type" name="type" value="<?php echo $service['type']; ?>" required>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="description" class="form-label">Description</label>
-                                                            <textarea class="form-control" id="description" name="description" rows="3" required><?php echo $row['description']; ?></textarea>
+                                                            <textarea class="form-control" id="description" name="description" rows="3" required><?php echo $service['description']; ?></textarea>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="included" class="form-label">Included Items</label>
-                                                            <textarea class="form-control" id="included" name="included" rows="3" ><?php echo $row['included']; ?></textarea>
+                                                            <textarea class="form-control" id="included" name="included" rows="3"><?php echo $service['included']; ?></textarea>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="excluded" class="form-label">Excluded Items</label>
-                                                            <textarea class="form-control" id="excluded" name="excluded" rows="3"><?php echo $row['excluded']; ?></textarea>
+                                                            <textarea class="form-control" id="excluded" name="excluded" rows="3"><?php echo $service['excluded']; ?></textarea>
                                                         </div>
                                                         <div class="mb-3">
-                                                            <img  src="public/category/<?php echo $row['banner_image']; ?>" alt="no image" style="width: 50px; height:50px">
-                                                            <br>
-                                                            <label for="bannerImage" class="form-label">Banner Image</label>
-                                                            <input type="file" class="form-control" id="bannerImage" name="bannerImage" accept="image/*">
+                                                            <label for="charge" class="form-label">Charge</label>
+                                                            <input type="number" class="form-control" id="charge" name="charge" value="<?php echo $service['charge']; ?>" required>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="status" class="form-label">Status</label>
                                                             <select class="form-select" id="status" name="status" required>
                                                                 <option value="">Select status</option>
-                                                                <option value="Active" <?php echo $row['status']=='Active'?'selected':'' ?>>Active</option>
-                                                                <option value="Inactive" <?php echo $row['status']=='Inactive'?'selected':'' ?>>Inactive</option>
+                                                                <option value="Active" <?php echo $service['status'] == 'Active' ? 'selected' : '' ?>>Active</option>
+                                                                <option value="Inactive" <?php echo $service['status'] == 'Inactive' ? 'selected' : '' ?>>Inactive</option>
                                                             </select>
                                                         </div>
 
@@ -301,7 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary" name="editCategory">Save</button>
+                                                    <button type="submit" class="btn btn-primary" name="editService">Save</button>
                                                 </div>
                                                 </form>
                                             </div>
@@ -378,7 +378,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
         </section>
-        <?php include_once "include/modal/category_modal.php" ?>
+        <?php include_once "include/modal/service_modal.php" ?>
     </main><!-- End #main -->
     <!-- ======= Footer ======= -->
     <?php include_once "include/layout/footer.php" ?>
