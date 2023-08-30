@@ -93,13 +93,14 @@
   </nav>
 </header>
 <!-- modal include -->
-<?php include($documentRoot."/frontend/includes/modals/login.php") ?>
+<?php include($documentRoot."/frontend/includes/modals/login_modal.php") ?>
  
 
-<?php include($documentRoot."/frontend/includes/modals/register.php") ?>
+<?php include($documentRoot."/frontend/includes/modals/register_modal.php") ?>
 
 <!-- ajax include -->
-<?php include($documentRoot."/frontend/includes/ajax/login.php") ?>
+<?php include($documentRoot."/frontend/includes/ajax/login_ajax.php") ?>
+<?php include($documentRoot."/frontend/includes/ajax/register_ajax.php") ?>
 
 
 <!-- <x-auth.modal.login/>
