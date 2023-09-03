@@ -36,7 +36,7 @@
   echo json_encode($res);
 }
  
-// otp verify
+// otp verify for login
 if (isset($_POST['otpVerify'])) {
   
     $mobile = $_POST['mobile'];
