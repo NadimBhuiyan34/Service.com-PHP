@@ -1,46 +1,19 @@
 <?php
 include_once('config.php');
-// category service
-if (isset($_POST['categoryService'])) {
-    $id  = $_POST['id'];
-    $query = "SELECT * FROM services WHERE category_id = $id ORDER BY id DESC";
-    $data = mysqli_query($connection, $query);
-
-    if ($data) {
-        $services = array();
-        while ($service = mysqli_fetch_assoc($data)) {
-            $services[] = $service;
-        }
-
-        $res = [
-            'status' => 'success',
-            'services' => $services
-
-        ];
-    } else {
-        $res = [
-            'status' => 'fail',
-
-        ];
-    }
-    header('Content-Type: application/json');
-    echo json_encode($res);
-}
-
-
 // register
 if (isset($_POST['registerRequest'])) {
     $mobile = $_POST['mobile']; // Sanitize input
-    $query = "SELECT id FROM users WHERE mobile = $mobile";
+    $query = "SELECT id FROM users WHERE mobile = '$mobile'";
     $userCheck = mysqli_query($connection, $query);
 
     if (mysqli_num_rows($userCheck) > 0) {
 
         $res = [
             'status' => 'fail',
-            'message' => 'User with the provided mobile number does not exist'
+            'message' => 'This mobile number is already registered'
         ];
-    } else {
+    } 
+    else {
 
 
         // Sanitize and get form data
@@ -59,7 +32,7 @@ if (isset($_POST['registerRequest'])) {
         $queryUser = "INSERT INTO `users`(`name`, `email`, `mobile`, `otp`, `role`, `status`) VALUES ('$name','$email','$mobile','$otp','$role','Active')";
         $resultUser = mysqli_query($connection, $queryUser);
 
-        if ($resultUser) {
+        
             $query = "SELECT id FROM users WHERE mobile = $mobile";
             $result = mysqli_query($connection, $query);
             $row = mysqli_fetch_assoc($result);
@@ -67,41 +40,13 @@ if (isset($_POST['registerRequest'])) {
 
             $queryUserProfile = "INSERT INTO `servicer_profiles`(`user_id`, `service_id`, `category_id`, `location`, `experience`, `biography`, `profile_image`, `work_image`) VALUES ('$id','2','$category_id','$location','','','','')";
             $resultProfile = mysqli_query($connection, $queryUserProfile);
-            if ($resultProfile) {
-                $response = [
+            
+                $res = [
                     'status' => 'success',
-                    'mobile' => $_POST['mobile'],
+                    'mobile' => $mobile
                 ];
-            }
-        }
+             
     }
     header('Content-Type: application/json');
-    echo json_encode($response);
-}
-
-// otp
-if(isset($_POST['otpVerify']))
-{
-    $mobile = $_POST['mobile'];
-    $otp = $_POST['otp'];
-    $submittedOTP = implode('', $otp);
-  // Check if user exists
-   
-  $query = "SELECT * FROM users WHERE mobile = '$mobile' AND otp = '$submittedOTP'";
-  $result = $connection->query($query);
-  
-  if ($result->num_rows > 0) {
-      $user = $result->fetch_assoc();
-      session_start();
-       
-      $_SESSION['user_id'] = $user['id'];
-       
-      header('Location:index.php');
-  
-      exit;
-        
-  } 
-  else {
-        echo "nadim";
-  }
+    echo json_encode($res);
 }

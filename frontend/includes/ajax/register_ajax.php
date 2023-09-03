@@ -9,8 +9,9 @@
         $(document).on('click', '.registerBtn', function(e) {
             e.preventDefault();
             let name = $('#name').val();
+            let role = $('#role').val();
             let email = $('#email').val();
-            let mobile = $('#mobile').val();
+            let mobile = $('#mobileRegister').val();
             let category = $('#category').val();
             let location = $('#location').val();
             let registerRequest = "registerRequest";
@@ -22,18 +23,17 @@
                 services.push($(this).val());
             });
 
-            // Log the selected checkboxes array
-            console.log(services);
-              
+            // Log the selected checkboxes array 
            
             $.ajax({
-                url: "register.php",
+                url: "user.php",
                 method: 'post',
                 dataType: 'text',
                 data: {
                     name: name,
                     email: email,
                     mobile: mobile,
+                    role: role,
                     category: category,
                     location: location,
                     services: services,
@@ -41,14 +41,16 @@
                 },
                 success: function(response) {
                     var res = JSON.parse(response);
-
+                      
+                     console.log(res.status);
                     if (res.status == 'success') {
                         $('#registerForm').addClass('d-none');
+                        $('.modal-footer').addClass('d-none');
                         $('#otpRegisterForm').removeClass('d-none');
                         $('#otpRegisterMobile').val(res.mobile);
                         $('#alertMessage').addClass('d-none');
                     } else if (res.status == 'fail') {
-                        $('#alertMessage').removeClass('d-none').addClass('alert-danger').text(res.message);
+                        $('#alertMessageRegister').removeClass('d-none').addClass('alert-danger').text(res.message);
 
                     }
                 },
@@ -72,37 +74,38 @@
         });
 
         // otp
-        $(document).on('click', '.otpBtn', function(e) {
+        $(document).on('click', '.otpRegister', function(e) {
             e.preventDefault();
-            let mobile = $('#otpMobile').val();
-            let otp = $('#otpInput').val();
-            let otpVerify = "otpVerify";
+           
+            let mobile = $('#otpRegisterMobile').val();
+            // let otp = $('#otpInput').val();
+            // let otpVerify = "otpVerify";
             console.log(mobile);
-            $.ajax({
-                url: "login.php",
-                method: 'post',
-                dataType: 'text',
-                data: {
-                    mobile: mobile,
-                    otp: otp,
-                    otpVerify: otpVerify,
-                },
-                success: function(response) {
-                    var res = JSON.parse(response);
-                    if (res.status == 'success') {
-                        console.log(res.status);
-                        $('#loginModal').modal('hide');
-                        $('#loginForm').removeClass('d-none');
-                        $('#loginForm')[0].reset();
-                        $('#otpForm').addClass('d-none');
+            // $.ajax({
+            //     url: "",
+            //     method: 'post',
+            //     dataType: 'text',
+            //     data: {
+            //         mobile: mobile,
+            //         otp: otp,
+            //         otpVerify: otpVerify,
+            //     },
+            //     success: function(response) {
+            //         var res = JSON.parse(response);
+            //         if (res.status == 'success') {
+            //             console.log(res.status);
+            //             $('#loginModal').modal('hide');
+            //             $('#loginForm').removeClass('d-none');
+            //             $('#loginForm')[0].reset();
+            //             $('#otpForm').addClass('d-none');
 
-                        window.location.href = 'index.php'; // Replace with the actual URL
-                    } else if (res.status == 'fail') {
-                        $('#alertMessage').addClass('alert-danger').removeClass('d-none')
-                            .text(res.message).show();
-                    }
-                }
-            });
+            //             window.location.href = 'index.php'; // Replace with the actual URL
+            //         } else if (res.status == 'fail') {
+            //             $('#alertMessage').addClass('alert-danger').removeClass('d-none')
+            //                 .text(res.message).show();
+            //         }
+            //     }
+            // });
 
 
 

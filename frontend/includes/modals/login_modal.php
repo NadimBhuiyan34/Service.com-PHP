@@ -23,7 +23,7 @@
 
         <!-- otp form -->
 
-        <form id="otpForm" class="d-none" action="otp.php" method="POST">
+        <form id="otpForm" class="d-none" action="login.php" method="POST">
 
           <input type="hidden" name="mobile" value="" id="otpMobile">
 

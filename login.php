@@ -1,5 +1,6 @@
 <?php
  include_once('config.php');
+//  login request
  if (isset($_POST['loginRequest'])) {
   $mobile = $_POST['mobile'];
   
@@ -35,6 +36,7 @@
   echo json_encode($res);
 }
  
+// otp verify
 if (isset($_POST['otpVerify'])) {
   
     $mobile = $_POST['mobile'];
@@ -60,4 +62,3 @@ if (isset($_POST['otpVerify'])) {
         echo "nadim";
   }
 }
-?>

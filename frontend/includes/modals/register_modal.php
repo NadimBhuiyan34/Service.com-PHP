@@ -7,9 +7,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            <div id="alertMessage" class="alert d-none" role="alert"></div>
+                <div id="alertMessageRegister" class="alert d-none" role="alert"></div>
+
+
                 <form id="registerForm" enctype="multipart/form-data" method="POST">
-                    <input type="hidden" name="role" value="servicer">
+                    <input type="hidden" name="role" value="servicer" id="role">
 
                     <div class="">
                         <div class="mb-3">
@@ -22,7 +24,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="mobile" class="form-label">Mobile*</label>
-                            <input type="text" class="form-control" id="mobile" name="mobile" required>
+                            <input type="text" class="form-control" id="mobileRegister" name="mobile" required>
                         </div>
                         <!-- <div class="mb-3">
                             <label for="profileImage" class="form-label">Profile Image</label>
@@ -69,36 +71,31 @@
                         <input type="file" class="form-control" id="workImage" name="workImage[]" accept="image/*" multiple required>
                     </div> -->
 
-
-                    <!-- otp form -->
-
-                    <form id="otpRegisterForm" class="d-none" action="otp.php" method="POST">
-
-                        <input type="hidden" name="mobile" value="" id="otpRegisterMobile">
-
-                        <div class="mb-3 text-center">
-                            <h2>Enter OTP</h2>
-                            <p>We've sent an OTP to your mobile number. Please enter it below.</p>
-                        </div>
-                        
-                        <div class="mb-3 d-flex justify-content-center gap-2 w-50 mx-auto">
-                            <input type="text" class="form-control otp-box shadow fs-4 text-center" maxlength="1" inputmode="numeric" name="otp[]" />
-                            <input type="text" class="form-control otp-box shadow fs-4 text-center" maxlength="1" inputmode="numeric" name="otp[]" />
-                            <input type="text" class="form-control otp-box shadow fs-4 text-center" maxlength="1" inputmode="numeric" name="otp[]" />
-                            <input type="text" class="form-control otp-box shadow fs-4 text-center" maxlength="1" inputmode="numeric" name="otp[]" />
-                        </div>
-
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary" name="otpVerify">Verify OTP</button>
-                        </div>
-                    </form>
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary registerBtn" form="serviceForm" name="registerRequest">Submit</button>
             </div>
+            </form>
+            <form action="register.php" method="POST" id="otpRegisterForm" class="d-none">
+
+                <input type="hidden" name="mobile" value="" id="otpRegisterMobile">
+
+                <div class="mb-3 text-center">
+                    <h2>Enter OTP</h2>
+                    <p>We've sent an OTP to your mobile number. Please enter it below.</p>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-center gap-2 w-50 mx-auto">
+                    <input type="text" class="form-control otp-box shadow fs-4 text-center" maxlength="1" inputmode="numeric" name="otp[]" />
+                    <input type="text" class="form-control otp-box shadow fs-4 text-center" maxlength="1" inputmode="numeric" name="otp[]" />
+                    <input type="text" class="form-control otp-box shadow fs-4 text-center" maxlength="1" inputmode="numeric" name="otp[]" />
+                    <input type="text" class="form-control otp-box shadow fs-4 text-center" maxlength="1" inputmode="numeric" name="otp[]" />
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" name="otpVerify" id="otpRegister">Verify OTP</button>
+                </div>
             </form>
         </div>
     </div>
