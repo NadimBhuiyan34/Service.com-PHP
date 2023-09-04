@@ -46,7 +46,7 @@ if (isset($_POST['registerRequest'])) {
         // Sanitize and get form data
         $name = $_POST['name'];
         $role = $_POST['role'];
-        $email = $_POST['email'];
+        // $email = $_POST['email'];
         $mobile = $_POST['mobile'];
         $category_id = $_POST['category'];
         $location = $_POST['location'];
@@ -56,7 +56,7 @@ if (isset($_POST['registerRequest'])) {
         // otp generate
         $otp = mt_rand(1000, 9999);
         //   query insert
-        $queryUser = "INSERT INTO `users`(`name`, `email`, `mobile`, `otp`, `role`, `status`) VALUES ('$name','$email','$mobile','$otp','$role','Active')";
+        $queryUser = "INSERT INTO `users`(`name`, `email`, `mobile`, `otp`, `role`, `status`) VALUES ('$name','','$mobile','$otp','$role','Active')";
         $resultUser = mysqli_query($connection, $queryUser);
 
         if ($resultUser) {
@@ -64,9 +64,17 @@ if (isset($_POST['registerRequest'])) {
             $result = mysqli_query($connection, $query);
             $row = mysqli_fetch_assoc($result);
             $id = $row['id'];
-
-            $queryUserProfile = "INSERT INTO `servicer_profiles`(`user_id`, `service_id`, `category_id`, `location`, `experience`, `biography`, `profile_image`, `work_image`) VALUES ('$id','2','$category_id','$location','','','','')";
-            $resultProfile = mysqli_query($connection, $queryUserProfile);
+              if($role == 'servicer')
+              {
+                $queryUserProfile = "INSERT INTO `servicer_profiles`(`user_id`, `service_id`, `category_id`, `location`, `experience`, `biography`, `profile_image`, `work_image`) VALUES ('$id','2','$category_id','$location','','','','')";
+                $resultProfile = mysqli_query($connection, $queryUserProfile);
+              }
+              else
+              {
+                $queryUserProfile = "INSERT INTO `user_profiles`(`user_id`,`address`,`profile_image`) VALUES ('$id','$location','')";
+                $resultProfile = mysqli_query($connection, $queryUserProfile);
+              }
+           
             if ($resultProfile) {
                 $response = [
                     'status' => 'success',

@@ -7,23 +7,22 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
- 
+
                 <div id="alertMessageRegister" class="alert d-none" role="alert"></div>
 
                 <div id="alertMessage" class="alert d-none" role="alert"></div>
- 
-                <form id="registerForm" enctype="multipart/form-data" method="POST">
-                    <input type="hidden" name="role" value="servicer" id="role">
 
+                <form id="registerForm" enctype="multipart/form-data" method="POST">
+                    
                     <div class="">
                         <div class="mb-3">
                             <label for="name" class="form-label">Name*</label>
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="text" class="form-control" id="email" name="email" required>
-                        </div>
+                        </div> -->
                         <div class="mb-3">
                             <label for="mobile" class="form-label">Mobile*</label>
                             <input type="text" class="form-control" id="mobileRegister" name="mobile" required>
@@ -32,8 +31,19 @@
                             <label for="profileImage" class="form-label">Profile Image</label>
                             <input type="file" class="form-control" id="profileImage" name="profileImage" accept="image/*" required>
                         </div> -->
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Select your role*</label>
+                            <select class="form-select" id="role" name="role" required>
+                                <option value="">Select a Role</option>
+                                <option value="servicer">Servicer</option>
+                                <option value="user">User</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="mb-3">
+
+
+
+                    <div class="mb-3 d-none" id="categoryDiv">
                         <label for="category" class="form-label">Select Work Category*</label>
                         <select class="form-select" id="category" name="category" required>
                             <option value="">Select a category</option>
@@ -73,7 +83,7 @@
                         <input type="file" class="form-control" id="workImage" name="workImage[]" accept="image/*" multiple required>
                     </div> -->
 
- 
+
 
                     <div class="d-none">
                         <!-- otp form -->
@@ -101,7 +111,7 @@
                     </div>
 
 
- 
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -131,9 +141,21 @@
         </div>
     </div>
 </div>
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
+        $(document).on('change', '#role', function() {
+            var selectedroleName = $(this).val();
+            if (selectedroleName == "servicer") {
+                $('#categoryDiv').removeClass('d-none');
+                // $('#serviceContainer').removeClass('d-none');      
+            } else {
+                $('#categoryDiv').addClass('d-none');
+                $('#serviceContainer').addClass('d-none');
+            }
+        });
         // Listen for changes on the select element
         $(document).on('change', '#category', function() {
             var selectedCategoryId = $(this).val();
@@ -161,7 +183,7 @@
                         var serviceContainer = $('#serviceContainer');
                         serviceContainer.empty();
                         $.each(res.services, function(index, service) {
-                            var checkbox = $('<div class="form-check form-switch col-6">').append(
+                            var checkbox = $('<div class="form-check form-switch col-6" id="serviceDiv">').append(
                                 $('<input class="form-check-input" id="flexSwitchCheckDefault" type="checkbox" value="' + service.id + '" name="services[]">'),
                                 $('<label class="form-check-label text-white" for="flexSwitchCheckDefault">').text(service.title)
                             );
