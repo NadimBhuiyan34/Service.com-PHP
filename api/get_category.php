@@ -5,7 +5,7 @@ require '../config.php';
   // get category data
 if($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-        echo "nadim";
+         
         if($_POST['data']=='categories' && $_POST['verify']=='idea')  
         {
             mysqli_set_charset($connection, 'utf8');

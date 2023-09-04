@@ -90,8 +90,8 @@ if (isset($_POST['registerRequest'])) {
 // otp
 if(isset($_POST['otpVerify']))
 {
-    $mobile = $_POST['mobile'];
-    $otp = $_POST['otp'];
+    $mobile = $_POST['mobileRegister'];
+    $otp = $_POST['otpRegister'];
     $submittedOTP = implode('', $otp);
   // Check if user exists
    
@@ -110,6 +110,7 @@ if(isset($_POST['otpVerify']))
         
   } 
   else {
-        echo "nadim";
+        echo "Otp is wrong";
+        
   }
 }

@@ -18,10 +18,11 @@ if ($_POST['verify'] == "idea") {
         $category_title = $_POST['category'];
         $address = $_POST['address'];
         $role = $_POST['role'];
-        $otp = mt_rand(1000, 9999);
+        $otp = mt_rand(100000, 999999); // Generates a random six-digit OTP
 
 
-        $queryUser = "INSERT INTO `users`(`name`, `email`, `mobile`, `otp`, `role`, `status`) VALUES ('$name','nadim@gmail.com','$mobile','$otp','$role','Active')";
+
+        $queryUser = "INSERT INTO `users`(`name`, `email`, `mobile`, `otp`, `role`, `status`) VALUES ('$name','','$mobile','$otp','$role','Pending')";
         $userRegister = mysqli_query($connection, $queryUser);
 
         $query = "SELECT id FROM users WHERE mobile = $mobile";
@@ -31,24 +32,72 @@ if ($_POST['verify'] == "idea") {
 
         if ($role == "servicer") {
 
-            $categoryQuery = "SELECT `id` FROM `categories` WHERE title = $category_title ";
+            $categoryQuery = "SELECT `id` FROM `categories` WHERE title = '$category_title' ";
             $category = mysqli_query($connection,  $categoryQuery);
             $row = mysqli_fetch_assoc($category);
             $category_id = $row['id'];
 
             $queryUserProfile = "INSERT INTO `servicer_profiles`(`user_id`, `service_id`, `category_id`, `location`, `experience`, `biography`, `profile_image`, `work_image`) VALUES ('$id','2','$category_id','$address','','','','')";
             $resultProfile = mysqli_query($connection, $queryUserProfile);
-            $data = [
-                'mobile' => $mobile,
-            ];
+            if ($resultProfile) {
+                $data = [
+                    'mobile' => $mobile,
+                ];
+            } else {
+                $data = [
+                    'message' => "data not inserted",
+                ];
+            }
         } else {
             $queryUserProfile = "INSERT INTO `user_profiles`(`user_id`,`address`,`profile_image`) VALUES ('$id','$address','')";
             $resultProfile = mysqli_query($connection, $queryUserProfile);
-            $data = [
-                'mobile' => $mobile,
-            ];
+            if ($resultProfile) {
+                $data = [
+                    'mobile' => $mobile,
+                ];
+            } else {
+                $data = [
+                    'message' => "data not inserted",
+                ];
+            }
         }
     }
+
+    header('Content-Type: application/json');
+    echo json_encode($data);
+}
+
+
+
+if ($_POST['verify'] == "otp") {
+
+    $mobile = $_POST['otpMobile'];
+    $submittedOTP = $_POST['otp'];
+
+
+    $query = "SELECT * FROM users WHERE mobile = '$mobile' AND otp = '$submittedOTP'";
+    $result =  $resultProfile = mysqli_query($connection, $query);
+
+
+    if ($result->num_rows > 0) {
+
+        $user = $result->fetch_assoc();
+
+        $id = $user['id'];
+        $name = $user['name'];
+        $data = [
+            'id' => $id,
+            'name' => $name,
+        ];
+
+        $updateQuery = "UPDATE `users` SET `status`='Active' WHERE id = $id";
+        $result =  $resultProfile = mysqli_query($connection, $updateQuery);
+    } else {
+        $data = [
+            'message' => "otp is wrong",
+        ];
+    }
+
 
     header('Content-Type: application/json');
     echo json_encode($data);

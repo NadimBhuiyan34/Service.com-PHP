@@ -23,14 +23,14 @@
              });
              // Check if category is not set and set a default value
              if (category === null) {
-                 category = 5;
+                 let category = 5;
              }
 
              // Check if services is not set and set it to an empty array
              if (services === null) {
-                services = ["default_value"];
+                let services = ["c"];
              }
-
+              console.log(category);
              $.ajax({
                  url: "register.php",
                  method: 'post',
@@ -49,13 +49,14 @@
                      try {
                          var res = JSON.parse(response);
                           
-
-                         console.log(res.status);
+      
+                         console.log(res.mobile);
                          if (res.status == 'success') {
                              $('#registerForm').addClass('d-none');
                              $('.modal-footer').addClass('d-none');
                              $('#otpRegisterForm').removeClass('d-none');
                              $('#otpRegisterMobile').val(res.mobile);
+                             console.log( $('#otpRegisterMobile').val(res.mobile));
                              $('#alertMessage').addClass('d-none');
                          } else if (res.status == 'fail') {
                              $('#alertMessageRegister').removeClass('d-none').addClass('alert-danger').text(res.message);
