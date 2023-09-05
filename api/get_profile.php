@@ -15,7 +15,12 @@ if($_POST['verify'] == "profile")
 
       if($user['role'] == "servicer")
       {
-                $sql = "SELECT users.*, servicer_profiles.* FROM users JOIN servicer_profiles ON users.id = servicer_profiles.user_id WHERE users.id = $id";
+               //  $sql = "SELECT users.*, servicer_profiles.* FROM users JOIN servicer_profiles ON users.id = servicer_profiles.user_id WHERE users.id = $id";
+               $sql = "SELECT users.*, servicer_profiles.*, categories.* 
+               FROM users 
+               JOIN servicer_profiles ON users.id = servicer_profiles.user_id 
+               LEFT JOIN category ON servicer_profiles.category_id = category.id
+               WHERE users.id = $id";
       
       }
       else
@@ -27,8 +32,7 @@ if($_POST['verify'] == "profile")
       if($users)
       {
         $data = array();
-        while ($row = mysqli_fetch_assoc($users)) {
-             
+        while ($row = mysqli_fetch_assoc($users)) {   
              $data[] = $row;
         }
       }

@@ -8,11 +8,11 @@ if($_POST['verify'] == 'servicer')
     if($servicers)
     {
         $data = array();
-        while ($row = mysqli_fetch_assoc($servicers)) {
-             
+        while ($row = mysqli_fetch_assoc($servicers)) {  
+
              $data[] = $row;
-        }
-        
+                       
+        }  
     }
     header('Content-Type: application/json');
     echo json_encode($data);
