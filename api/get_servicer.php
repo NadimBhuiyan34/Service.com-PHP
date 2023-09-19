@@ -1,4 +1,5 @@
 <?php
+require '../config.php';
 if($_POST['verify'] == 'servicer')
 {
     $category_id = $_POST['id'];

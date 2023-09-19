@@ -91,14 +91,14 @@ include($_SERVER['DOCUMENT_ROOT'].'/Service.com-PHP/config.php');
        
         <div class="col-4 col-md-2 text-center border">
         <div class="p-2">
-        <img src="admin/public/category/<?php echo $category['banner_image']; ?>" alt="" style="width:100px;height:100px">
-
-          <span class="d-block d-md-inline fw-bold d-md-block"><?php echo $category['title'] ?></span>
+       <a href="">
+       <img src="admin/public/category/<?php echo $category['banner_image']; ?>" alt="" style="width:100px;height:100px">
+       </a>
+       <span class="d-block d-md-inline fw-bold d-md-block"><?php echo $category['title'] ?></span>
         </div>
       </div>
-       
       <?php
-                     }
+   }
       ?>
     </div>
     <!-- first content -->

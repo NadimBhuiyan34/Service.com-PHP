@@ -5,7 +5,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-white" style="position: fixed;top:0;z-index:1000;width:100%">
     <div class="container">
       <a class="navbar-brand" href="/">
-        <img src="https://img.freepik.com/free-icon/diamond_318-195445.jpg" alt="" style="width:50px;height:50px">
+      <img src="https://otp799999.000webhostapp.com/frontend/image/The-search.png" alt="" style="width:100px;height:75px">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -67,15 +67,15 @@
           ?>
             <!-- if is not login -->
             <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle fw-bold" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle fw-bold" href="#" id="profileDropdown" role="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Registration <i class="fa-solid fa-user-plus"></i>
             </a>
-            <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+            <!-- <ul class="dropdown-menu" aria-labelledby="profileDropdown">
               <li><a class="dropdown-item fw-bold" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Survicer</a></li>
               <li><a class="dropdown-item fw-bold" href="#">Users</a></li>
                
               
-            </ul>
+            </ul> -->
           </li>
             <!-- <li class="nav-item">
               <a class="nav-link fw-bold" href="">Registration <i class="fa-solid fa-user-plus"></i></a>

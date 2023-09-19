@@ -3,6 +3,7 @@ require '../config.php';
 if ($_POST['verify'] == "login") {
 
   $mobile = $_POST['mobile'];
+  $password = md5($_POST['password']);
   // Check if user exists
   $query = "SELECT * FROM users WHERE mobile = '$mobile'";
   $result = $connection->query($query);
@@ -10,19 +11,41 @@ if ($_POST['verify'] == "login") {
   if ($result->num_rows > 0) {
       
       
+
+
+    $user = $result->fetch_assoc();
+    
+    // Compare the hashed password in the database with the entered password
+    if ($user['password'] === $password) {
+
+        $id = $user['id'];
+        $name = $user['name'];
+        $data = [
+            'id' => $id,
+            'name' => $name,
+        ];
+         
+    } else {
+
+          $data = [
+          'status' => 'fail',
+          'message' => 'Yor password is wrong'
+      ];
+    }
       // Generate OTP
-      $otp = mt_rand(100000, 999999);
+   
+    //   $otp = mt_rand(100000, 999999);
       
       // Update OTP in the database
-      $updateQuery = "UPDATE users SET otp = '$otp' WHERE mobile = '$mobile'";
-      if ($connection->query($updateQuery)) {
-          $data = [
-              'status' => 'success',
-              'mobile' => $mobile,
+    //   $updateQuery = "UPDATE users SET otp = '$otp' WHERE mobile = '$mobile'";
+    //   if ($connection->query($updateQuery)) {
+    //       $data = [
+    //           'status' => 'success',
+    //           'mobile' => $mobile,
               
-          ];
+    //       ];
           
-      }  
+    //   }  
   } 
   else {
       $data = [

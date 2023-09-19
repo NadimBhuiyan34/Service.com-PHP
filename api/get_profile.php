@@ -25,7 +25,7 @@ if($_POST['verify'] == "profile")
       }
       else
       {
-           $sql = "SELECT users.*, user_profiles.* FROM users JOIN user_profiles ON users.id = user_profiles.user_id WHERE users.id = $id";
+           $sql = "SELECT users.*, user_profiles.* FROM users JOIN user_profiles ON users.id = user_profiles.user_id WHERE users.id = $id"; 
       }
 
       $users = mysqli_query($connection, $sql);

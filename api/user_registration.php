@@ -15,6 +15,7 @@ if ($_POST['verify'] == "idea") {
 
         $name = $_POST['name'];
         $mobile = $_POST['mobile'];
+        $password = md5($_POST['password']);
         $category_title = $_POST['category'];
         $address = $_POST['address'];
         $role = $_POST['role'];
@@ -22,7 +23,7 @@ if ($_POST['verify'] == "idea") {
 
 
 
-        $queryUser = "INSERT INTO `users`(`name`, `email`, `mobile`, `otp`, `role`, `status`) VALUES ('$name','','$mobile','$otp','$role','Pending')";
+        $queryUser = "INSERT INTO `users`(`name`, `email`,`password`, `mobile`, `otp`, `role`, `status`) VALUES ('$name','','$password','$mobile','$otp','$role','Pending')";
         $userRegister = mysqli_query($connection, $queryUser);
 
         $query = "SELECT id FROM users WHERE mobile = $mobile";

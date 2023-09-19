@@ -48,6 +48,7 @@
                         <select class="form-select" id="category" name="category" required>
                             <option value="">Select a category</option>
                             <?php
+                            include($_SERVER['DOCUMENT_ROOT'].'/config.php');
                             $query = "SELECT * FROM categories ORDER BY id DESC";
 
                             // $query = "SELECT * FROM categories ORDER BY id DESC";
@@ -134,48 +135,48 @@
             }
         });
         // Listen for changes on the select element
-        $(document).on('change', '#category', function() {
-            var selectedCategoryId = $(this).val();
-            var categoryService = "categoryService";
-            if (selectedCategoryId !== "") {
-                fetchServices(selectedCategoryId, categoryService); // Call the fetchServices function
-            } else {
-                $('#servicesContainer').empty(); // Clear services
-            }
-        });
+        // $(document).on('change', '#category', function() {
+        //     var selectedCategoryId = $(this).val();
+        //     var categoryService = "categoryService";
+        //     if (selectedCategoryId !== "") {
+        //         fetchServices(selectedCategoryId, categoryService); // Call the fetchServices function
+        //     } else {
+        //         $('#servicesContainer').empty(); // Clear services
+        //     }
+        // });
 
-        function fetchServices(categoryId, categoryService) {
-            // Perform an AJAX request to fetch services for the selected category
-            $.ajax({
-                url: 'register.php',
-                method: 'post',
-                dataType: 'text',
-                data: {
-                    id: categoryId,
-                    categoryService: categoryService
-                }, // Send selected category ID as a parameter
-                success: function(response) {
-                    var res = JSON.parse(response);
-                    if (res.status == 'success') {
-                        var serviceContainer = $('#serviceContainer');
-                        serviceContainer.empty();
-                        $.each(res.services, function(index, service) {
-                            var checkbox = $('<div class="form-check form-switch col-6" id="serviceDiv">').append(
-                                $('<input class="form-check-input" id="flexSwitchCheckDefault" type="checkbox" value="' + service.id + '" name="services[]">'),
-                                $('<label class="form-check-label text-white" for="flexSwitchCheckDefault">').text(service.title)
-                            );
-                            serviceContainer.append(checkbox);
-                        });
-                        $('#serviceContainer').prepend('<label for="location" class="form-label text-white">Select Your Service Item</label>');
-                        serviceContainer.removeClass('d-none');
-                    }
+        // function fetchServices(categoryId, categoryService) {
+        //     // Perform an AJAX request to fetch services for the selected category
+        //     $.ajax({
+        //         url: 'register.php',
+        //         method: 'post',
+        //         dataType: 'text',
+        //         data: {
+        //             id: categoryId,
+        //             categoryService: categoryService
+        //         }, // Send selected category ID as a parameter
+        //         success: function(response) {
+        //             var res = JSON.parse(response);
+        //             if (res.status == 'success') {
+        //                 var serviceContainer = $('#serviceContainer');
+        //                 serviceContainer.empty();
+        //                 $.each(res.services, function(index, service) {
+        //                     var checkbox = $('<div class="form-check form-switch col-6" id="serviceDiv">').append(
+        //                         $('<input class="form-check-input" id="flexSwitchCheckDefault" type="checkbox" value="' + service.id + '" name="services[]" checked>'),
+        //                         $('<label class="form-check-label text-white" for="flexSwitchCheckDefault">').text(service.title)
+        //                     );
+        //                     serviceContainer.append(checkbox);
+        //                 });
+        //                 $('#serviceContainer').prepend('<label for="location" class="form-label text-white">Select Your Service Item</label>');
+        //                 serviceContainer.removeClass('d-none');
+        //             }
 
 
-                },
-                error: function(xhr) {
-                    console.error('AJAX Error:', xhr.statusText);
-                }
-            });
-        }
+        //         },
+        //         error: function(xhr) {
+        //             console.error('AJAX Error:', xhr.statusText);
+        //         }
+        //     });
+        // }
     });
 </script>

@@ -31,16 +31,16 @@ if (isset($_POST['categoryService'])) {
 // register
 if (isset($_POST['registerRequest'])) {
     $mobile = $_POST['mobile']; // Sanitize input
-    $query = "SELECT id FROM users WHERE mobile = $mobile";
+    $query = "SELECT id FROM users WHERE mobile = '$mobile'";
     $userCheck = mysqli_query($connection, $query);
-
     if (mysqli_num_rows($userCheck) > 0) {
 
-        $res = [
+        $response = [
             'status' => 'fail',
             'message' => 'User with the provided mobile number does not exist'
         ];
-    } else {
+    }
+     else {
 
 
         // Sanitize and get form data
@@ -50,23 +50,23 @@ if (isset($_POST['registerRequest'])) {
         $mobile = $_POST['mobile'];
         $category_id = $_POST['category'];
         $location = $_POST['location'];
-        $services = array_filter($_POST["services"]);
-        $service_id = json_encode($services);
+        // $services = array_filter($_POST["services"]);
+        // $service_id = json_encode($services);
 
         // otp generate
         $otp = mt_rand(1000, 9999);
         //   query insert
-        $queryUser = "INSERT INTO `users`(`name`, `email`, `mobile`, `otp`, `role`, `status`) VALUES ('$name','','$mobile','$otp','$role','Active')";
+        $queryUser = "INSERT INTO `users`(`name`, `email`, `mobile`, `otp`, `role`, `status`) VALUES ('$name','nadim@gmail.com','$mobile','$otp','$role','Active')";
         $resultUser = mysqli_query($connection, $queryUser);
 
         if ($resultUser) {
-            $query = "SELECT id FROM users WHERE mobile = $mobile";
+            $query = "SELECT id FROM users WHERE mobile = '$mobile'";
             $result = mysqli_query($connection, $query);
             $row = mysqli_fetch_assoc($result);
             $id = $row['id'];
               if($role == 'servicer')
               {
-                $queryUserProfile = "INSERT INTO `servicer_profiles`(`user_id`, `service_id`, `category_id`, `location`, `experience`, `biography`, `profile_image`, `work_image`) VALUES ('$id','2','$category_id','$location','','','','')";
+                $queryUserProfile = "INSERT INTO `servicer_profiles`(`user_id`, `service_id`, `category_id`, `address`, `experience`, `biography`, `profile_image`, `work_image`) VALUES ('$id','2','$category_id','$location','','','','')";
                 $resultProfile = mysqli_query($connection, $queryUserProfile);
               }
               else
@@ -78,9 +78,17 @@ if (isset($_POST['registerRequest'])) {
             if ($resultProfile) {
                 $response = [
                     'status' => 'success',
-                    'mobile' => $_POST['mobile'],
+                    'mobile' =>$_POST['mobile']
                 ];
             }
+            else
+            {
+                 $response = [
+                    'status' => 'fail',
+                    'message' =>" $mobile"
+                ];
+            }
+             
         }
     }
     header('Content-Type: application/json');
