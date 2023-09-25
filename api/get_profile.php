@@ -16,11 +16,13 @@ if($_POST['verify'] == "profile")
       if($user['role'] == "servicer")
       {
                //  $sql = "SELECT users.*, servicer_profiles.* FROM users JOIN servicer_profiles ON users.id = servicer_profiles.user_id WHERE users.id = $id";
-               $sql = "SELECT users.*, servicer_profiles.*, categories.* 
+               $sql = "SELECT users.*, servicer_profiles.*, categories.*, reviews.rating_point 
                FROM users 
                JOIN servicer_profiles ON users.id = servicer_profiles.user_id 
-               LEFT JOIN category ON servicer_profiles.category_id = category.id
+               LEFT JOIN categories ON servicer_profiles.category_id = categories.id
+               LEFT JOIN reviews ON servicer_profiles.user_id = reviews.servicer_id
                WHERE users.id = $id";
+       
       
       }
       else

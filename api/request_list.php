@@ -14,6 +14,11 @@ if($_POST['verify'] == 'requestlist')
              $listSql = "SELECT * FROM `service_requests` WHERE user_id = '$user_id' AND status = 'pending'";
              $result = mysqli_query($connection, $listSql);
         }
+        else if($status == 'completed')
+        {
+             $listSql = "SELECT * FROM `service_requests` WHERE user_id = '$user_id' AND status = 'completed'";
+             $result = mysqli_query($connection, $listSql); 
+        }
         else
         {
             $listSql = "SELECT * FROM `service_requests` WHERE user_id = '$user_id' AND status = 'accepted'";
@@ -54,6 +59,11 @@ if($_POST['verify'] == 'requestlist')
              $listSql = "SELECT * FROM `service_requests` WHERE servicer_id = '$user_id' AND status = 'pending'";
              $result = mysqli_query($connection, $listSql);
         }
+        else if($status == 'completed')
+        {
+            $listSql = "SELECT * FROM `service_requests` WHERE servicer_id = '$user_id' AND status = 'completed'";
+            $result = mysqli_query($connection, $listSql);
+        }
         else
         {
             $listSql = "SELECT * FROM `service_requests` WHERE servicer_id = '$user_id' AND status = 'accepted'";
@@ -93,4 +103,4 @@ if($_POST['verify'] == 'requestlist')
     echo json_encode($data);
 
 }
-?>
+?>  
