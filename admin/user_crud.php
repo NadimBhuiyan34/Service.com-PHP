@@ -1,29 +1,10 @@
 <?php
-require '../config.php';
+// edit
+require 'config.php';
+
 if($_POST['verify'] == "profileUpdate")
 {
 
-    //  if (isset($_FILES["profile"]) && $_FILES["profile"]["error"] == 0) {
-
-    //       $uploadDir = "https://otp799999.000webhostapp.com/admin/public/profile/"; // Directory to store uploaded images
-    //       $targetFile = $uploadDir . basename($_FILES["profile"]["name"]);
-    //       $uploadOk = 1;
-    //       $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-          
-    //       $check = getimagesize($_FILES["profile"]["tmp_name"]);
-          
-    //      if ($check !== false) {
-    //       if (move_uploaded_file($_FILES["profile"]["tmp_name"], $targetFile)) {
-
-    //           $imageName = $_FILES["profile"]["name"];
-                      
-    //       }  
-     
-    //      }  
-          
-         
-    //   } 
-   
 
        if (!empty($_POST['imageFile'])) {
              $image=$_POST['image'];
@@ -37,7 +18,9 @@ if($_POST['verify'] == "profileUpdate")
        
     $id=$_POST['id'];
     $image=$_POST['image'];
+    $status=$_POST['status'];
     $name = $_POST['name'];
+    $role = $_POST['role'];
     $address = $_POST['address'];
     $category = $_POST['category'];
     $biography = $_POST['biography'];
@@ -57,7 +40,7 @@ if($_POST['verify'] == "profileUpdate")
       
       $user = $resultProfile->fetch_assoc();
 
-      $updateQuery = "UPDATE `users` SET `name`='$name' WHERE id = '$id'";
+      $updateQuery = "UPDATE `users` SET `name`='$name',`status`='$status' WHERE id = '$id'";
       $resultUser = mysqli_query($connection, $updateQuery);
 
       if($user['role'] == "servicer")
@@ -67,9 +50,11 @@ if($_POST['verify'] == "profileUpdate")
 
                if(mysqli_query($connection, $profileQuery))
                {
-                $data = [
-                    'message' => "Profile update successfully",
-                ];  
+                $message = "Profile Update Successfully.";
+
+                // Redirect to the index.php page with the message
+                header("Location: users.php?message=" . urlencode($message) . "&role=" . urlencode($role));
+                exit;
                }
               
       }
@@ -78,9 +63,11 @@ if($_POST['verify'] == "profileUpdate")
           $profileQuery = "UPDATE `user_profiles` SET `address`='$address', `profile_image`='$image' WHERE user_id = '$id'";
           if(mysqli_query($connection, $profileQuery))
           {
-            $data = [
-                'message' => "Profile update successfully",
-            ]; 
+            $message = "Profile Update successfully.";
+
+            // Redirect to the index.php page with the message
+            header("Location: users.php?message=" . urlencode($message) . "&role=" . urlencode($role));
+            exit;
           }
          
          
@@ -89,12 +76,36 @@ if($_POST['verify'] == "profileUpdate")
   }
   else
   {
-       $data = [
-                'message' => "user not found",
-            ];  
+    $message = "User Not Found.";
+
+    // Redirect to the index.php page with the message
+    header("Location: users.php?message=" . urlencode($message) . "&role=" . urlencode($role));
+    exit;
   }
  
   
   header('Content-Type: application/json');
   echo json_encode($data);
 }
+// delete
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['deleteUser'])) {
+        $id = $_POST['user_id'];
+        $role = $_POST['role'];
+        $query = "DELETE FROM `users` WHERE id = $id";
+        if (mysqli_query($connection,  $query)) {
+            $message = "Record delete successfully.";
+
+            // Redirect to the index.php page with the message
+            header("Location: users.php?message=" . urlencode($message) . "&role=" . urlencode($role));
+            exit;
+        } else {
+            $message = "Something is wrong.";
+
+            // Redirect to the index.php page with the message
+            header("Location: users.php?message=" . urlencode($message) . "&role=" . urlencode($role));
+            exit;
+        }
+    }
+}
+?>

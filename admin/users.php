@@ -15,24 +15,45 @@ $table_name = 'user_profiles';
 $join_condition = "users.id = $table_name.user_id";
 
 if ($role === 'servicer') {
-    $query = "SELECT users.*, servicer_profiles.*, categories.title, categories.banner_image, AVG(reviews.rating_point) AS average_rating
-    FROM users 
-    JOIN servicer_profiles ON users.id = servicer_profiles.user_id 
-    LEFT JOIN reviews ON servicer_profiles.user_id = reviews.servicer_id 
-    LEFT JOIN categories ON servicer_profiles.category_id = categories.id 
-    GROUP BY users.id, servicer_profiles.user_id, categories.title, categories.banner_image 
-    ORDER BY servicer_profiles.user_id DESC 
-    LIMIT $items_per_page OFFSET $offset";
+    $query = "SELECT
+    users.name,
+    users.mobile,
+    users.role,
+    users.status,
+    users.created_at,
+    servicer_profiles.*,
+    categories.id AS categoryId,
+    categories.title AS category_title,
+    categories.banner_image AS category_banner,
+    IFNULL(ROUND(AVG(reviews.rating_point), 2), 0) AS average_rating
+    FROM
+        users
+    JOIN
+        servicer_profiles ON users.id = servicer_profiles.user_id
+    LEFT JOIN
+        categories ON servicer_profiles.category_id = categories.id
+    LEFT JOIN
+        reviews ON servicer_profiles.user_id = reviews.servicer_id
+    GROUP BY
+        users.id,
+        servicer_profiles.id,
+        category_title,
+        category_banner
+    ORDER BY
+        servicer_profiles.id DESC
+    LIMIT $items_per_page OFFSET $offset;
+";
+} else {
 
-}
-else{
-    $query = "SELECT users.*, user_profiles.* FROM users JOIN user_profiles ON users.id = user_profiles.user_id DESC 
-    LIMIT $items_per_page OFFSET $offset";
-
+    $query = "SELECT users.*, user_profiles.*
+    FROM users
+    JOIN user_profiles ON users.id = user_profiles.user_id
+    ORDER BY user_profiles.created_at DESC
+    LIMIT $items_per_page OFFSET $offset;
+    ";
 }
 
 // Prepare the SQL query with the dynamically selected table and JOIN condition
-
 
 $result = mysqli_query($connection, $query);
 
@@ -41,113 +62,7 @@ $total_rows_query = "SELECT COUNT(*) AS total FROM users WHERE role = '$role'";
 $total_rows_result = mysqli_query($connection, $total_rows_query);
 $total_rows = mysqli_fetch_assoc($total_rows_result)['total'];
 $total_pages = ceil($total_rows / $items_per_page);
-//  insert category
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    if (isset($_POST['editUser'])) {
-        include_once('config.php');
-
-        $name = $_POST['name'];
-        $mobile = $_POST['mobile'];
-        $address = $_POST['address'];
-        $experience = $_POST['experience'];
-        $status = $_POST['status'];
-        $user_id = $_POST['user_id'];
-        $role = $_POST['role'];
-
-        // Update data in the `users` table
-        $updateUserQuery = "UPDATE `users` SET `name`='[value-2]',`mobile`='[value-5]',`status`='[value-8]' WHERE id = '$user_id'";
-
-        if (mysqli_query($connection, $updateUserQuery)) {
-            // Data updated in the `users` table successfully
-
-            // Now, update data in the appropriate profile table based on the role
-            if ($role == 'servicer') {
-                $updateProfileQuery = "UPDATE `servicer_profiles` SET `id`='[value-1]',`user_id`='[value-2]',`service_id`='[value-3]',`category_id`='[value-4]',`address`='[value-5]',`experience`='[value-6]',`biography`='[value-7]',`profile_image`='[value-8]',`work_image`='[value-9]',`created_at`='[value-10]',`updated_at`='[value-11]' WHERE 1";
-            } else {
-                $updateProfileQuery = "UPDATE user_profiles SET address = '$address' WHERE user_id = $user_id";
-            }
-
-            if (mysqli_query($connection, $updateProfileQuery)) {
-                // Data updated in the profile table successfully
-                $message = "Record Updated successfully.";
-                header("Location: users.php?message=" . urlencode($message) . "&role=" . urlencode($role));
-            } else {
-                echo "Error updating data in the profile table: " . mysqli_error($connection);
-            }
-        } else {
-            echo "Error updating data in users: " . mysqli_error($connection);
-        }
-    }
-
-    // edit Data
-    // if (isset($_POST["editCategory"])) {
-
-    //     if (isset($_FILES['bannerImage']) && $_FILES['bannerImage']['error'] === UPLOAD_ERR_OK) {
-    //         $uploadDir = 'public/category/';
-
-    //         $uploadedFile = $_FILES['bannerImage']['tmp_name'];
-    //         $imageName = $_FILES['bannerImage']['name'];
-    //         $imagePath = $uploadDir . $imageName;
-
-
-    //         move_uploaded_file($uploadedFile, $imagePath);
-    //     }
-
-    //     $id = $_POST["categoryId"];
-    //     $title = $_POST['title'];
-    //     $type = $_POST['type'];
-    //     $description = $_POST['description'];
-    //     $included = $_POST['included'];
-    //     $excluded = $_POST['excluded'];
-    //     $status = $_POST['status'];
-    //     $banner_image = $imageName ??  $_POST['banner_image'];
-
-
-    //     mysqli_set_charset($connection, "utf8");
-    //     $updateQuery = "UPDATE categories SET title='$title', type='$type', description='$description', included='$included', excluded='$excluded', status='$status', banner_image='$banner_image' WHERE id='$id'";
-
-    //     if (mysqli_query($connection, $updateQuery)) {
-    //         $message = "Record updated successfully.";
-
-    //         mysqli_close($connection);
-
-    //         // Redirect to the index.php page with the message
-    //         header("Location: category.php?message=" . urlencode($message));
-    //         exit;
-    //     } else {
-    //         echo "Error: " . mysqli_error($connection);
-    //     }
-    // }
-    // Delete data
-    // if (isset($_POST['categoryId']) && !empty($_POST['categoryId'])) {
-
-    //     $categoryId = mysqli_real_escape_string($connection, $_POST['categoryId']);
-
-    //     // SQL query to delete the question
-    //     $deleteQuery = "DELETE FROM categories WHERE id = '$categoryId'";
-
-    //     // Execute the query
-    //     if (mysqli_query($connection, $deleteQuery)) {
-    //         $message = "Record deleted successfully.";
-
-    //         // Redirect to the index.php page with the message
-    //         header("Location: category.php?message=" . urlencode($message));
-    //         exit;
-    //     } else {
-    //         echo "Error deleting question: " . mysqli_error($connection);
-    //     }
-
-    //     // Close the database connection
-    //     mysqli_close($connection);
-    // } else {
-    //     $message = "This data not found";
-
-    //     // Redirect to the index.php page with the message
-    //     header("Location: category.php?message=" . urlencode($message));
-    //     exit;
-    // }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -182,6 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- End Sidebar-->
 
     <main id="main" class="main">
+        <div id="notification"></div>
 
         <?php
         if (isset($_GET['message'])) {
@@ -227,14 +143,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <section>
             <div class="card">
-                <div class="card-header d-flex" style="background-color: hwb(0 90% 7%);">
-                    <div>
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addModal">
-                            <i class="fa-solid fa-plus"></i> Add New
-                        </button>
-                    </div>
+            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: hsl(180, 2%, 80%);">
+    <div>
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addModal">
+            <i class="fa-solid fa-plus"></i> Add New
+        </button>
+    </div>
+    <div class="form-group mb-0">
+        <label for="statusFilter" class="me-2 text-dark">Filter by Status <i class="fa-solid fa-filter"></i></label>
+        <select class="form-select" id="statusFilter">
+            <option value="all">All</option>
+            <option value="Active">Active</option>
+            <option value="Pending">Pending</option>
+            <option value="Inactive">Inactive</option>
+        </select>
+    </div>
+    <div class="form-group mb-0">
+        <label for="search" class="me-2">Search:</label>
+        <input type="text" id="search" class="form-control" placeholder="Search...">
+    </div>
+</div>
 
-                </div>
+
                 <div class="card-body table-responsive">
 
                     <table id="example" class="display table " style="width:100%">
@@ -249,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tableBody">
                             <?php
                             $serialNumber = 1;
 
@@ -285,9 +215,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#showModal<?php echo $row['id'] ?>">
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
-                                        <form action="category.php" method="POST" class="deleteForm">
-                                            <input type="hidden" value="<?php echo $row['id']; ?>" name="categoryId">
-                                            <button type="submit" class="btn btn-outline-danger btn-sm" name="deleteData">
+                                        <form action="user_crud.php" method="POST" class="deleteForm">
+                                            <input type="hidden" value="<?php echo $row['user_id']; ?>" name="user_id">
+                                            <input type="hidden" value="<?php echo $row['role']; ?>" name="role">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm" name="deleteUser">
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </button>
                                         </form>
@@ -298,41 +229,107 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <div class="modal fade" id="editModal<?php echo $row['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog  modal-xl">
                                             <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title text-center fw-bold" id="exampleModalLabel" style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;">Edit User</h3>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <div class="modal-header" style="background-color: rgb(223, 226, 217);">
+                                                    <h3 class="modal-title text-center fw-bold mx-auto" id="exampleModalLabel" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;">
+                                                        Edit <?php echo ucfirst($row['role']); ?> Profile
+                                                    </h3>
+                                                    <i class="fa-solid fa-user-pen fa-fade fa-2xl"></i>
+
                                                 </div>
-                                                <div class="modal-body" style="background-color: hsl(46, 90%, 47%);">
+                                                <div class="modal-body" style="background-color: hwb(207 4% 12%);">
 
-                                                    <form class="" action="http://localhost/Service.com-PHP/api/profile_update.php" method="POST">
+                                                    <form class="" action="user_crud.php" method="POST">
 
-                                                        <input type="hidden" name="user_id" value="<?php echo $row['id'] ?>">
+                                                        <input type="hidden" name="id" value="<?php echo $row['user_id'] ?>">
                                                         <input type="hidden" name="role" value="<?php echo $row['role'] ?>">
                                                         <input type="hidden" name="image" value="<?php echo $row['profile_image'] ?>">
                                                         <input type="hidden" name="verify" value="profileUpdate">
+                                                        <input type="hidden" name="role" value="<?php echo $row['role'] ?>">
 
                                                         <div class="row p-5 bg-white rounded-4">
+                                                            <?php
+                                                            if ($row['role'] == 'servicer') {
+
+
+                                                                $rating = $row['average_rating']; // Assuming $row['average_rating'] contains the rating point (e.g., 4.5)
+
+                                                                // Check if the rating is greater than 0 and not null
+                                                                if ($rating !== null && $rating > 0) {
+                                                                    $fullStars = floor($rating); // Get the number of full stars (e.g., 4)
+                                                                    $halfStar = $rating - $fullStars; // Get the fraction part (e.g., 0.5 for half a star)
+                                                                } else {
+                                                                    // Set default values when rating is null or 0
+                                                                    $fullStars = 0;
+                                                                    $halfStar = 0;
+                                                                }
+                                                            }
+                                                            ?>
+
                                                             <div class="mx-auto col-md-12 col-lg-12 col-xl-12 text-center mb-3">
-                                                                <img src="https://otp799999.000webhostapp.com/admin/public/profile/<?php echo $row['profile_image']; ?>" alt="" style="border-radius: 50%; width: 100px; height: 100px;">
+                                                                <div style="display: inline-block; vertical-align: top;">
+                                                                    <img src="https://otp799999.000webhostapp.com/admin/public/profile/<?php echo $row['profile_image']; ?>" alt="" style="border-radius: 50%; width: 100px; height: 100px;">
+                                                                    <br>
+                                                                    <span class="badge rounded-pill bg-success"><?php echo $row['role'] ?></span>
+                                                                </div>
+                                                                <?php if ($row['role'] == 'servicer') : ?>
+                                                                    <div>
+                                                                        <?php if ($rating !== null && $rating > 0) : ?>
+                                                                            <p>Rating: <strong><?php echo $row['average_rating'] ?></strong>
+                                                                                <?php
+                                                                                // Display full stars
+                                                                                for ($i = 0; $i < $fullStars; $i++) {
+                                                                                    echo '<i class="fa-solid fa-star text-warning"></i> ';
+                                                                                }
+
+                                                                                // Display half-star if applicable
+                                                                                if ($halfStar >= 0.5) {
+                                                                                    echo '<i class="fa-solid fa-star-half-stroke text-warning"></i> ';
+                                                                                }
+                                                                                ?>
+                                                                            </p>
+                                                                        <?php else : ?>
+                                                                            <p>No Rating Available</p>
+                                                                        <?php endif; ?>
+                                                                    </div>
+                                                                <?php endif; ?>
                                                             </div>
+                                                            <h6 class="fw-bold text-primary ">Created Date: <?php echo $row['created_at'] ?></h6>
+
                                                             <div class="col-md-6 col-lg-6 col-xl-6 py-2">
-                                                                <label for="name" class="form-label">Name</label>
+                                                                <label for="name" class="form-label fw-bold">Name</label>
                                                                 <input type="text" class="form-control" id="name" name="name" value="<?php echo $row['name']; ?>">
                                                             </div>
                                                             <div class="col-md-6 col-lg-6 col-xl-6 py-2">
-                                                                <label for="mobile" class="form-label">Mobile</label>
+                                                                <label for="mobile" class="form-label fw-bold">Mobile</label>
                                                                 <input type="text" name="mobile" class="form-control" id="Mobile" value="<?php echo $row['mobile']; ?>">
                                                             </div>
                                                             <div class="col-12 py-2">
-                                                                <label for="address" class="form-label">Address</label>
+                                                                <label for="address" class="form-label fw-bold">Address</label>
                                                                 <input type="text" name="address" class="form-control" id="address" placeholder="" value="<?php echo $row['address']; ?>">
                                                             </div>
                                                             <?php if ($row['role'] == 'servicer') {
                                                             ?>
-                                                                <div class="col-12 py-2">
-                                                                    <label for="experience" class="form-label">Experience</label>
+
+
+                                                                <div class="col-6 py-2">
+                                                                    <label for="experience" class="form-label fw-bold">Service Category</label>
+                                                                    <select class="form-select" aria-label="Default select example" name="category">
+                                                                        <option selected>Open this select menu</option>
+                                                                        <?php
+                                                                        $categoryQuery = "SELECT * FROM categories ORDER BY id DESC";
+                                                                        $categories = mysqli_query($connection, $categoryQuery);
+
+                                                                        while ($category = mysqli_fetch_assoc($categories)) { ?>
+                                                                            <option value="<?php echo $category['title'] ?>" <?php echo $category['id'] == $row['category_id'] ? 'selected' : ''; ?>><?php echo $category['title'] ?></option>
+                                                                        <?php } ?>
+                                                                    </select>
+
+                                                                </div>
+                                                                <div class="col-6 py-2">
+                                                                    <label for="experience" class="form-label fw-bold">Experience</label>
                                                                     <input type="text" name="experience" class="form-control" id="experience" placeholder="" value="<?php echo $row['experience']; ?>">
                                                                 </div>
+
 
                                                                 <div class="col-12 py-2">
                                                                     <label for="biography" class="form-label fw-bold">Biography</label>
@@ -390,20 +387,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <div class="modal fade" id="showModal<?php echo $row['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog  modal-xl">
                                             <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h3 class="modal-title text-center fw-bold" id="exampleModalLabel" style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;">View User Information</h3>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <div class="modal-header" style="background-color: hsla(207, 88%, 91%, 0.841);">
+                                                    <h3 class="modal-title text-center fw-bold mx-auto" id="exampleModalLabel" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;">
+                                                        View <?php echo ucfirst($row['role']); ?> Profile
+                                                    </h3>
+                                                    <i class="fa-solid fa-users-viewfinder fa-fade fa-2xl"></i>
+
                                                 </div>
-                                                <div class="modal-body" style="background-color: hsl(46, 90%, 47%);">
+                                                <div class="modal-body" style="background-color: hwb(196 5% 11%);">
 
                                                     <form class="" method="POST">
 
 
 
                                                         <div class="row p-5 bg-white rounded-4">
+
+                                                            <?php
+                                                            if ($row['role'] == 'servicer') {
+
+
+                                                                $rating = $row['average_rating']; // Assuming $row['average_rating'] contains the rating point (e.g., 4.5)
+
+                                                                // Check if the rating is greater than 0 and not null
+                                                                if ($rating !== null && $rating > 0) {
+                                                                    $fullStars = floor($rating); // Get the number of full stars (e.g., 4)
+                                                                    $halfStar = $rating - $fullStars; // Get the fraction part (e.g., 0.5 for half a star)
+                                                                } else {
+                                                                    // Set default values when rating is null or 0
+                                                                    $fullStars = 0;
+                                                                    $halfStar = 0;
+                                                                }
+                                                            }
+                                                            ?>
+
                                                             <div class="mx-auto col-md-12 col-lg-12 col-xl-12 text-center mb-3">
-                                                                <img src="https://otp799999.000webhostapp.com/admin/public/profile/<?php echo $row['profile_image']; ?>" alt="" style="border-radius: 50%; width: 100px; height: 100px;">
+                                                                <div style="display: inline-block; vertical-align: top;">
+                                                                    <img src="https://otp799999.000webhostapp.com/admin/public/profile/<?php echo $row['profile_image']; ?>" alt="" style="border-radius: 50%; width: 100px; height: 100px;">
+                                                                    <br>
+                                                                    <span class="badge rounded-pill bg-success"><?php echo $row['role'] ?></span>
+                                                                </div>
+                                                                <div style="">
+                                                                    <?php if ($row['role'] == 'servicer') : ?>
+                                                                        <div>
+                                                                            <?php if ($rating !== null && $rating > 0) : ?>
+                                                                                <p>Rating: <strong><?php echo $row['average_rating'] ?></strong>
+                                                                                    <?php
+                                                                                    // Display full stars
+                                                                                    for ($i = 0; $i < $fullStars; $i++) {
+                                                                                        echo '<i class="fa-solid fa-star text-warning"></i> ';
+                                                                                    }
+
+                                                                                    // Display half-star if applicable
+                                                                                    if ($halfStar >= 0.5) {
+                                                                                        echo '<i class="fa-solid fa-star-half-stroke text-warning"></i> ';
+                                                                                    }
+                                                                                    ?>
+                                                                                </p>
+                                                                            <?php else : ?>
+                                                                                <p>No Rating Available</p>
+                                                                            <?php endif; ?>
+                                                                        </div>
+                                                                    <?php endif; ?>
+                                                                </div>
                                                             </div>
+                                                             <h6 class="fw-bold text-primary ">Created Date: <?php echo $row['created_at'] ?></h6>
+
+
                                                             <div class="col-md-6 col-lg-6 col-xl-6 py-2">
                                                                 <label for="name" class="form-label fw-bold">Name</label>
                                                                 <input type="text" class="form-control" id="name" value="<?php echo $row['name']; ?>" disabled>
@@ -418,11 +467,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                             </div>
                                                             <?php if ($row['role'] == 'servicer') {
                                                             ?>
-                                                                
-                                                                
-                                                                <div class="col-12 py-2">
+
+
+                                                                <div class="col-6 py-2">
                                                                     <label for="experience" class="form-label fw-bold">Experience</label>
                                                                     <input type="text" class="form-control" id="experience" placeholder="" value="<?php echo $row['experience']; ?>" disabled>
+                                                                </div>
+                                                                <div class="col-6 py-2">
+                                                                    <label for="experience" class="form-label fw-bold">Service Category</label>
+                                                                    <input type="text" class="form-control" id="experience" placeholder="" value="<?php echo $row['category_title']; ?>" disabled>
                                                                 </div>
                                                                 <div class="col-12 py-2">
                                                                     <label for="biography" class="form-label fw-bold">Biography</label>
@@ -506,6 +559,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- ======= Footer ======= -->
     <?php include_once "include/layout/footer.php" ?>
     <!-- End Footer -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#statusFilter').change(function() {
+                var selectedStatus = $(this).val(); // Get the selected status
+
+                // Show all rows initially
+                $('#tableBody tr').show();
+
+                // Filter rows based on selected status
+                if (selectedStatus !== 'all') {
+                    $('#tableBody tr').not(':has(td:contains(' + selectedStatus + '))').hide();
+                }
+            });
+        });
+
+
+        // searchg
+
+        $(document).ready(function() {
+            $('#statusFilter, #search').on('input', function() {
+                var selectedStatus = $('#statusFilter').val();
+                var searchQuery = $('#search').val().toLowerCase();
+
+                // Show all rows initially
+                $('#tableBody tr').show();
+
+                // Filter rows based on selected status
+                if (selectedStatus !== 'all') {
+                    $('#tableBody tr').not(':has(td:contains(' + selectedStatus + '))').hide();
+                }
+
+                // Filter rows based on search query
+                if (searchQuery !== '') {
+                    $('#tableBody tr').filter(function() {
+                        return $(this).text().toLowerCase().indexOf(searchQuery) === -1;
+                    }).hide();
+                }
+            });
+        });
+    </script>
+
+    </script>
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
