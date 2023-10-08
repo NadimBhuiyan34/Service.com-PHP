@@ -51,6 +51,12 @@
       <span>Service</span>
     </a>
   </li><!-- End Service Page Nav -->
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="request.php">
+      <i class="bi bi-card-list"></i>
+      <span>Service Request</span>
+    </a>
+  </li><!-- End Service Page Nav -->
 
   <li class="nav-item">
     <a class="nav-link collapsed" href="pages-faq.html">

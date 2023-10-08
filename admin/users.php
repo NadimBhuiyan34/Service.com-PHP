@@ -151,11 +151,11 @@ $total_pages = ceil($total_rows / $items_per_page);
     </div>
     <div class="form-group mb-0">
         <label for="statusFilter" class="me-2 text-dark">Filter by Status <i class="fa-solid fa-filter"></i></label>
-        <select class="form-select" id="statusFilter">
-            <option value="all">All</option>
-            <option value="Active">Active</option>
-            <option value="Pending">Pending</option>
-            <option value="Inactive">Inactive</option>
+        <select class="form-select"  id="statusFilter">
+        <option value="all">All</option>
+    <option value="Active">Active</option>
+    <option value="Pending">Pending</option>
+    <option value="Inactive">Inactive</option>
         </select>
     </div>
     <div class="form-group mb-0">
