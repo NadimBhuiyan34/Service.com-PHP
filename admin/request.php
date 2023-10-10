@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </select>
                     </div>
                     <div>
-                    <!-- <div class="btn-group">
+                        <!-- <div class="btn-group">
   <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     Get Status
   </button>
@@ -197,7 +197,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <th>Servicer Mobile</th>
                                 <th>Servicer Address</th>
 
-                                <th>Created at</th>
+                                <th>Requested Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -233,7 +233,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         $capitalizedStatus = ucfirst($status); // Capitalize the first letter
 
                                         echo '<span class="badge ' . $badgeClass . '">' . $capitalizedStatus . '</span>';
-                                    
+
                                         ?>
 
                                     </td>
@@ -324,6 +324,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                     <div class="col-md-12 col-lg-12 col-xl-12 py-2 col-12">
                                                                         <label for="name" class="form-label fw-bold">Address</label>
                                                                         <input type="text" class="form-control" id="name" name="name" value="<?php echo $row['user_address']; ?>" disabled>
+                                                                    </div>
+                                                                    <div class="col-md-12 col-lg-12 col-xl-12 py-2 col-12">
+                                                                        <label for="name" class="form-label fw-bold">Requested Date</label>
+                                                                        <input type="text" class="form-control" id="name" name="name" value="<?php echo date('d-M-Y', strtotime($row['created_at'])); ?>" disabled>
                                                                     </div>
                                                                 </div>
                                                             </div>

@@ -2,7 +2,7 @@
 // edit
 require 'config.php';
 
-if($_POST['verify'] == "profileUpdate")
+if (isset($_POST['profileUpdate']))
 {
 
 

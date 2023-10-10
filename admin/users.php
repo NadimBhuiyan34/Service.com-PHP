@@ -243,7 +243,7 @@ $total_pages = ceil($total_rows / $items_per_page);
                                                         <input type="hidden" name="id" value="<?php echo $row['user_id'] ?>">
                                                         <input type="hidden" name="role" value="<?php echo $row['role'] ?>">
                                                         <input type="hidden" name="image" value="<?php echo $row['profile_image'] ?>">
-                                                        <input type="hidden" name="verify" value="profileUpdate">
+                                                       
                                                         <input type="hidden" name="role" value="<?php echo $row['role'] ?>">
 
                                                         <div class="row p-5 bg-white rounded-4">
