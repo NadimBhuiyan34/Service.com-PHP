@@ -41,7 +41,7 @@
   
   <li class="nav-item">
     <a class="nav-link collapsed" href="category.php">
-      <i class="bi bi-card-list"></i>
+    <i class="fa-solid fa-list-ol"></i>
       <span>Category</span>
     </a>
   </li><!-- End Category Page Nav -->

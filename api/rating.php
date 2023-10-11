@@ -4,10 +4,10 @@ if($_POST['verify'] == 'rating')
 {
     $user_id = $_POST['user_id'];
     $servicer_id = $_POST['servicer_id'];
-    $servicer_id = $_POST['message']??'';
+    $message= $_POST['message']??'';
     $point = $_POST['point'];
     
-    $checkSql = "INSERT INTO `reviews`(`user_id`, `service_id`, `servicer_id`, `message`, `rating_point`) VALUES ('$user_id','','$servicer_id','','$point')";
+    $checkSql = "INSERT INTO `reviews`(`user_id`, `service_id`, `servicer_id`, `message`, `rating_point`) VALUES ('$user_id','','$servicer_id','$message','$point')";
 
     $result = mysqli_query($connection, $checkSql);
 

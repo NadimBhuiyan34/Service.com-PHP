@@ -10,13 +10,11 @@ if ($_POST['verify'] == "login") {
 
   if ($result->num_rows > 0) {
       
-      
-
 
     $user = $result->fetch_assoc();
     
     // Compare the hashed password in the database with the entered password
-    if ($user['password'] === $password) {
+    if ($user['password'] === $password AND $user['status'] == 'Active') {
 
         $id = $user['id'];
         $name = $user['name'];
@@ -25,27 +23,33 @@ if ($_POST['verify'] == "login") {
             'name' => $name,
         ];
          
-    } else {
+    } else if($user['password'] === $password AND $user['status'] == 'Inactive') {
 
           $data = [
           'status' => 'fail',
-          'message' => 'Yor password is wrong'
+          'message' => 'Your account is inactive please contact with admin'
       ];
     }
-      // Generate OTP
+    else
+    {
+         // Generate OTP
    
-    //   $otp = mt_rand(100000, 999999);
+      $otp = mt_rand(100000, 999999);
       
-      // Update OTP in the database
-    //   $updateQuery = "UPDATE users SET otp = '$otp' WHERE mobile = '$mobile'";
-    //   if ($connection->query($updateQuery)) {
-    //       $data = [
-    //           'status' => 'success',
-    //           'mobile' => $mobile,
+       
+      $updateQuery = "UPDATE users SET otp = '$otp' WHERE mobile = '$mobile'";
+      if ($connection->query($updateQuery)) {
+          $data = [
+              'status' => 'Unverify',
+              'mobile' => $mobile,
               
-    //       ];
+          ];
           
-    //   }  
+      }  
+
+       
+    }
+     
   } 
   else {
       $data = [
@@ -55,9 +59,11 @@ if ($_POST['verify'] == "login") {
   }
  
   header('Content-Type: application/json');
-  echo json_encode($res);
+  echo json_encode($data);
 }
  
+
+
 // otp verify for login
 if ($_POST['verify'] == "otp") {
 
@@ -72,21 +78,22 @@ if ($_POST['verify'] == "otp") {
     if ($result->num_rows > 0) {
 
         $user = $result->fetch_assoc();
-
-        $id = $user['id'];
-        $name = $user['name'];
-        $data = [
+        $updateQuery = "UPDATE users SET status = 'Active' WHERE mobile = '$mobile'";
+        if( mysqli_query($connection, $query))
+        {
+            $id = $user['id'];
+            $name = $user['name'];
+            $data = [
             'id' => $id,
             'name' => $name,
-        ];
-
-    
+           ];
+        }
+       
     } else {
         $data = [
             'message' => "otp is wrong",
         ];
     }
-
 
     header('Content-Type: application/json');
     echo json_encode($data);

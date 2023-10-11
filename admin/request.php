@@ -47,12 +47,13 @@ $total_rows_result = mysqli_query($connection, $total_rows_query);
 $total_rows = mysqli_fetch_assoc($total_rows_result)['total'];
 $total_pages = ceil($total_rows / $items_per_page);
 
+// status updated
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['statusUpdate'])) {
         $status = $_POST['status'];
         $id = $_POST['id'];
 
-        $updateQuery = "UPDATE `service_requests` SET `status`='$status' WHERE id = '$id'";
+        $updateQuery = "UPDATE `service_requests` SET `status` = '$status', `updated_at` = NOW() WHERE id = '$id'";
         $resultRequest = mysqli_query($connection, $updateQuery);
         if ($resultRequest) {
             $message = "Status Update Successfully.";
@@ -348,9 +349,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                         <label for="name" class="form-label fw-bold">Mobile</label>
                                                                         <input type="text" class="form-control" id="name" name="name" value="<?php echo $row['servicer_mobile']; ?>" disabled>
                                                                     </div>
-                                                                    <div class="col-md-12 col-lg-12 col-xl-12 py-2 col-12">
+                                                                    <div class="col-md-6 col-lg-6 col-xl-6 py-2 col-12">
                                                                         <label for="name" class="form-label fw-bold">Address</label>
                                                                         <input type="text" class="form-control" id="name" name="name" value="<?php echo $row['servicer_address']; ?>" disabled>
+                                                                    </div>
+                                                                    <div class="col-md-6 col-lg-6 col-xl-6 py-2 col-12">
+                                                                        <label for="name" class="form-label fw-bold">Status</label>
+                                                                        <input type="text" class="form-control" id="name" name="name" value="<?php echo $row['status']; ?>" disabled>
+                                                                    </div>
+                                                                    <div class="col-md-6 col-lg-6 col-xl-6 py-2 col-12">
+                                                                        <label for="name" class="form-label fw-bold">Approved Date</label>
+                                                                        <input type="text" class="form-control" id="name" name="name" value="<?php echo date('d-M-Y', strtotime($row['updated_at'])); ?>" disabled>
+                                                                    </div>
+                                                                    <div class="col-md-6 col-lg-6 col-xl-6 py-2 col-12">
+                                                                        <label for="name" class="form-label fw-bold">Completed Date</label>
+                                                                        <input type="text" class="form-control" id="name" name="name" value="<?php echo date('d-M-Y', strtotime($row['completed_at'])); ?>" disabled>
                                                                     </div>
                                                                 </div>
                                                             </div>

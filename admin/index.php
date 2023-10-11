@@ -1,3 +1,8 @@
+<?php
+
+require '../config.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +14,7 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
 
-  <?php include_once"include/layout/css.php" ?>
+  <?php include_once "include/layout/css.php" ?>
 
   <!-- =======================================================
   * Template Name: NiceAdmin
@@ -23,11 +28,11 @@
 <body>
 
   <!-- ======= Header ======= -->
-  <?php include_once"include/layout/topbar.php" ?>
+  <?php include_once "include/layout/topbar.php" ?>
   <!-- End Header -->
 
   <!-- ======= Sidebar ======= -->
-  <?php include_once"include/layout/sidebar.php" ?>
+  <?php include_once "include/layout/sidebar.php" ?>
   <!-- End Sidebar-->
 
   <main id="main" class="main">
@@ -67,15 +72,58 @@
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Sales <span>| Today</span></h5>
+                  <h5 class="card-title">Requested <span>| Today</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-cart"></i>
+                      <i class="fa-solid fa-cart-plus fa-beat"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>145</h6>
-                      <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+                      <h6>
+
+                        <?php
+
+
+                        $query = "SELECT COUNT(id) as row_count FROM service_requests";
+                        $result = $connection->query($query);
+
+                        if ($result) {
+                          $row = $result->fetch_assoc();
+                          $count = $row['row_count'];
+                          echo "$count";
+                        } else {
+                          echo "Query failed: " . $connection->error;
+                        }
+
+
+                        ?>
+                      </h6>
+                      <div>
+                        <span class="text-danger small pt-1 fw-bold">
+                          <?php
+                          $query = "SELECT 
+                       SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pendingCount,
+                       SUM(CASE WHEN status = 'accepted' THEN 1 ELSE 0 END) as acceptedCount
+                       FROM service_requests";
+
+                          $result = $connection->query($query);
+
+                          if ($result) {
+                            $row = $result->fetch_assoc();
+                            $pendingCount = $row['pendingCount'];
+                            $acceptedCount = $row['acceptedCount'];
+
+                            echo "$pendingCount";
+                          } else {
+                            echo "Query failed: " . $connection->error;
+                          }
+                          ?>
+
+                        </span> <span class="text-muted small pt-2 ps-1">Pending</span>
+                        <span class="text-success small pt-1 fw-bold ps-2 ">
+                          <?php echo $acceptedCount  ?>
+                        </span> <span class="text-muted small pt-2 ps-1">Ongoing</span>
+                      </div>
 
                     </div>
                   </div>
@@ -102,16 +150,54 @@
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Revenue <span>| This Month</span></h5>
+                  <h5 class="card-title">Servicer <span>| This Month</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-currency-dollar"></i>
+                      <i class="fa-solid fa-user-nurse fa-beat"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>$3,264</h6>
-                      <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+                      <h6>
+                        <?php
+                        $query = "SELECT COUNT(id) as servicer FROM users WHERE role = 'servicer'";
+                        $result = $connection->query($query);
 
+                        if ($result) {
+                          $row = $result->fetch_assoc();
+                          $servicerCount = $row['servicer'];
+                          echo "$servicerCount";
+                        } else {
+                          echo "Query failed: " . $connection->error;
+                        }
+                        ?>
+                      </h6>
+                      <div>
+                        <span class="text-danger small pt-1 fw-bold">
+                          <?php
+                          $query = "SELECT 
+                       SUM(CASE WHEN status = 'Pending' THEN 1 ELSE 0 END) as pendingCount,
+                       SUM(CASE WHEN status = 'Active' THEN 1 ELSE 0 END) as activeCount
+                       FROM users 
+                       WHERE role = 'servicer'";
+
+                          $result = $connection->query($query);
+
+                          if ($result) {
+                            $row = $result->fetch_assoc();
+                            $pendingCount = $row['pendingCount'];
+                            $activeCount = $row['activeCount'];
+
+                            echo "$pendingCount";
+                          } else {
+                            echo "Query failed: " . $connection->error;
+                          }
+                          ?>
+
+                        </span> <span class="text-muted small pt-2 ps-1">Pending</span>
+                        <span class="text-success small pt-1 fw-bold ps-2 ">
+                          <?php echo $activeCount  ?>
+                        </span> <span class="text-muted small pt-2 ps-1">Active</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -142,11 +228,50 @@
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-people"></i>
+                      <i class="fa-solid fa-users fa-beat"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>1244</h6>
-                      <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
+                      <h6 class="">
+                        <?php
+                        $query = "SELECT COUNT(id) as user FROM users WHERE role = 'user'";
+                        $result = $connection->query($query);
+
+                        if ($result) {
+                          $row = $result->fetch_assoc();
+                          $userCount = $row['user'];
+                          echo "$userCount";
+                        } else {
+                          echo "Query failed: " . $connection->error;
+                        }
+                        ?>
+                      </h6>
+                      <div>
+                        <span class="text-danger small pt-1 fw-bold">
+                          <?php
+                          $query = "SELECT 
+                       SUM(CASE WHEN status = 'Pending' THEN 1 ELSE 0 END) as pendingCount,
+                       SUM(CASE WHEN status = 'Active' THEN 1 ELSE 0 END) as activeCount
+                       FROM users 
+                       WHERE role = 'user'";
+
+                          $result = $connection->query($query);
+
+                          if ($result) {
+                            $row = $result->fetch_assoc();
+                            $pendingCount = $row['pendingCount'];
+                            $activeCount = $row['activeCount'];
+
+                            echo "$pendingCount";
+                          } else {
+                            echo "Query failed: " . $connection->error;
+                          }
+                          ?>
+
+                        </span> <span class="text-muted small pt-2 ps-1">Pending</span>
+                        <span class="text-success small pt-1 fw-bold ps-2 ">
+                          <?php echo $activeCount  ?>
+                        </span> <span class="text-muted small pt-2 ps-1">Active</span>
+                      </div>
 
                     </div>
                   </div>
@@ -679,15 +804,15 @@
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
-  <?php include_once"include/layout/footer.php" ?>
+  <?php include_once "include/layout/footer.php" ?>
   <!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
-   
-    <?php include_once"include/layout/js.php" ?>
- 
+
+  <?php include_once "include/layout/js.php" ?>
+
 
 </body>
 
