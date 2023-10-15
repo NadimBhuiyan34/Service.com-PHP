@@ -6,10 +6,23 @@ if($_POST['verify'] == 'rating')
     $servicer_id = $_POST['servicer_id'];
     $message= $_POST['message']??'';
     $point = $_POST['point'];
+    $queryCheck = "SELECT `id` FROM `reviews` WHERE user_id = $user_id AND servicer_id = $servicer_id";
+    $result1 = mysqli_query($connection, $checkSql);
     
-    $checkSql = "INSERT INTO `reviews`(`user_id`, `service_id`, `servicer_id`, `message`, `rating_point`) VALUES ('$user_id','','$servicer_id','$message','$point')";
+    if(mysqli_num_rows($result1)>0)
+    {
+        $row = mysqli_fetch_assoc($result1);
+        $id = $row['id'];
+        $checkSql = "UPDATE `reviews` SET `rating_point`='$point' WHERE id = $id";
+    }
+    else
+    {
+        $checkSql = "INSERT INTO `reviews`(`user_id`, `service_id`, `servicer_id`, `message`, `rating_point`) VALUES ('$user_id','2','$servicer_id','$message','$point')";
 
-    $result = mysqli_query($connection, $checkSql);
+        $result = mysqli_query($connection, $checkSql);
+    }
+
+    
 
     if($result)
     {
