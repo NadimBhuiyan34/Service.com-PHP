@@ -13,7 +13,7 @@ $userAddress = $row['address'];
 
 // Extract the middle part of the user address
 $userAddressParts = explode(',', $userAddress);
-if (count($userAddressParts) >= 2) {
+if (count($userAddressParts) >= 2) {  
     $userMiddlePart = trim($userAddressParts[1]);
 } else {
     $userMiddlePart = '';

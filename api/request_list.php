@@ -2,7 +2,7 @@
 require '../config.php';
 if($_POST['verify'] == 'requestlist')
 {
-    
+
     $user_id = $_POST['user_id'];
     $role = $_POST['role'];
     $status = $_POST['status'];
@@ -28,10 +28,31 @@ if($_POST['verify'] == 'requestlist')
 
         if ($result) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $id = $row['servicer_id'];
-                
-                 $data[] = $id;
-                $sql = "SELECT users.*, servicer_profiles.* FROM users JOIN servicer_profiles ON users.id = servicer_profiles.user_id WHERE users.id = '$id'";
+            $id = $row['servicer_id'];
+            $request_id = $row['id'];
+
+$sql = "
+    SELECT 
+        users.name,
+        users.mobile,
+        servicer_profiles.address,
+        servicer_profiles.experience,
+        servicer_profiles.biography,
+        servicer_profiles.profile_image,
+        COALESCE(AVG(reviews.rating_point), 0) AS average_rating,
+        service_requests.id,
+        service_requests.status,
+        service_requests.created_at,
+        service_requests.updated_at
+    FROM users 
+    JOIN servicer_profiles ON users.id = servicer_profiles.user_id 
+    LEFT JOIN reviews ON servicer_profiles.user_id = reviews.servicer_id 
+    LEFT JOIN service_requests ON servicer_profiles.user_id = service_requests.servicer_id 
+    WHERE users.id = $id AND service_requests.id = $request_id
+    GROUP BY servicer_profiles.user_id, service_requests.id;
+";
+
+
                 $profile_result = mysqli_query($connection, $sql);
 
                 if ($profile_result) {
@@ -73,10 +94,27 @@ if($_POST['verify'] == 'requestlist')
 
         if ($result) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $id = $row['user_id'];
-                
-                 $data[] = $id;
-                $sql = "SELECT users.*, user_profiles.* FROM users JOIN user_profiles ON users.id = user_profiles.user_id WHERE users.id = '$id'";
+$id = $row['user_id'];
+$request_id = $row['id'];
+
+$sql = "
+    SELECT 
+        users.name, 
+        users.mobile, 
+        user_profiles.address, 
+        user_profiles.profile_image, 
+        service_requests.id, 
+        service_requests.status, 
+        service_requests.created_at, 
+        service_requests.updated_at
+    FROM users
+    JOIN user_profiles ON users.id = user_profiles.user_id
+    LEFT JOIN service_requests ON user_profiles.user_id = service_requests.user_id
+    WHERE users.id = '$id' AND service_requests.id = '$request_id'
+    GROUP BY user_profiles.user_id;
+";
+
+               
                 $profile_result = mysqli_query($connection, $sql);
 
                 if ($profile_result) {
@@ -103,4 +141,4 @@ if($_POST['verify'] == 'requestlist')
     echo json_encode($data);
 
 }
-?>  
+?>

@@ -2,19 +2,17 @@
 require '../config.php';
 if($_POST['verify'] == 'acceptrequest')
 {
-    $user_id = $_POST['user_id'];
-    $servicer_id = $_POST['servicer_id'];
+    $id = $_POST['id'];
     $status = $_POST['status'];
-    if($status == 'accepted')
-    {
-        $checkSql = "UPDATE `service_requests` SET `status`='accepted' WHERE user_id = $user_id AND servicer_id = $servicer_id And status = 'pending'";
+   
+        $checkSql = "UPDATE `service_requests` SET `status`='$status', `updated_at`= NOW() WHERE id = $id";
 
         $result = mysqli_query($connection, $checkSql);
 
         if($result)
         {
             $data = [
-                'message' => "Request accpeted",
+                'message' => "Request status updated",
             ]; 
         }
         else
@@ -23,29 +21,8 @@ if($_POST['verify'] == 'acceptrequest')
                 'message' => "Something is wrong",
             ]; 
         }
-    }
-    else
-    {
-        $checkSql = "UPDATE `service_requests` SET `status`='completed' WHERE user_id = $user_id AND servicer_id = $servicer_id And status = 'accepted'";
-        $result = mysqli_query($connection, $checkSql);
-
-        if($result)
-        {
-            $data = [
-                'message' => "Task Completed",
-            ]; 
-        }
-        else
-        {
-            $data = [
-                'message' => "Something is wrong",
-            ]; 
-        }
-    }
+   
     
-
-
-
    
     header('Content-Type: application/json');
     echo json_encode($data);
