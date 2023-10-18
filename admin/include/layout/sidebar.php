@@ -53,15 +53,15 @@
   </li><!-- End Service Page Nav -->
   <li class="nav-item">
     <a class="nav-link collapsed" href="request.php">
-      <i class="bi bi-card-list"></i>
+    <i class="fa-solid fa-code-pull-request"></i>
       <span>Service Request</span>
     </a>
   </li><!-- End Service Page Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" href="pages-faq.html">
-      <i class="bi bi-question-circle"></i>
-      <span>F.A.Q</span>
+    <a class="nav-link collapsed" href="report.php">
+    <i class="fa-solid fa-bug"></i>
+      <span>Report</span>
     </a>
   </li><!-- End F.A.Q Page Nav -->
 
