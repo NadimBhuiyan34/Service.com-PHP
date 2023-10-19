@@ -1,7 +1,12 @@
 <?php
 //  fetch category
 require 'config.php';
-
+session_start();
+require 'config.php';
+if(!isset( $_SESSION['user_id']))
+{
+  header("Location: index.php");
+}
 // fetch data from table
 mysqli_set_charset($connection, "utf8");
 
@@ -131,19 +136,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php
         }
         ?>
-        <div class="pagetitle d-flex justify-content-between">
-            <div>
+         <div class="pagetitle d-flex justify-content-between">
+            <div class="mt-3">
                 <h1>Service Request</h1>
 
                 <nav>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                        <li class="breadcrumb-item active">Users</li>
+                        <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Service Request</li>
                     </ol>
                 </nav>
             </div>
             <div class="text-center p-2">
-                <img src="https://otp799999.000webhostapp.com/frontend/image/The-search.png" alt="" style="width:90px !important;height:60px !important" class="text-center">
+                <img src="https://otp799999.000webhostapp.com/frontend/image/The-search.png" alt="" style="width:100px !important;height:75px !important" class="text-center">
             </div>
 
         </div><!-- End Page Title -->

@@ -1,7 +1,11 @@
 <?php
 //  fetch category
 require 'config.php';
-
+session_start();
+require 'config.php';
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+}
 // fetch data from table
 mysqli_set_charset($connection, "utf8");
 
@@ -19,6 +23,7 @@ if ($role === 'servicer') {
     users.name,
     users.mobile,
     users.role,
+    users.otp,
     users.status,
     users.created_at,
     servicer_profiles.*,
@@ -125,44 +130,44 @@ $total_pages = ceil($total_rows / $items_per_page);
         }
         ?>
         <div class="pagetitle d-flex justify-content-between">
-            <div>
-                <h1>Users</h1>
+            <div class="mt-3">
+                <h1><?php echo ucfirst($role) ?></h1>
 
                 <nav>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-                        <li class="breadcrumb-item active">Users</li>
+                        <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
+                        <li class="breadcrumb-item active"><?php echo ucfirst($role) ?></li>
                     </ol>
                 </nav>
             </div>
             <div class="text-center p-2">
-                <img src="https://otp799999.000webhostapp.com/frontend/image/The-search.png" alt="" style="width:90px !important;height:60px !important" class="text-center">
+                <img src="https://otp799999.000webhostapp.com/frontend/image/The-search.png" alt="" style="width:100px !important;height:75px !important" class="text-center">
             </div>
 
         </div><!-- End Page Title -->
 
         <section>
             <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: hsl(180, 2%, 80%);">
-    <div>
-        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addModal">
-            <i class="fa-solid fa-plus"></i> Add New
-        </button>
-    </div>
-    <div class="form-group mb-0">
-        <label for="statusFilter" class="me-2 text-dark">Filter by Status <i class="fa-solid fa-filter"></i></label>
-        <select class="form-select"  id="statusFilter">
-        <option value="all">All</option>
-    <option value="Active">Active</option>
-    <option value="Pending">Pending</option>
-    <option value="Inactive">Inactive</option>
-        </select>
-    </div>
-    <div class="form-group mb-0">
-        <label for="search" class="me-2">Search:</label>
-        <input type="text" id="search" class="form-control" placeholder="Search...">
-    </div>
-</div>
+                <div class="card-header d-flex justify-content-between align-items-center" style="background-color: hsl(180, 2%, 80%);">
+                    <div>
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addModal">
+                            <i class="fa-solid fa-plus"></i> Add New
+                        </button>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label for="statusFilter" class="me-2 text-dark">Filter by Status <i class="fa-solid fa-filter"></i></label>
+                        <select class="form-select" id="statusFilter">
+                            <option value="all">All</option>
+                            <option value="Active">Active</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label for="search" class="me-2">Search:</label>
+                        <input type="text" id="search" class="form-control" placeholder="Search...">
+                    </div>
+                </div>
 
 
                 <div class="card-body table-responsive">
@@ -174,6 +179,7 @@ $total_pages = ceil($total_rows / $items_per_page);
                                 <th>Name</th>
                                 <th>Mobile</th>
                                 <th>Address</th>
+                                <th>Otp</th>
                                 <th>Status</th>
 
                                 <th>Action</th>
@@ -189,6 +195,7 @@ $total_pages = ceil($total_rows / $items_per_page);
                                     <td><?php echo $row['name']; ?></td>
                                     <td><?php echo $row['mobile']; ?></td>
                                     <td><?php echo $row['address']; ?></td>
+                                    <td><?php echo $row['otp']; ?></td>
                                     <td>
                                         <?php
                                         $status = $row['status'];
@@ -200,6 +207,8 @@ $total_pages = ceil($total_rows / $items_per_page);
                                             $badgeClass = 'bg-primary';
                                         } elseif ($status == 'Inactive') {
                                             $badgeClass = 'bg-danger';
+                                        } else {
+                                            $badgeClass = 'bg-secondary';
                                         }
 
                                         echo '<span class="badge ' . $badgeClass . '">' . $status . '</span>';
@@ -243,7 +252,7 @@ $total_pages = ceil($total_rows / $items_per_page);
                                                         <input type="hidden" name="id" value="<?php echo $row['user_id'] ?>">
                                                         <input type="hidden" name="role" value="<?php echo $row['role'] ?>">
                                                         <input type="hidden" name="image" value="<?php echo $row['profile_image'] ?>">
-                                                       
+
                                                         <input type="hidden" name="role" value="<?php echo $row['role'] ?>">
 
                                                         <div class="row p-5 bg-white rounded-4">
@@ -450,7 +459,7 @@ $total_pages = ceil($total_rows / $items_per_page);
                                                                     <?php endif; ?>
                                                                 </div>
                                                             </div>
-                                                             <h6 class="fw-bold text-primary ">Created Date: <?php echo $row['created_at'] ?></h6>
+                                                            <h6 class="fw-bold text-primary ">Created Date: <?php echo $row['created_at'] ?></h6>
 
 
                                                             <div class="col-md-6 col-lg-6 col-xl-6 py-2">
@@ -559,49 +568,10 @@ $total_pages = ceil($total_rows / $items_per_page);
     <!-- ======= Footer ======= -->
     <?php include_once "include/layout/footer.php" ?>
     <!-- End Footer -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#statusFilter').change(function() {
-                var selectedStatus = $(this).val(); // Get the selected status
+ 
+  
 
-                // Show all rows initially
-                $('#tableBody tr').show();
-
-                // Filter rows based on selected status
-                if (selectedStatus !== 'all') {
-                    $('#tableBody tr').not(':has(td:contains(' + selectedStatus + '))').hide();
-                }
-            });
-        });
-
-
-        // searchg
-
-        $(document).ready(function() {
-            $('#statusFilter, #search').on('input', function() {
-                var selectedStatus = $('#statusFilter').val();
-                var searchQuery = $('#search').val().toLowerCase();
-
-                // Show all rows initially
-                $('#tableBody tr').show();
-
-                // Filter rows based on selected status
-                if (selectedStatus !== 'all') {
-                    $('#tableBody tr').not(':has(td:contains(' + selectedStatus + '))').hide();
-                }
-
-                // Filter rows based on search query
-                if (searchQuery !== '') {
-                    $('#tableBody tr').filter(function() {
-                        return $(this).text().toLowerCase().indexOf(searchQuery) === -1;
-                    }).hide();
-                }
-            });
-        });
-    </script>
-
-    </script>
+   
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

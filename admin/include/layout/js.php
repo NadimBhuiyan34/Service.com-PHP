@@ -49,3 +49,44 @@
             });
         });
     </script>
+    
+    <script>
+        $(document).ready(function() {
+            $('#statusFilter').change(function() {
+                var selectedStatus = $(this).val(); // Get the selected status
+
+                // Show all rows initially
+                $('#tableBody tr').show();
+
+                // Filter rows based on selected status
+                if (selectedStatus !== 'all') {
+                    $('#tableBody tr').not(':has(td:contains(' + selectedStatus + '))').hide();
+                }
+            });
+        });
+
+
+        // searchg
+
+        $(document).ready(function() {
+            $('#statusFilter, #search').on('input', function() {
+                var selectedStatus = $('#statusFilter').val();
+                var searchQuery = $('#search').val().toLowerCase();
+
+                // Show all rows initially
+                $('#tableBody tr').show();
+
+                // Filter rows based on selected status
+                if (selectedStatus !== 'all') {
+                    $('#tableBody tr').not(':has(td:contains(' + selectedStatus + '))').hide();
+                }
+
+                // Filter rows based on search query
+                if (searchQuery !== '') {
+                    $('#tableBody tr').filter(function() {
+                        return $(this).text().toLowerCase().indexOf(searchQuery) === -1;
+                    }).hide();
+                }
+            });
+        });
+    </script>

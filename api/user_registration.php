@@ -23,7 +23,7 @@ if ($_POST['verify'] == "idea") {
 
 
 
-        $queryUser = "INSERT INTO `users`(`name`, `email`,`password`, `mobile`, `otp`, `role`, `status`) VALUES ('$name','','$password','$mobile','$otp','$role','Pending')";
+        $queryUser = "INSERT INTO `users`(`name`, `email`,`password`, `mobile`, `otp`, `role`, `status`) VALUES ('$name','','$password','$mobile','$otp','$role','Unverify')";
         $userRegister = mysqli_query($connection, $queryUser);
 
         $query = "SELECT id FROM users WHERE mobile = $mobile";
@@ -79,7 +79,6 @@ if ($_POST['verify'] == "otp") {
     $query = "SELECT * FROM users WHERE mobile = '$mobile' AND otp = '$submittedOTP'";
     $result =  $resultProfile = mysqli_query($connection, $query);
 
-
     if ($result->num_rows > 0) {
 
         $user = $result->fetch_assoc();
@@ -91,7 +90,7 @@ if ($_POST['verify'] == "otp") {
             'name' => $name,
         ];
 
-        $updateQuery = "UPDATE `users` SET `status`='Active' WHERE id = $id";
+        $updateQuery = "UPDATE `users` SET `status`='Pending' WHERE id = $id";
         $result =  $resultProfile = mysqli_query($connection, $updateQuery);
     } else {
         $data = [
