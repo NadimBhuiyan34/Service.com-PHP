@@ -1,44 +1,44 @@
 <?php
 session_start();
 require 'config.php';
-if(!isset( $_SESSION['user_id']))
-{
-if (isset($_POST['login'])) {
+if (!isset($_SESSION['user_id'])) {
+  if (isset($_POST['login'])) {
     if (isset($_POST['email']) && isset($_POST['password'])) {
-        $email = $_POST['email'];
-        $user_input_password = $_POST['password'];
-        // Convert the user input password to MD5
-        $md5_user_input_password = md5($user_input_password);
+      $email = $_POST['email'];
+      $user_input_password = $_POST['password'];
+      // Convert the user input password to MD5
+      $md5_user_input_password = md5($user_input_password);
 
-        // Replace with your database connection details
-        $stmt = $connection->prepare("SELECT id, name, password FROM users WHERE email = ?");
-        $stmt->bind_param("s", $email); // Bind the parameter
-        $stmt->execute();
-        $stmt->store_result();
-        $stmt->bind_result($id,$name, $hashed_password);
-        $stmt->fetch();
-         
-        if ($md5_user_input_password === $hashed_password) {
-            $_SESSION['user_id'] = $id;
-            $_SESSION['name'] = $name; // Store the user's name in the session
-            // $_SESSION['profile_image'] = $profile_image;
-            header("Location: dashboard.php"); // Redirect to a dashboard or home page
-           
-        } else {
-            $message = "Incorrect Username or Password.";
-            header("Location: index.php?message=" . urlencode($message));
-            exit;
-        }
+      // Replace with your database connection details
+      $stmt = $connection->prepare("SELECT u.id, u.name, u.password, up.profile_image
+    FROM users u
+    LEFT JOIN user_profiles up ON u.id = up.user_id
+    WHERE u.email = ?");
+      $stmt->bind_param("s", $email);
+      $stmt->execute();
+      $stmt->store_result();
+      $stmt->bind_result($id, $name, $hashed_password, $profile_image);
+      $stmt->fetch();
 
-        $stmt->close();
-        $connection->close();
+
+      if ($md5_user_input_password === $hashed_password) {
+        $_SESSION['user_id'] = $id;
+        $_SESSION['name'] = $name; // Store the user's name in the session
+        $_SESSION['profile_image'] = $profile_image; // Store the user's name in the session
+        // $_SESSION['profile_image'] = $profile_image;
+        header("Location: dashboard.php"); // Redirect to a dashboard or home page
+
+      } else {
+        $message = "Incorrect Username or Password.";
+        header("Location: index.php?message=" . urlencode($message));
+        exit;
+      }
+
+      $stmt->close();
+      $connection->close();
     }
-
-  
-}
-}
-else
-{
+  }
+} else {
   $message = "Your are already login now.";
   header("Location: dashboard.php?message=" . urlencode($message));
   exit;
@@ -56,7 +56,7 @@ else
   <title>Login</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
- 
+
   <?php include_once "include/layout/css.php" ?>
 
   <!-- =======================================================
@@ -155,7 +155,7 @@ else
 
                 </div>
               </div>
-               
+
               <div class="credits">
                 <!-- All the links in the footer should remain intact. -->
                 <!-- You can delete the links only if you purchased the pro version. -->

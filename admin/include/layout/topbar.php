@@ -1,4 +1,18 @@
   <!-- ======= Header ======= -->
+  <?php
+require 'config.php';
+$id = $_SESSION['user_id'];
+$stmt = $connection->prepare("SELECT u.id, u.name, up.profile_image
+    FROM users u
+    LEFT JOIN user_profiles up ON u.id = up.user_id
+    WHERE u.id = ?");
+$stmt->bind_param("s", $id);
+$stmt->execute();
+$stmt->store_result();
+$stmt->bind_result($id, $name, $profile_image);
+$stmt->fetch();
+
+  ?>
   <header id="header" class="header fixed-top d-flex align-items-center" style="">
 
     <div class="d-flex align-items-center justify-content-between">
@@ -245,9 +259,9 @@
 
         <li class="nav-item dropdown pe-3">
 
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $_SESSION['name']; ?></span>
+        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="public/profile/<?php echo  $profile_image ?>" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $name; ?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -260,7 +274,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="../view/profile.php">
+              <a class="dropdown-item d-flex align-items-center" href="profile.php">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
