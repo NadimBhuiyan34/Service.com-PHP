@@ -15,7 +15,7 @@ if ($_POST['verify'] == "idea") {
 
         $name = $_POST['name'];
         $mobile = $_POST['mobile'];
-        $password = md5($_POST['password']);
+         $password = md5($_POST['password']);
         $category_title = $_POST['category'];
         $address = $_POST['address'];
         $role = $_POST['role'];
@@ -26,7 +26,7 @@ if ($_POST['verify'] == "idea") {
         $queryUser = "INSERT INTO `users`(`name`, `email`,`password`, `mobile`, `otp`, `role`, `status`) VALUES ('$name','','$password','$mobile','$otp','$role','Unverify')";
         $userRegister = mysqli_query($connection, $queryUser);
 
-        $query = "SELECT id FROM users WHERE mobile = $mobile";
+        $query = "SELECT id FROM users WHERE mobile = '$mobile'";
         $result = mysqli_query($connection, $query);
         $row = mysqli_fetch_assoc($result);
         $id = $row['id'];
@@ -38,29 +38,39 @@ if ($_POST['verify'] == "idea") {
             $row = mysqli_fetch_assoc($category);
             $category_id = $row['id'];
 
-            $queryUserProfile = "INSERT INTO `servicer_profiles`(`user_id`, `service_id`, `category_id`, `location`, `experience`, `biography`, `profile_image`, `work_image`) VALUES ('$id','2','$category_id','$address','','','','')";
+            $queryUserProfile = "INSERT INTO `servicer_profiles`(`user_id`, `service_id`, `category_id`, `address`, `experience`, `biography`, `profile_image`, `work_image`) VALUES ('$id','2','$category_id','$address','','','','')";
             $resultProfile = mysqli_query($connection, $queryUserProfile);
-            if ($resultProfile) {
+            if($resultProfile)
+            {
                 $data = [
-                    'mobile' => $mobile,
-                ];
-            } else {
-                $data = [
-                    'message' => "data not inserted",
-                ];
+                'mobile' => $mobile,
+                'id' => $id,
+            ]; 
             }
+            else
+            {
+                $data = [
+                'message' => "data not inserted",
+            ];  
+            }
+           
         } else {
-            $queryUserProfile = "INSERT INTO `user_profiles`(`user_id`,`address`,`profile_image`) VALUES ('$id','$address','')";
+            $queryUserProfile = "INSERT INTO `user_profiles`(`user_id`, `address`, `profile_image`) VALUES ('$id','$address','')";
             $resultProfile = mysqli_query($connection, $queryUserProfile);
-            if ($resultProfile) {
+            if($resultProfile)
+            {
                 $data = [
-                    'mobile' => $mobile,
-                ];
-            } else {
-                $data = [
-                    'message' => "data not inserted",
-                ];
+                'mobile' => $mobile,
+                 'id' => $id,
+            ]; 
             }
+            else
+            {
+                $data = [
+                'message' => "data not inserted",
+            ];  
+            }
+           
         }
     }
 
@@ -70,35 +80,68 @@ if ($_POST['verify'] == "idea") {
 
 
 
-if ($_POST['verify'] == "otp") {
-
-    $mobile = $_POST['otpMobile'];
+if($_POST['verify'] == "otp")
+{
+     
+    $mobile=$_POST['otpMobile'];
     $submittedOTP = $_POST['otp'];
-
+  
 
     $query = "SELECT * FROM users WHERE mobile = '$mobile' AND otp = '$submittedOTP'";
-    $result =  $resultProfile = mysqli_query($connection, $query);
+  $result =  $resultProfile = mysqli_query($connection, $query);
+ 
+ 
+  if ($result->num_rows > 0) {
+      
+      $user = $result->fetch_assoc();
+   
+      $id = $user['id'];
+      $name = $user['name'];
+      $data = [
+                'id' => $id,
+                'name' => $name,
+            ]; 
+            
+            $updateQuery = "UPDATE `users` SET `status`='Pending' WHERE id = $id";
+            $result =  $resultProfile = mysqli_query($connection, $updateQuery);
+     
+    //   if($user['role'] == "servicer")
+    //   {
+    //             $sql = "SELECT users.*, servicer_profiles.* FROM users JOIN servicer_profiles ON users.id = servicer_profiles.user_id WHERE users.id = $id";
+      
+    //   }
+    //   else
+    //   {
+    //       $sql = "SELECT users.*, user_profiles.* FROM users JOIN user_profiles ON users.id = user_profiles.user_id WHERE users.id = $id";
+    //   }
 
-    if ($result->num_rows > 0) {
+    //   $users = mysqli_query($connection, $sql);
+    //   if($users)
+    //   {
+    //             $data = [];
 
-        $user = $result->fetch_assoc();
-
-        $id = $user['id'];
-        $name = $user['name'];
-        $data = [
-            'id' => $id,
-            'name' => $name,
-        ];
-
-        $updateQuery = "UPDATE `users` SET `status`='Pending' WHERE id = $id";
-        $result =  $resultProfile = mysqli_query($connection, $updateQuery);
-    } else {
-        $data = [
-            'message' => "otp is wrong",
-        ];
-    }
-
-
-    header('Content-Type: application/json');
-    echo json_encode($data);
+       
+    //         while ($row = $users->fetch_assoc()) {
+    //              $data[] = $row;
+    //             } 
+    //   }
+    //   else
+    //   {
+    //       $data = [
+    //             'message' => "no data here",
+    //         ]; 
+    //   }
+  
+        
+  }
+  else
+  {
+       $data = [
+                'message' => "otp is wrong",
+            ];  
+  }
+ 
+  
+  header('Content-Type: application/json');
+  echo json_encode($data);
 }

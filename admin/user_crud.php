@@ -7,6 +7,7 @@ if(!isset( $_SESSION['user_id']))
 {
   header("Location: index.php");
 }
+// updated
 if (isset($_POST['profileUpdate']))
 {
 
@@ -50,7 +51,8 @@ if (isset($_POST['profileUpdate']))
 
       if($user['role'] == "servicer")
       {
-                
+        
+
                $profileQuery = "UPDATE `servicer_profiles` SET `category_id`='$category_id', `address`='$address',`experience`='$experience', `biography`='$biography', `profile_image`='$image' WHERE user_id = '$id'";
 
                if(mysqli_query($connection, $profileQuery))

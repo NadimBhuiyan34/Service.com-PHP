@@ -10,13 +10,12 @@ if ($_POST['verify'] == "login") {
 
     if ($result->num_rows > 0) {
 
-
         $user = $result->fetch_assoc();
 
         // Compare the hashed password in the database with the entered password
         if ($user['password'] === $password) {
             if ($user['password'] === $password and $user['status'] == 'Active') {
-
+                
                 $id = $user['id'];
                 $name = $user['name'];
                 $data = [
@@ -26,12 +25,21 @@ if ($_POST['verify'] == "login") {
             } else if ($user['password'] === $password and $user['status'] == 'Inactive') {
 
                 $data = [
-                    'status' => 'fail',
+                    'status' => 'Inactive',
                     'message' => 'Your account is inactive please contact with admin'
                 ];
-            } else {
+            }else if($user['password'] === $password and $user['status'] == 'Pending')
+            {
+                
+                $data = [
+                    'status' => 'Pending',
+                    'message' => 'Your account is pending please contact with admin'
+                ];
+            }
+            
+            else {
+                
                 // Generate OTP
-
                 $otp = mt_rand(100000, 999999);
 
 

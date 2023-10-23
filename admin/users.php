@@ -79,6 +79,37 @@ $total_pages = ceil($total_rows / $items_per_page);
     <title>Admin-Category</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
+    <!-- <script>
+        tinymce.init({
+            selector: '#editor',
+            menubar: false,
+            statusbar: false,
+            plugins: 'autoresize anchor autolink charmap code codesample directionality fullpage help hr image imagetools insertdatetime link lists media nonbreaking pagebreak preview print searchreplace table template textpattern toc visualblocks visualchars',
+            toolbar: 'h1 h2 bold italic strikethrough blockquote bullist numlist backcolor | link image media | removeformat help fullscreen ',
+            skin: 'bootstrap',
+            toolbar_drawer: 'floating',
+            min_height: 200,
+            autoresize_bottom_margin: 16,
+            setup: (editor) => {
+                editor.on('init', () => {
+                    editor.getContainer().style.transition = "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out"
+                });
+                editor.on('focus', () => {
+                    editor.getContainer().style.boxShadow = "0 0 0 .2rem rgba(0, 123, 255, .25)",
+                        editor.getContainer().style.borderColor = "#80bdff"
+                });
+                editor.on('blur', () => {
+                    editor.getContainer().style.boxShadow = "",
+                        editor.getContainer().style.borderColor = ""
+                });
+            }
+        });
+    </script> -->
+
+    <!-- Include Quill CSS -->
+    <!-- Include Bootstrap CSS and JavaScript -->
+
+    <!-- Include Bootstrap CSS -->
 
     <?php include_once "include/layout/css.php" ?>
 
@@ -339,12 +370,39 @@ $total_pages = ceil($total_rows / $items_per_page);
                                                                     <input type="text" name="experience" class="form-control" id="experience" placeholder="" value="<?php echo $row['experience']; ?>">
                                                                 </div>
 
+                                                                <!-- <textarea id="editor"></textarea> -->
+                                                                <!-- <div class="col-12 py-2">
+                                                                    <label for="biography" class="form-label fw-bold">Biography</label>
+                                                                    <textarea class="form-control" id="biography" name="biography" placeholder="Enter biography" rows="4"></textarea>
+                                                                </div> -->
 
                                                                 <div class="col-12 py-2">
-                                                                    <label for="biography" class="form-label fw-bold">Biography</label>
-                                                                    <textarea class="form-control" id="biography" name="biography" placeholder="Enter biography" rows="4"><?php echo $row['biography']; ?></textarea>
-                                                                </div>
 
+                                                                    <label for="biography" class="form-label fw-bold">Biography</label>
+<?php if (!empty($row['biography'])) { ?>
+    <textarea class="form-control" id="editor" name="biography" placeholder="Enter biography" rows="10">
+        <?php echo $row['biography']; ?>
+    </textarea>
+<?php } else { ?>
+<textarea class="form-control" id="editor" name="biography" placeholder="Enter biography" rows="10">
+Included Items:
+# Repair of common household appliances (e.g., washing machines, refrigerators, ovens).
+# Regular maintenance and check-ups for specific appliances.
+# Replacement of certain parts or components.
+# Labor costs for service calls.
+
+Excluded Items:
+# Appliances older than a specific age.
+# Appliances damaged due to user misuse or negligence.
+# Replacement of specialized or expensive parts not included in the service.
+# Any additional costs that may be incurred beyond the standard service.
+</textarea>
+<?php } ?>
+
+
+
+                                                                </div>
+                                                                
                                                             <?php } ?>
 
 
@@ -489,6 +547,8 @@ $total_pages = ceil($total_rows / $items_per_page);
                                                                 <div class="col-12 py-2">
                                                                     <label for="biography" class="form-label fw-bold">Biography</label>
                                                                     <textarea class="form-control" id="biography" name="biography" placeholder="Enter biography" rows="4" disabled><?php echo $row['biography']; ?></textarea>
+
+
                                                                 </div>
 
 
@@ -562,16 +622,17 @@ $total_pages = ceil($total_rows / $items_per_page);
                     </nav>
                 </div>
             </div>
+       
         </section>
         <?php include_once "include/modal/category_modal.php" ?>
     </main><!-- End #main -->
     <!-- ======= Footer ======= -->
     <?php include_once "include/layout/footer.php" ?>
     <!-- End Footer -->
- 
-  
 
-   
+
+
+
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
@@ -581,5 +642,16 @@ $total_pages = ceil($total_rows / $items_per_page);
 
 
 </body>
+
+<script>
+    tinymce.init({
+        selector: "#myTextarea",
+        plugins: "autoresize link image",
+        toolbar: "undo redo | formatselect | bold italic | alignleft aligncenter alignright | link image",
+        menubar: false,
+        autoresize_max_height: 300,
+    });
+</script>
+
 
 </html>

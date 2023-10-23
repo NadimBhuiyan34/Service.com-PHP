@@ -16,7 +16,7 @@ if($_POST['verify'] == 'request')
     }
     else
     {
-        $servicerQuery = "INSERT INTO `service_requests`(`user_id`, `servicer_id`, `status`, ) VALUES ('$user_id','$servicer_id','pending')";
+        $servicerQuery = "INSERT INTO `service_requests`(`user_id`, `servicer_id`, `status`) VALUES ('$user_id','$servicer_id','pending')";
         $request = mysqli_query($connection, $servicerQuery);
         
         if($request)

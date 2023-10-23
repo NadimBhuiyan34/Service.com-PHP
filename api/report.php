@@ -6,7 +6,9 @@ if($_POST['verify'] == 'report')
     $report_id = $_POST['report_id'];
     $report = $_POST['report'];
    
-        $reportSql = "INSERT INTO `reports`(`user_id`, `report_id`, `report`, `status`,) VALUES ('$user_id','$report_id','$report','pending')";
+        $reportSql = "INSERT INTO `reports` (`user_id`, `report_id`, `report`, `status`)
+VALUES ('$user_id', '$report_id', '$report', 'pending');
+";
 
         $result = mysqli_query($connection, $reportSql);
 

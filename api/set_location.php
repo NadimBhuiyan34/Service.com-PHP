@@ -9,7 +9,7 @@ if($_POST['verify'] == "location")
     $let = $_POST['let'];
     $long = $_POST['long'];
     $manuallyAddress = $_POST['address'];
-    $data1 = array(
+    $dataAddress = array(
         'city' => $city,
         'area' => $area,
         'latitude' => $latitude,
@@ -20,26 +20,33 @@ if($_POST['verify'] == "location")
     if(isset($_POST['fullAddress']))
     {
         $address = $_POST['fullAddress'];
+         
      
     }
     else
     {
-        $address = json_encode($data1);
+        $address = json_encode($dataAddress);
+         $data = [
+                'message' => "User not found",
+                'id' => $id,
+            ];  
     }
     
- 
+
     $query = "SELECT role FROM users WHERE id = '$id'";
-    $result =  $resultProfile = mysqli_query($connection, $query);
+    $result =  mysqli_query($connection, $query);
+    
   if ($result->num_rows > 0) {
       
-      $user = $result->fetch_assoc();
+      $user =mysqli_fetch_assoc($result);
 
-      
+       
 
       if($user['role'] == "servicer")
       {
                 
-               $profileQuery = "UPDATE `servicer_profiles` SET `address`='$address'' WHERE user_id = $id";
+               
+               $profileQuery = "UPDATE `servicer_profiles` SET `address`='$address' WHERE user_id = $id";
                $resultprofile = mysqli_query($connection, $profileQuery);
                if($resultprofile)
                {
@@ -52,7 +59,7 @@ if($_POST['verify'] == "location")
       }
       else
       {
-          $profileQuery = "UPDATE `user_profiles` SET `address`='$address'' WHERE user_id = $id";
+          $profileQuery = "UPDATE `user_profiles` SET `address`='$address' WHERE user_id = $id";
           $resultprofile = mysqli_query($connection, $profileQuery);
           if($resultprofile)
           {
@@ -67,6 +74,7 @@ if($_POST['verify'] == "location")
   {
        $data = [
                 'message' => "User not found",
+                'id' => $id,
             ];  
   }
  

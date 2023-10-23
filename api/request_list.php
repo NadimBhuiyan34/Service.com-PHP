@@ -34,6 +34,7 @@ if($_POST['verify'] == 'requestlist')
 $sql = "
     SELECT 
         users.name,
+        users.id As user_id,
         users.mobile,
         servicer_profiles.address,
         servicer_profiles.experience,
@@ -100,6 +101,7 @@ $request_id = $row['id'];
 $sql = "
     SELECT 
         users.name, 
+        users.id As user_id,
         users.mobile, 
         user_profiles.address, 
         user_profiles.profile_image, 

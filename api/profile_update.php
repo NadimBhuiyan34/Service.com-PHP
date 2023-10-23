@@ -47,7 +47,7 @@ if($_POST['verify'] == "profileUpdate")
     $query = "SELECT role FROM users WHERE id = '$id'";
     $resultProfile = mysqli_query($connection, $query);
     
-    $categorySql = "SELECT `id` FROM `categories` WHERE title = '$category'";
+   $categorySql = "SELECT `id` FROM `categories` WHERE title = '$category'";
     $resultCategory = mysqli_query($connection, $categorySql);
      
       $categoryId = $resultCategory->fetch_assoc();
@@ -65,25 +65,22 @@ if($_POST['verify'] == "profileUpdate")
                 
                $profileQuery = "UPDATE `servicer_profiles` SET `category_id`='$category_id', `address`='$address',`experience`='$experience', `biography`='$biography', `profile_image`='$image' WHERE user_id = '$id'";
 
-               if(mysqli_query($connection, $profileQuery))
+             if(mysqli_query($connection, $profileQuery))
                {
                 $data = [
                     'message' => "Profile update successfully",
                 ];  
                }
-              
       }
       else
       {
           $profileQuery = "UPDATE `user_profiles` SET `address`='$address', `profile_image`='$image' WHERE user_id = '$id'";
-          if(mysqli_query($connection, $profileQuery))
+         if(mysqli_query($connection, $profileQuery))
           {
             $data = [
                 'message' => "Profile update successfully",
             ]; 
           }
-         
-         
       }   
         
   }

@@ -7,13 +7,14 @@ if($_POST['verify'] == 'rating')
     $message= $_POST['message']??'';
     $point = $_POST['point'];
     $queryCheck = "SELECT `id` FROM `reviews` WHERE user_id = $user_id AND servicer_id = $servicer_id";
-    $result1 = mysqli_query($connection, $checkSql);
+    $result1 = mysqli_query($connection, $queryCheck);
     
     if(mysqli_num_rows($result1)>0)
     {
         $row = mysqli_fetch_assoc($result1);
         $id = $row['id'];
-        $checkSql = "UPDATE `reviews` SET `rating_point`='$point' WHERE id = $id";
+        $checkSql = "UPDATE `reviews` SET `rating_point`='$point', `message`='$message' WHERE id = $id";
+        $result = mysqli_query($connection, $checkSql);
     }
     else
     {

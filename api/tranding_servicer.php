@@ -3,7 +3,6 @@ require '../config.php';
 if($_POST['verify'] == 'tranding_servicer')
 {
 
-
     $servicerQuery = "SELECT users.*, servicer_profiles.*, AVG(reviews.rating_point) AS average_rating
     FROM users 
     JOIN servicer_profiles ON users.id = servicer_profiles.user_id 
