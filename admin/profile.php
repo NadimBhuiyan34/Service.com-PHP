@@ -27,6 +27,10 @@ if (isset($_POST['profileUpdate'])) {
       $profile_name = basename($_FILES["profileImage"]["name"]);
       // You can now save the file name or path to your database for future reference.
     }
+    else
+    {
+      $profile_name = $_POST['profileImageName'];
+    }
   }
 
   $id = $_SESSION['user_id'];
@@ -35,13 +39,13 @@ if (isset($_POST['profileUpdate'])) {
   $address = $_POST['address'];
   $mobile = $_POST['phone'];
 
-  $profile = $profile_name ?? $_POST['profileImageName'];
+  $profile = $profile_name;
 
-  $userQuery = "UPDATE `users` SET `name`='$name',`email`='$email',`mobile`='$mobile',`updated_at`= NOW() WHERE id = $id";
+  $userQuery = "UPDATE `users` SET `name`='$name',`email`='$email',`mobile`='$mobile' WHERE id = $id";
   // Now, you can use the $profile variable in your code.
   $userResult = mysqli_query($connection, $userQuery);
 
-  $profileQuery = "UPDATE `user_profiles` SET `address`='$address',`profile_image`='$profile',`updated_at`= NOW() WHERE user_id = $id";
+  $profileQuery = "UPDATE `user_profiles` SET `address`='$address',`profile_image`='$profile' WHERE user_id = $id";
   $profileResult = mysqli_query($connection, $profileQuery);
 
   if ($userResult && $profileResult) {

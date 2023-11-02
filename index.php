@@ -1,6 +1,6 @@
 <?php
 session_start(); // Start the session
-include($_SERVER['DOCUMENT_ROOT'].'/Service.com-PHP/config.php');
+include($_SERVER['DOCUMENT_ROOT'].'config.php');
 ?>
 
 <!-- Your HTML content here -->
@@ -31,7 +31,7 @@ include($_SERVER['DOCUMENT_ROOT'].'/Service.com-PHP/config.php');
 
   <?php 
      
-     include_once($documentRoot."/frontend/includes/layouts/header.php");
+     include_once($documentRoot."frontend/includes/layouts/header.php");
    ?>
 
 
@@ -39,8 +39,8 @@ include($_SERVER['DOCUMENT_ROOT'].'/Service.com-PHP/config.php');
     <div class="row">
       <div class=" text-center w-100">
         <div class="bg-image h-100" style="background-image: url('https://img.freepik.com/free-vector/neon-light-background_53876-67443.jpg?w=360');">
-          <h1 class="text-white" style="padding-top: 50px;"><strong>Your Personal Assistant</strong></h1>
-          <h4 class="text-white">One-stop solution for your services. Order any service, anytime.</h4>
+          <h1 class="text-white" style="padding-top: 50px;"><strong>Your On-Demand Service Finder</strong></h1>
+          <h4 class="text-white">Discover and Connect with Service Providers at Your Convenience.</h4>
 
           <div class="row justify-content-center pt-2" style="padding-bottom:100px;">
             <div class="col-md-4 col-10">
@@ -79,26 +79,30 @@ include($_SERVER['DOCUMENT_ROOT'].'/Service.com-PHP/config.php');
     </div>
 
   </div>
-
+ 
 
   <div class="container">
     <div class="row mt-3">
     <?php 
-                     $query = "SELECT * FROM categories ORDER BY id DESC";
+                     $query = "SELECT * FROM categories WHERE status = 'Active' ORDER BY id DESC";
                      $categories = mysqli_query($connection, $query);
                      while ($category = mysqli_fetch_assoc($categories)) {
                         ?>
        
         <div class="col-4 col-md-2 text-center border">
         <div class="p-2">
-       <a href="">
+         <a href="">
        <img src="admin/public/category/<?php echo $category['banner_image']; ?>" alt="" style="width:100px;height:100px">
+
+
        </a>
        <span class="d-block d-md-inline fw-bold d-md-block"><?php echo $category['title'] ?></span>
+          
         </div>
       </div>
+       
       <?php
-   }
+                     }
       ?>
     </div>
     <!-- first content -->

@@ -38,7 +38,7 @@ if ($_POST['verify'] == "idea") {
             $row = mysqli_fetch_assoc($category);
             $category_id = $row['id'];
 
-            $queryUserProfile = "INSERT INTO `servicer_profiles`(`user_id`, `service_id`, `category_id`, `address`, `experience`, `biography`, `profile_image`, `work_image`) VALUES ('$id','2','$category_id','$address','','','','')";
+            $queryUserProfile = "INSERT INTO `servicer_profiles`(`user_id`, `service_id`, `category_id`, `address`, `experience`, `biography`, `profile_image`, `work_image`) VALUES ('$id','8','$category_id','$address','','','','')";
             $resultProfile = mysqli_query($connection, $queryUserProfile);
             if($resultProfile)
             {
@@ -97,12 +97,22 @@ if($_POST['verify'] == "otp")
    
       $id = $user['id'];
       $name = $user['name'];
+      $role = $user['role'];
+      
+      if($role == 'servicer')
+      {
+          $status = 'Pending';
+      }
+      else
+      {
+        $status = 'Active';
+      }
       $data = [
                 'id' => $id,
                 'name' => $name,
             ]; 
             
-            $updateQuery = "UPDATE `users` SET `status`='Pending' WHERE id = $id";
+            $updateQuery = "UPDATE `users` SET `status`='$status' WHERE id = $id";
             $result =  $resultProfile = mysqli_query($connection, $updateQuery);
      
     //   if($user['role'] == "servicer")

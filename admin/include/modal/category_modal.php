@@ -1,54 +1,51 @@
 <!-- Add new modal -->
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-dark  text-center">
-                <h3 class="modal-title text-white text-center mx-auto" id="exampleModalLabel">Add New Category 
-</h3>
-                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            <div class="modal-header bg-info">
+                <h5 class="modal-title text-white" id="exampleModalLabel">Add New Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body bg-dark-light">
+            <div class="modal-body">
                 <form id="offerForm" action="category.php" enctype="multipart/form-data" method="POST">
-                    <div class="card p-2 rounded-4">
-                    <div class="row">
-                    <div class="mb-3 col-6">
-                        <label for="title" class="form-label fw-bold">Title</label>
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
                         <input type="text" class="form-control" id="title" name="title" required>
                     </div>
-                    <div class="mb-3 col-6">
-                        <label for="type" class="form-label fw-bold">Type</label>
+                    <div class="mb-3">
+                        <label for="type" class="form-label">Type</label>
                         <input type="text" class="form-control" id="type" name="type" required>
                     </div>
                     <div class="mb-3">
-                        <label for="description" class="form-label fw-bold">Description</label>
+                        <label for="description" class="form-label">Description</label>
                         <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="included" class="form-label fw-bold">Included Items</label>
+                        <label for="included" class="form-label">Included Items</label>
                         <textarea class="form-control" id="included" name="included" rows="3"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="excluded" class="form-label fw-bold">Excluded Items</label>
+                        <label for="excluded" class="form-label">Excluded Items</label>
                         <textarea class="form-control" id="excluded" name="excluded" rows="3"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="bannerImage" class="form-label fw-bold">Banner Image</label>
+                        <label for="bannerImage" class="form-label">Banner Image</label>
                         <input type="file" class="form-control" id="bannerImage" name="bannerImage" accept="image/*" required>
                     </div>
                     <div class="mb-3">
-                        <label for="status" class="form-label fw-bold">Status</label>
+                        <label for="status" class="form-label">Status</label>
                         <select class="form-select" id="status" name="status" required>
                             <option value="">Select status</option>
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
                         </select>
                     </div>
-                </div>
-                </div>
+
+
             </div>
-            <div class="modal-footer mx-auto">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-success" name="addCategory">Save</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" name="addCategory">Save</button>
             </div>
             </form>
         </div>

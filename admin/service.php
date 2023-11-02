@@ -2,7 +2,7 @@
 //  fetch category
 require 'config.php';
 session_start();
-require 'config.php';
+
 if(!isset( $_SESSION['user_id']))
 {
   header("Location: index.php");
@@ -177,7 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php
         }
         ?>
-        <div class="pagetitle d-flex justify-content-between">
+     <div class="pagetitle d-flex justify-content-between">
             <div class="mt-3">
                 <h1>Search</h1>
 

@@ -18,7 +18,7 @@ if($_POST['verify'] == 'rating')
     }
     else
     {
-        $checkSql = "INSERT INTO `reviews`(`user_id`, `service_id`, `servicer_id`, `message`, `rating_point`) VALUES ('$user_id','2','$servicer_id','$message','$point')";
+        $checkSql = "INSERT INTO `reviews`(`user_id`, `service_id`, `servicer_id`, `message`, `rating_point`) VALUES ('$user_id','8','$servicer_id','$message','$point')";
 
         $result = mysqli_query($connection, $checkSql);
     }

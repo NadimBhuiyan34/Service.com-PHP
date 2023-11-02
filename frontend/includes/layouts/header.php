@@ -1,11 +1,12 @@
 <?php
-   include($_SERVER['DOCUMENT_ROOT'].'/Service.com-PHP/config.php');
+  include($_SERVER['DOCUMENT_ROOT'].'config.php');
 ?>
+
 <header>
   <nav class="navbar navbar-expand-lg navbar-light bg-white" style="position: fixed;top:0;z-index:1000;width:100%">
     <div class="container">
       <a class="navbar-brand" href="/">
-      <img src="https://otp799999.000webhostapp.com/frontend/image/The-search.png" alt="" style="width:100px;height:75px">
+        <img src="https://otp799999.000webhostapp.com/frontend/image/The-search.png" alt="" style="width:100px;height:75px">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -66,8 +67,8 @@
           } else {
           ?>
             <!-- if is not login -->
-            <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle fw-bold" href="#" id="profileDropdown" role="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+             <li class="nav-item dropdown">
+            <a class="nav-link  fw-bold" href="#" id="profileDropdown" role="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Registration <i class="fa-solid fa-user-plus"></i>
             </a>
             <!-- <ul class="dropdown-menu" aria-labelledby="profileDropdown">
@@ -91,16 +92,15 @@
       </div>
     </div>
   </nav>
+
+<?php include($_SERVER['DOCUMENT_ROOT'].'/frontend/includes/modals/login_modal.php')?>
+<?php include($_SERVER['DOCUMENT_ROOT'].'/frontend/includes/modals/register_modal.php')?>
+<?php include($_SERVER['DOCUMENT_ROOT'].'/frontend/includes/ajax/login_ajax.php')?>
+<?php include($_SERVER['DOCUMENT_ROOT'].'/frontend/includes/ajax/register_ajax.php')?>
+
 </header>
 <!-- modal include -->
-<?php include($documentRoot."/frontend/includes/modals/login_modal.php") ?>
- 
 
-<?php include($documentRoot."/frontend/includes/modals/register_modal.php") ?>
-
-<!-- ajax include -->
-<?php include($documentRoot."/frontend/includes/ajax/login_ajax.php") ?>
-<?php include($documentRoot."/frontend/includes/ajax/register_ajax.php") ?>
 
 
 <!-- <x-auth.modal.login/>
