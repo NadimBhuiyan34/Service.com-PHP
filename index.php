@@ -1,6 +1,6 @@
 <?php
 session_start(); // Start the session
-include($_SERVER['DOCUMENT_ROOT'].'config.php');
+include('config.php');
 ?>
 
 <!-- Your HTML content here -->
@@ -31,7 +31,7 @@ include($_SERVER['DOCUMENT_ROOT'].'config.php');
 
   <?php 
      
-     include_once($documentRoot."frontend/includes/layouts/header.php");
+     include_once("frontend/includes/layouts/header.php");
    ?>
 
 

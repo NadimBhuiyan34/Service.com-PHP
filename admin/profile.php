@@ -27,11 +27,12 @@ if (isset($_POST['profileUpdate'])) {
       $profile_name = basename($_FILES["profileImage"]["name"]);
       // You can now save the file name or path to your database for future reference.
     }
+   
+  }
     else
     {
       $profile_name = $_POST['profileImageName'];
     }
-  }
 
   $id = $_SESSION['user_id'];
   $name = $_POST['fullName'];

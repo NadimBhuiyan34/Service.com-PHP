@@ -1,5 +1,5 @@
 <?php
-  include($_SERVER['DOCUMENT_ROOT'].'config.php');
+  include('config.php');
 ?>
 
 <header>
@@ -93,10 +93,10 @@
     </div>
   </nav>
 
-<?php include($_SERVER['DOCUMENT_ROOT'].'/frontend/includes/modals/login_modal.php')?>
-<?php include($_SERVER['DOCUMENT_ROOT'].'/frontend/includes/modals/register_modal.php')?>
-<?php include($_SERVER['DOCUMENT_ROOT'].'/frontend/includes/ajax/login_ajax.php')?>
-<?php include($_SERVER['DOCUMENT_ROOT'].'/frontend/includes/ajax/register_ajax.php')?>
+<?php include('frontend/includes/modals/login_modal.php')?>
+<?php include('frontend/includes/modals/register_modal.php')?>
+<?php include('frontend/includes/ajax/login_ajax.php')?>
+<?php include('frontend/includes/ajax/register_ajax.php')?>
 
 </header>
 <!-- modal include -->
