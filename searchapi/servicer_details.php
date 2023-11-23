@@ -66,6 +66,14 @@ WHERE reviews.servicer_id = '$user_id'
         }
         
     }
+ else
+    {
+        $data = array();
+        $data = [
+            'message' => "Something is wrong",
+           
+        ];  
+    }
     header('Content-Type: application/json');
     echo json_encode($data);
 

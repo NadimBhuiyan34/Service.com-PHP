@@ -3,6 +3,7 @@ require '../config.php';
 if($_POST['verify'] == 'request')
 {
     $user_id = $_POST['user_id'];
+    $message = $_POST['message'];
     $servicer_id = $_POST['servicer_id'];
     $checkSql = "SELECT * FROM `service_requests` WHERE user_id = '$user_id ' AND servicer_id = '$servicer_id' AND status = 'pending'";
 
@@ -16,7 +17,8 @@ if($_POST['verify'] == 'request')
     }
     else
     {
-        $servicerQuery = "INSERT INTO `service_requests`(`user_id`, `servicer_id`, `status`) VALUES ('$user_id','$servicer_id','pending')";
+        $confirmationCode = sprintf('%06d', mt_rand(0, 999999));
+        $servicerQuery = "INSERT INTO `service_requests`(`user_id`, `servicer_id`, `message`, `confirmation_code`, `status`) VALUES ('$user_id','$servicer_id','$message','$confirmationCod','pending')";
         $request = mysqli_query($connection, $servicerQuery);
         
         if($request)

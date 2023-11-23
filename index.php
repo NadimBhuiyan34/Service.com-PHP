@@ -15,7 +15,7 @@ include('config.php');
   <meta name="description" content="" />
   <meta name="author" content="" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Serive.com</title>
+  <title>The Search</title>
 
 
   <link rel="icon" href="" type="image/x-icon">
@@ -23,24 +23,26 @@ include('config.php');
 
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  
+  <link rel="stylesheet" href="frontend/includes/css/footer.css">
 
 </head>
 
-<body class="sb-nav-fixed">
+<body class="sb-nav-fixed" style="background-color: rgb(254, 254, 254);">
   <!-- header -->
 
   <?php 
      
-     include_once("frontend/includes/layouts/header.php");
+     include_once("header.php");
    ?>
 
 
-  <div class="" style="margin-top:70px;">
+  <div class="" style="margin-top:150px;">
     <div class="row">
       <div class=" text-center w-100">
         <div class="bg-image h-100" style="background-image: url('https://img.freepik.com/free-vector/neon-light-background_53876-67443.jpg?w=360');">
-          <h1 class="text-white" style="padding-top: 50px;"><strong>Your On-Demand Service Finder</strong></h1>
-          <h4 class="text-white">Discover and Connect with Service Providers at Your Convenience.</h4>
+          <h1 class="text-white" style="padding-top: 50px;"><strong>Find Services On-the-Go</strong></h1>
+          <h4 class="text-white">Connect with Providers at Your Own Pace.</h4>
 
           <div class="row justify-content-center pt-2" style="padding-bottom:100px;">
             <div class="col-md-4 col-10">
@@ -188,8 +190,11 @@ include('config.php');
 
 
 
-
-
+  <?php 
+     
+     include_once("footer.php");
+   ?>
+ 
   <!-- js -->
   <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 

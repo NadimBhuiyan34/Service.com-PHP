@@ -43,8 +43,11 @@ $sql = "
         COALESCE(AVG(reviews.rating_point), 0) AS average_rating,
         service_requests.id,
         service_requests.status,
+        service_requests.message,
+        service_requests.confirmation_code,
         service_requests.created_at,
-        service_requests.updated_at
+        service_requests.updated_at,
+        service_requests.completed_at
     FROM users 
     JOIN servicer_profiles ON users.id = servicer_profiles.user_id 
     LEFT JOIN reviews ON servicer_profiles.user_id = reviews.servicer_id 
@@ -106,7 +109,8 @@ $sql = "
         user_profiles.address, 
         user_profiles.profile_image, 
         service_requests.id, 
-        service_requests.status, 
+        service_requests.status,
+        service_requests.message, 
         service_requests.created_at, 
         service_requests.updated_at
     FROM users
