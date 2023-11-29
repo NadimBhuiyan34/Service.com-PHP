@@ -5,7 +5,7 @@ if ($_POST['verify'] == 'acceptrequest') {
     $id = $_POST['id'];
     $status = $_POST['status'];
     $confirmation_code = $_POST['code'];
-
+     
     if ($status == 'accepted') {
         // Update status to 'accepted'
         $checkSql = "UPDATE `service_requests` SET `status`='$status', `updated_at`= NOW() WHERE id = $id";

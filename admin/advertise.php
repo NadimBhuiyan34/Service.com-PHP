@@ -55,8 +55,9 @@ if (isset($_POST['editAdvertise'])) {
   $id = $_POST['id'];
   $title = $_POST['title'];
   $link = $_POST['link'];
+  $status = $_POST['status'];
 
-  $updateQuery = "UPDATE `advertises` SET `title`='$title',`link`='$link',`image`='$image_name' WHERE id = $id";
+  $updateQuery = "UPDATE `advertises` SET `title`='$title', `link`='$link', `image`='$image_name', `status`='$status' WHERE id = $id";
   if (mysqli_query($connection, $updateQuery)) {
     $message = "Advertisements update successfully.";
 
@@ -203,7 +204,7 @@ if (isset($_POST['deleteAdv'])) {
                     <!-- edit modal -->
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary btn-sm success" data-bs-toggle="modal" data-bs-target="#editAdvertise<?php echo $advertise['id'] ?>">
-                    <i class="fa-solid fa-pen-to-square"></i>
+                      <i class="fa-solid fa-pen-to-square"></i>
                     </button>
 
                     <!-- edit advertisement Modal -->
@@ -233,6 +234,15 @@ if (isset($_POST['deleteAdv'])) {
                                 <label for="link" class="form-label text-black fw-bold">Site Link</label>
                                 <input type="link" class="form-control" name="link" id="link" value="<?php echo $advertise['link'] ?>">
                               </div>
+                              <div class="mb-3">
+                                <label for="status" class="form-label fw-bold"> Status</label>
+                                <select class="form-select" aria-label="Default select example" name="status" id="status">
+                                  <option selected>Select Status</option>
+                                  <option value="active" <?php echo ($advertise['status'] == 'active') ? 'selected' : ''; ?>>Active</option>
+                        
+                                  <option value="inactive" <?php echo ($advertise['status'] == 'inactive') ? 'selected' : ''; ?>>Inactive</option>
+                                </select>
+                              </div>
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -246,7 +256,7 @@ if (isset($_POST['deleteAdv'])) {
 
                     <form action="advertise.php" method="POST" class="deleteForm">
                       <input type="hidden" value="<?php echo $advertise['id']; ?>" name="id">
-                    
+
                       <button type="submit" class="btn btn-outline-danger btn-sm" name="deleteAdv">
                         <i class="fa-solid fa-trash-can"></i>
                       </button>

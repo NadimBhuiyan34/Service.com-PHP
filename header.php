@@ -15,26 +15,34 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto mx-auto ">
                     <li class="nav-item px-3">
-                        <a class="nav-link" href="index.php"> <i class="fas fa-home"></i> Home</a>
+                        <a class="nav-link text-dark" href="index.php"> <i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item px-3">
+                        <a class="nav-link text-dark" href="index.php"> <i class="fa-solid fa-user-nurse"></i> Servicer</a>
                     </li>
 
-               
                 
                     <li class="nav-item dropdown px-3">
-                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Services
+                        <a class="nav-link dropdown-toggle text-dark" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-cogs service-icon"></i> Service Category
                         </a>
                         <ul class="dropdown-menu  shadow border-2" style="width: 300px;background-color:white">
+                        <?php 
+                     $query = "SELECT * FROM categories WHERE status = 'Active' ORDER BY id DESC";
+                     $categories = mysqli_query($connection, $query);
+                     while ($category = mysqli_fetch_assoc($categories)) {
+                        ?>
                             <li class="nav-item px-3">
-                                <a class="nav-link" href="construction.php">Construction</a>
+                                <a class="nav-link" href="construction.php"><?php echo $category['title'] ?></a>
                             </li>
-                            <li class="nav-item px-3">
-                                <a class="nav-link" href="interior.php">Logout</a>
-                            </li>
+                        <?php } ?>    
                         </ul>
 
 
 
+                    </li>
+                    <li class="nav-item px-3">
+                        <a class="nav-link text-dark" href="contactus.php"> <i class="fas fa-envelope contact-icon"></i> Contact Us</a>
                     </li>
                     
                     
@@ -75,44 +83,24 @@
                         </a>
                         <ul class="dropdown-menu  shadow border-2" style="width: 180px;background-color:rgb(202, 228, 255)">
                             <li class="nav-item px-3">
-                                <a class="nav-link" href="construction.php"><i class="fa-solid fa-user"></i> User</a>
+                                <a class="nav-link" href="register.php?role=User"><i class="fa-solid fa-user"></i> User</a>
                             </li>
                             <li class="nav-item px-3">
-                                <a class="nav-link" href="interior.php"><i class="fa-solid fa-user-nurse"></i> Servicer</a>
+                            <a class="nav-link" href="register.php?role=Servicer"><i class="fa-solid fa-user-nurse"></i> Servicer</a>
+
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item px-3 d-none d-md-block d-lg-block">
-                        <a class=" btn btn-sm btn-danger shadow" href="index.php"> <i class="fa-solid fa-right-to-bracket"></i> Login</a>
+                        <a class=" btn btn-sm btn-danger shadow" href="login.php"> <i class="fa-solid fa-right-to-bracket"></i> Login</a>
                     </li>
                    </ul>
-                    <!-- <div class="col-3  h-75 text-center mt-3 rounded-2" style="color: hsl(0, 0%, 100%);background-color: rgb(241, 102, 33);">
-                       <div class="py-2 rounded-2">
-                        <i class="fas fa-phone fs-5 text-center fa-shake"></i>
-                       </div>
-                    </div> -->
-
-                    <!-- <div class="col-9 ml-2 mt-2">
-                        <span class="fw-bold" style="font-size: 16px;font-family: Arial, Helvetica, sans-serif !important;color:  rgb(241, 102, 33);;">Call us today</span>
-                        <p class="">01966611853</p>
-                    </div> -->
+                   
                     
                 </div>
             </div>
         </div>
-        <div class="d-none d-lg-block d-xl-block d-md-block">
-            <div class="d-flex flex-column gap-1 social-icons">
-                <div class="social-icon">
-                    <a href="https://www.facebook.com/nplbd.net/"><i class="fab fa-facebook" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook"></i></a>
-                </div>
-                <div class="social-icon">
-                    <a href="https://www.linkedin.com/company/nawar-properties-ltd/?originalSubdomain=bd"> <i class="fab fa-linkedin" data-bs-toggle="tooltip" data-bs-placement="top" title="LinkedIn"></i></a>
-                </div>
-                <div class="social-icon">
-                    <a href=""> <i class="fab fa-instagram" data-bs-toggle="tooltip" data-bs-placement="top" title="Instagram"></i></a>
-                </div>
-            </div>
-        </div>
+          
     </nav>
 </header>
 <!-- end header -->
