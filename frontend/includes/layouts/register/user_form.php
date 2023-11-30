@@ -1,6 +1,6 @@
 <form action="register.php" method="POST" enctype="multipart/form-data">
                             <div class="row register-form">
-                                <input type="hidden" name="role" value="User">
+                                <input type="hidden" name="role" value="user">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="name" class="form-label">Name*</label>
@@ -53,11 +53,12 @@
                                         <label for="address" class="form-label">Address</label>
                                         <input type="text" class="form-control" id="address" name="address">
                                     </div>
-                                    <!-- <div class="form-group">
+                                    <div class="form-group">
                                         <label for="profile" class="form-label">Profile Image</label>
                                         <input type="file" class="form-control" id="profile" name="profile">
-                                    </div> -->
-                                    <input type="submit" class="btnRegister" value="registerUser" />
+                                    </div>
+                                    <input type="submit" class="btnRegister"  value="Registration" name="registerUser" />
+                                    
                                 </div>
                             </div>
                         </form>

@@ -57,13 +57,13 @@
                              </a>
                          </div>
                          <address class="text-white">
-                             <p><i class="fa-solid fa-location-dot fa-lg pr-2"></i> NAWAR PROPERTIES LTD.
+                             <p><i class="fa-solid fa-location-dot fa-lg pr-2"></i> The Search.
                                  House # 206 (1st Floor), Road # 02
                                  Baridhara DOHS, Dhaka-1206.</p>
                              <p><i class="fa-solid fa-square-phone fa-lg"></i> +88 01966611853
                                  +88 02 8417480
                                  +88 02 8417624</p>
-                             <p><i class="fa-regular fa-envelope fa-lg"></i> nawarpropertiesltd@gmail.com</p>
+                             <p><i class="fa-regular fa-envelope fa-lg"></i> search@gmail.com</p>
 
                          </address>
                      </div>
@@ -72,18 +72,18 @@
                          <ul class="footer-links">
                              <li><a href="index.php">Home</a>
                              </li>
-                             <li><a href="company_profile.php">Company Profile</a>
+                             <li><a href="company_profile.php"></a>
                              </li>
-                             <li><a href="Properties.php">Properties</a>
+                             <li><a href="Properties.php"></a>
                              </li>
-                             <li><a href="construction.php">Construction</a>
+                             <li><a href="construction.php"></a>
                              </li>
-                             <li><a href="interior.php" target="_blank">Interior Solution</a>
+                             <li><a href="interior.php" target="_blank"></a>
                              </li>
                              <li><a href="contactus.php">Contact Us</a>
                              </li>
 
-                             <li><a href="mission&vision" target="_blank">Vision & Mission</a>
+                             <li><a href="mission&vision" target="_blank"></a>
                              </li>
 
                          </ul>
@@ -91,9 +91,9 @@
                      <div class="col-md-3 col-sm-6">
                          <h3>OUR SERVICES</h3>
                          <ul class="footer-category">
-                             <li><a href="construction.php">Construction</a>
+                             <li><a href="construction.php"></a>
                              </li>
-                             <li><a href="interior.php">Interior Solution</a>
+                             <li><a href="interior.php"></a>
                              </li>
 
                          </ul>
@@ -103,11 +103,11 @@
                          <h3>Properties</h3>
 
                          <ul class="footer-links">
-                             <li><a href="#">Ongoing</a>
+                             <li><a href="#"></a>
                              </li>
-                             <li><a href="#">Upcoming</a>
+                             <li><a href="#"></a>
                              </li>
-                             <li><a href="#">Completed</a>
+                             <li><a href="#"></a>
                              </li>
                          </ul>
 

@@ -28,7 +28,7 @@ include('config.php');
 
 </head>
 
-<body class="sb-nav-fixed" style="background-color: rgb(254, 254, 254);">
+<body style="background-color: rgb(224, 241, 253);">
   <!-- header -->
 
   <?php 
@@ -91,7 +91,7 @@ include('config.php');
                      while ($category = mysqli_fetch_assoc($categories)) {
                         ?>
        
-        <div class="col-4 col-md-2 text-center border">
+        <div class="col-4 col-md-2 text-center border bg-white  rounded-3">
         <div class="p-2">
          <a href="">
        <img src="admin/public/category/<?php echo $category['banner_image']; ?>" alt="" style="width:100px;height:100px">

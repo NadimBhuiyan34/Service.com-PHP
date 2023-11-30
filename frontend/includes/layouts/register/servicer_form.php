@@ -82,7 +82,7 @@
                                   
                                 </div>
                                 <div class="col-md-6">
-                                <input type="submit" class="btnRegister" value="registerServicer" />
+                                <input type="submit" class="btnRegister"  value="Registration" name="registerServicer" />
                                 </div>
                                
                             </div>

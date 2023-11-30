@@ -1,5 +1,6 @@
 <?php
 require 'config.php';
+session_start(); // Start the session
  
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST['contacts']))

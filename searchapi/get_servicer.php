@@ -2,6 +2,7 @@
 require '../config.php';
 
 if ($_POST['verify'] == 'servicer') {
+    
     $category_id = $_POST['id'];
     $user_id = $_POST['user_id'];
 
