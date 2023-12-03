@@ -112,7 +112,8 @@ $sql = "
         service_requests.status,
         service_requests.message, 
         service_requests.created_at, 
-        service_requests.updated_at
+        service_requests.updated_at,
+        service_requests.completed_at
     FROM users
     JOIN user_profiles ON users.id = user_profiles.user_id
     LEFT JOIN service_requests ON user_profiles.user_id = service_requests.user_id

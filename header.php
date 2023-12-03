@@ -9,11 +9,11 @@ if (session_status() == PHP_SESSION_NONE) {
  
 ?>
 <header class="fw-bold background-container" style="position: fixed; top: 30px; width: 100%; z-index: 1000;">
-    <nav class="navbar navbar-expand-lg mx-auto rounded-5" style="width: 80%; background-color:hwb(0 100% 0% / 0.981)">
+    <nav class="navbar navbar-expand-lg mx-auto rounded-5" style="width: 80%; background-color:hwb(0 0% 100% / 0.981)">
         <div class="container rounded-4" style="background-color:rgb(255, 176, 40)">
 
           <div class="" style="background-color:white;">
-            <img src="https://otp799999.000webhostapp.com/frontend/image/The-search.png" class="px-2" alt="" style="width:150px;height:80px">
+            <img src="frontend/image/The-search.png" class="px-2" alt="" style="width:150px;height:80px">
           </div>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +26,7 @@ if (session_status() == PHP_SESSION_NONE) {
                         <a class="nav-link text-dark" href="index.php"> <i class="fas fa-home"></i> Home</a>
                     </li>
                     <li class="nav-item px-3">
-                        <a class="nav-link text-dark" href="servicer.php"> <i class="fa-solid fa-user-nurse"></i> Servicer</a>
+                        <a class="nav-link text-dark" href="servicer.php?type=All"> <i class="fa-solid fa-users-gear"></i> Servicer</a>
                     </li>
 
                 
@@ -47,6 +47,19 @@ if (session_status() == PHP_SESSION_NONE) {
                         </ul>
 
                     </li>
+                    <?php
+                     if(isset($_SESSION['user_id']))
+                    {
+                        $role = $_SESSION['role'];
+
+                        if($role == 'servicer')
+                        {
+                    ?>    
+                    <li class="nav-item px-3">
+                        <a class="nav-link text-dark" href="contactus.php">  <i class="fa-solid fa-bell"></i> Service Request</a>
+                    </li>
+                    <?php } }?>
+
                     <li class="nav-item px-3">
                         <a class="nav-link text-dark" href="contactus.php"> <i class="fas fa-envelope contact-icon"></i> Contact Us</a>
                     </li>
@@ -69,9 +82,9 @@ if (session_status() == PHP_SESSION_NONE) {
                             if(isset($_SESSION['user_id']))
                             {
                                 $id = $_SESSION['user_id'];
-                              $role = $_SESSION['role'];
+                                $role = $_SESSION['role'];
 
-                              if($role == 'user')
+                              if($role == 'user' || $role == 'admin')
                               {
                                 $userQuery = "SELECT users.name, user_profiles.profile_image FROM users
                                 LEFT JOIN user_profiles ON users.id = user_profiles.user_id
@@ -82,9 +95,11 @@ if (session_status() == PHP_SESSION_NONE) {
                               }
                               else
                               {
-                                $userQuery = "SELECT users.name, servicer_profiles.profile_image FROM users
-                                LEFT JOIN user_profiles ON users.id = user_profiles.user_id
+                                $userQuery = "SELECT users.name, servicer_profiles.profile_image 
+                                FROM users
+                                LEFT JOIN servicer_profiles ON users.id = servicer_profiles.user_id
                                 WHERE users.id = '$id'";
+
                               }
                               $result = $connection->query($userQuery);
                               $userData = $result->fetch_assoc();
@@ -104,6 +119,9 @@ if (session_status() == PHP_SESSION_NONE) {
                             </li> -->
                             <li class="nav-item px-3">
                                 <a class="nav-link" href="profile.php">   <i class="fas fa-user profile-icon"></i> Profile</a>
+                            </li>
+                            <li class="nav-item px-3">
+                                <a class="nav-link" href="profile.php">   <i class="fas fa-user profile-icon"></i> Request List</a>
                             </li>
                             <li class="nav-item px-3">
                                 <a class="nav-link text-danger" href="logout.php">  <i class="fas fa-sign-out-alt logout-icon"></i>  Logout</a>

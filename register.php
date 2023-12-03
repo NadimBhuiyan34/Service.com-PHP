@@ -70,7 +70,7 @@ if ( isset($_POST['registerUser']) || isset($_POST['registerServicer'])) {
         if ($role == "servicer") {
             $biography = $_POST['biography'];
             $experience = $_POST['experience'];
-            $queryUserProfile = "INSERT INTO `servicer_profiles`(`user_id`, `service_id`, `category_id`, `address`, `experience`, `biography`, `profile_image`, `work_image`) VALUES ('$id','8','$category_id','$fullAddress',' $experience',' $biography','$profileName','')";
+            $queryUserProfile = "INSERT INTO `servicer_profiles`(`user_id`, `service_id`, `category_id`, `address`, `area`, `experience`, `biography`, `profile_image`, `work_image`) VALUES ('$id','8','$category_id','$fullAddress','$area',' $experience',' $biography','$profileName','')";
             $resultProfile = mysqli_query($connection, $queryUserProfile);
             if ($resultProfile) {
                 header("Location: register.php?id=" . urlencode($id). "&role=" . urlencode('otp'). "&mobile=" . urlencode($lastThreeDigits));

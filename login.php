@@ -178,7 +178,7 @@ background: linear-gradient(to right, #f7e333, rgb(148, 156, 179))">
                     <div class="d-flex align-items-center justify-content-center pb-4">
                       <p class="mb-0 me-2">Don't have an account?</p>
                      
-                      <a href="register.php" class="btn btn-outline-danger">Create new</a>
+                      <a href="register.php?role=user" class="btn btn-outline-danger">Create new</a>
                     </div>
 
                   </form>

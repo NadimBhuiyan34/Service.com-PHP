@@ -53,7 +53,8 @@
                      <div class="col-md-4 col-sm-6">
 
                          <div class="footer-logow-50 rounded-2 p-2"> <a class="navbar-brand bg-white" href="index.php">
-                                 <img src="frontend/img/Logo-NPL2.png" class="px-2" alt="" style="width:130px;height:70px;background-color:hsl(0, 0%, 100%)">
+                                 <img src="frontend/image/The-search.png" class="px-2" alt="" style="width:130px;height:70px;background-color:hsl(0, 0%, 100%)">
+                                
                              </a>
                          </div>
                          <address class="text-white">
