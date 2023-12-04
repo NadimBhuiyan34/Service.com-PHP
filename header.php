@@ -41,7 +41,7 @@ if (session_status() == PHP_SESSION_NONE) {
                      while ($category = mysqli_fetch_assoc($categories)) {
                         ?>
                             <li class="nav-item px-3">
-                                <a class="nav-link" href="construction.php"><?php echo $category['title'] ?></a>
+                                <a class="nav-link" href="servicer.php?type=<?php echo $category['id'] ?>"><?php echo $category['title'] ?></a>
                             </li>
                         <?php } ?>    
                         </ul>

@@ -1,6 +1,7 @@
 <?php
 session_start(); // Start the session
 include('config.php');
+ 
 ?>
 
 <!-- Your HTML content here -->
@@ -42,7 +43,7 @@ include('config.php');
       <div class=" text-center w-100">
         <div class="bg-image h-100" style="background-image: url('https://img.freepik.com/free-vector/neon-light-background_53876-67443.jpg?w=360');">
           <h1 class="text-white" style="padding-top: 50px;"><strong>Find Services On-the-Go</strong></h1>
-          <h4 class="text-white">Connect with Providers at Your Own Pace.</h4>
+          <h4 class="text-white">Connect with Servicers at Your Own Pace.</h4>
 
           <div class="row justify-content-center pt-2" style="padding-bottom:100px;">
             <div class="col-md-4 col-10">
@@ -93,7 +94,7 @@ include('config.php');
        
         <div class="col-4 col-md-2 text-center border bg-white  rounded-3">
         <div class="p-2">
-         <a href="">
+         <a href="servicer.php?type=<?php echo $category['id'] ?>">
        <img src="admin/public/category/<?php echo $category['banner_image']; ?>" alt="" style="width:100px;height:100px">
 
 

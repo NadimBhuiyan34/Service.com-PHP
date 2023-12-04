@@ -82,7 +82,7 @@ if (isset($_POST['requestBtn'])) {
     </section>
 
     <section class="container mt-5">
-        <form action="properties.php" method="POST">
+        <form action="servicer.php" method="POST">
 
             <div class="d-flex <?php echo isset($_POST['search']) ? 'justify-content-center' : 'justify-content-right'; ?>  gap-4 flex-column flex-xl-row flex-md-row flex-lg-row  p-3 rounded-3" style="background-color: rgba(241, 102, 33, 0.702);;">
                 <div class="text-center mt-3 <?php echo isset($_POST['search']) ? 'd-none' : ''; ?>">
@@ -92,7 +92,7 @@ if (isset($_POST['requestBtn'])) {
 
                 <div>
                     <label for="" class="text-center fw-bold">Area</label>
-                    <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to area...">
+                    <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to area..." name="area">
                     <datalist id="datalistOptions">
                         <option value="Tejgaon">Tejgaon</option>
                         <option value="Dhanmondi">Dhanmondi</option>
@@ -108,7 +108,7 @@ if (isset($_POST['requestBtn'])) {
                 </div>
                 <div>
                     <label for="" class="text-center fw-bold">Category</label>
-                    <input class="form-control" list="datalistOptionscategory" id="exampleDataList" placeholder="Type to category...">
+                    <input class="form-control" list="datalistOptionscategory" id="exampleDataList" placeholder="Type to category..." name="category">
                     <datalist id="datalistOptionscategory">
 
                         <?php
@@ -157,7 +157,7 @@ if (isset($_POST['requestBtn'])) {
                                     <ul class="social-links list-inline rounded-2 p-2 bg-warning">
                                         <i class="fa-solid fa-mobile-retro"></i> <span class="fw-bold"><?php echo $servicer['mobile'] ?></span> <br>
                                         <i class="fa-solid fa-location-dot"></i> <?php echo $servicer['address'] ?> <br>
-                                        <i class="fas fa-star"></i> Rating : <span><?php echo $servicer['average_rating'] ?>/5</span>
+                                        <i class="fas fa-star"></i> Rating : <span><?php echo empty($servicer['average_rating']) ? '0' : $servicer['average_rating'] ?>/5</span>
                                     </ul>
                                     <?php
                                     if (!isset($_SESSION['role']) || ($_SESSION['role'] == 'user' && isset($_SESSION['role']))) {
@@ -277,14 +277,29 @@ if (isset($_POST['requestBtn'])) {
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
                         <?php
-                        for ($i = 1; $i <= $totalPages; $i++) {
-                            echo '<li class="page-item ' . ($page == $i ? 'active' : '') . '">
-                    <a class="page-link" href="?page=' . $i . '&type=All">' . $i . '</a>
-                  </li>';
+                        
+                        if(isset($_GET['type']))
+                        {
+                            $type = $_GET['type'];
+                            for ($i = 1; $i <= $totalPages; $i++) {
+                                echo '<li class="page-item ' . ($page == $i ? 'active' : '') . '">
+                    <a class="page-link" href="?page=' . $i . '&type=' . $type . '">' . $i . '</a>
+                </li>';
+                            }
                         }
+                        else
+                        {
+                            for ($i = 1; $i <= $totalPages; $i++) {
+                                echo '<li class="page-item ' . ($page == $i ? 'active' : '') . '">
+                    <a class="page-link" href="?page=' . $i .'">' . $i . '</a>
+                </li>';
+                            }
+                        }
+                      
                         ?>
                     </ul>
                 </nav>
+
 
 
 

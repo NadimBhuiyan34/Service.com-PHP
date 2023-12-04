@@ -10,19 +10,20 @@ if (!isset($_SESSION['user_id'])) {
       $md5_user_input_password = md5($user_input_password);
 
       // Replace with your database connection details
-      $stmt = $connection->prepare("SELECT u.id, u.name, u.password, up.profile_image
+      $stmt = $connection->prepare("SELECT u.id, u.name, u.password,u.role,up.profile_image
     FROM users u
     LEFT JOIN user_profiles up ON u.id = up.user_id
     WHERE u.email = ?");
       $stmt->bind_param("s", $email);
       $stmt->execute();
       $stmt->store_result();
-      $stmt->bind_result($id, $name, $hashed_password, $profile_image);
+      $stmt->bind_result($id, $name, $hashed_password,$role,$profile_image);
       $stmt->fetch();
 
 
       if ($md5_user_input_password === $hashed_password) {
         $_SESSION['user_id'] = $id;
+        $_SESSION['role'] = $role;
         $_SESSION['name'] = $name; // Store the user's name in the session
         $_SESSION['profile_image'] = $profile_image; // Store the user's name in the session
         // $_SESSION['profile_image'] = $profile_image;
