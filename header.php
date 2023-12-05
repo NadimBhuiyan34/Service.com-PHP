@@ -47,31 +47,37 @@ if (session_status() == PHP_SESSION_NONE) {
                         </ul>
 
                     </li>
+
                     <?php
                      if(isset($_SESSION['user_id']))
                     {
                         $role = $_SESSION['role'];
 
-                        if($role == 'servicer')
+                        if($role == 'servicer' || $role == 'user')
                         {
                     ?>    
-                    <li class="nav-item px-3">
-                        <a class="nav-link text-dark" href="contactus.php">  <i class="fa-solid fa-bell"></i> Service Request</a>
+                    <li class="nav-item dropdown px-3">
+                        <a class="nav-link dropdown-toggle text-dark" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-cogs service-icon"></i> Service Request
+                        </a>
+                        <ul class="dropdown-menu  shadow border-2" style="width: 200px;background-color:white">
+                        <li class="nav-item px-3">
+                                <a class="nav-link" href="request.php?status=pending">Pending</a>
+                            </li>
+                        <li class="nav-item px-3">
+                                <a class="nav-link" href="request.php?status=accepted">Ongoing</a>
+                            </li>
+                        <li class="nav-item px-3">
+                                <a class="nav-link" href="request.php?status=completed">Completed</a>
+                            </li>
+                        </ul>
+
                     </li>
                     <?php } }?>
 
                     <li class="nav-item px-3">
                         <a class="nav-link text-dark" href="contactus.php"> <i class="fas fa-envelope contact-icon"></i> Contact Us</a>
-                    </li>
-                    
-                    
-                    
-
-
-                   
-
-
-
+                    </li>                   
 
                 </ul>
                 <div class="row">
@@ -89,9 +95,7 @@ if (session_status() == PHP_SESSION_NONE) {
                                 $userQuery = "SELECT users.name, user_profiles.profile_image FROM users
                                 LEFT JOIN user_profiles ON users.id = user_profiles.user_id
                                 WHERE users.id = '$id'";
-                              
-                               
-                                
+                                                                                   
                               }
                               else
                               {
@@ -114,9 +118,10 @@ if (session_status() == PHP_SESSION_NONE) {
                           <?php echo $name ?>
                         </a>
                         <ul class="dropdown-menu  shadow " style="width: 250px">
-                            <!-- <li class="nav-item px-3">
-                                <a class="nav-link" href="gellery.php">Gellery</a>
-                            </li> -->
+                            <li class="nav-item px-3">
+                                <?php echo ucfirst($_SESSION['role'])  ?>
+                            </li>
+                            <hr>
                             <li class="nav-item px-3">
                                 <a class="nav-link" href="profile.php">   <i class="fas fa-user profile-icon"></i> Profile</a>
                             </li>

@@ -1,14 +1,10 @@
 <?php
 session_start(); // Start the session
 include('config.php');
- 
 ?>
-
 <!-- Your HTML content here -->
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -17,7 +13,6 @@ include('config.php');
   <meta name="author" content="" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>The Search</title>
-
 
   <link rel="icon" href="" type="image/x-icon">
   <!-- Google Fonts -->

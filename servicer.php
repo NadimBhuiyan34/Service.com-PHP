@@ -1,9 +1,6 @@
 <?php
 session_start(); // Start the session
 include('config.php');
-include('servicer_code.php');
-
-// request sent
 if (isset($_POST['requestBtn'])) {
 
     $user_id = $_POST['user_id'];
@@ -16,7 +13,7 @@ if (isset($_POST['requestBtn'])) {
 
     if (mysqli_num_rows($result) > 0) {
         $message = "Request Allready Submitted";
-        header("Location: servicer.php?message=" . urlencode($message));
+        header("Location: servicer.php?message=" . urlencode($message). "&type=" . urlencode('All'));
         exit;
     } else {
         $confirmationCode = sprintf('%06d', mt_rand(0, 999999));
@@ -25,15 +22,19 @@ if (isset($_POST['requestBtn'])) {
 
         if ($request) {
             $message = "Request Submitted Successfully";
-            header("Location: servicer.php?message=" . urlencode($message));
+            header("Location: servicer.php?message=" . urlencode($message). "&type=" . urlencode('All'));
             exit;
         } else {
             $message = "Something is wrong";
-            header("Location: servicer.php?message=" . urlencode($message));
+            header("Location: servicer.php?message=" . urlencode($message). "&type=" . urlencode('All'));
             exit;
         }
     }
 }
+include('servicer_code.php');
+
+// request sent
+
 ?>
 
 <!-- Your HTML content here -->
@@ -48,7 +49,7 @@ if (isset($_POST['requestBtn'])) {
     <meta name="description" content="" />
     <meta name="author" content="" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>The Search</title>
+    <title>Servicer</title>
 
 
     <link rel="icon" href="" type="image/x-icon">
@@ -81,18 +82,19 @@ if (isset($_POST['requestBtn'])) {
         <!-- end slider -->
     </section>
 
-    <section class="container mt-5">
-        <form action="servicer.php" method="POST">
+    <section class="container mt-5 mx-auto">
+        <form action="servicer.php" method="POST" class="mx-auto">
 
-            <div class="d-flex <?php echo isset($_POST['search']) ? 'justify-content-center' : 'justify-content-right'; ?>  gap-4 flex-column flex-xl-row flex-md-row flex-lg-row  p-3 rounded-3" style="background-color: rgba(241, 102, 33, 0.702);;">
-                <div class="text-center mt-3 <?php echo isset($_POST['search']) ? 'd-none' : ''; ?>">
+            <div class="d-flex <?php echo isset($_POST['search']) ? 'justify-content-center' : 'justify-content-right'; ?>  gap-4 flex-column flex-xl-row flex-md-row flex-lg-row  p-3 rounded-3 pt-2 shadow-3 mx-auto" style="background-color: rgb(9, 1, 1);;">
+                <div class="text-center mt-3 <?php echo isset($_POST['search']) ? 'd-none' : ''; ?> ">
                     <h3 class="text-white"><i class="fa-solid fa-users-gear"></i> Find <span class=""><?php echo $type_text ?></span> Servicer</h3>
                 </div>
 
-
+                
                 <div>
-                    <label for="" class="text-center fw-bold">Area</label>
-                    <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to area..." name="area">
+                    <label for="" class="text-center fw-bold text-white pb-2">Area</label>
+                    <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to area..." name="area" value="<?php echo (isset($_POST['area'])) ? htmlspecialchars($_POST['area']) : ''; ?>">
+
                     <datalist id="datalistOptions">
                         <option value="Tejgaon">Tejgaon</option>
                         <option value="Dhanmondi">Dhanmondi</option>
@@ -107,8 +109,8 @@ if (isset($_POST['requestBtn'])) {
                     </datalist>
                 </div>
                 <div>
-                    <label for="" class="text-center fw-bold">Category</label>
-                    <input class="form-control" list="datalistOptionscategory" id="exampleDataList" placeholder="Type to category..." name="category">
+                    <label for="" class="text-center fw-bold text-white pb-2">Category</label>
+                    <input class="form-control" list="datalistOptionscategory" id="exampleDataList" placeholder="Type to category..." name="category" value="<?php echo (isset($_POST['category'])) ? htmlspecialchars($_POST['category']) : ''; ?>">
                     <datalist id="datalistOptionscategory">
 
                         <?php
@@ -122,7 +124,7 @@ if (isset($_POST['requestBtn'])) {
                     </datalist>
                 </div>
                 <div class="my-auto text-center">
-                    <button class="btn btn-success mt-xl-4 mt-lg-4 mt-md-4" type="submit" name="search">Search <i class="fa-solid fa-magnifying-glass fa-beat"></i></button>
+                    <button class="btn btn-warning mt-xl-4 mt-lg-4 mt-md-4" type="submit" name="search">Search</button>
                 </div>
             </div>
         </form>
