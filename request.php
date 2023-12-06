@@ -7,9 +7,23 @@ $user_id = $_SESSION['user_id'];
 $role = $_SESSION['role'];
 $status = $_GET['status'];
 $data = array();
+if(isset($_POST['cancelRequest']))
+{
+    $id = $_POST['request_id'];
+    $type = $_POST['type'];
 
+    $cancelQuery = "UPDATE `service_requests` SET `status`='cancel', `updated_at` = NOW() WHERE id = $id";
+
+    if(mysqli_query($connection, $cancelQuery)){
+        $message = "Request Successfully Cancelled";
+        header("Location: request.php?message=" . urlencode($message)."&type=").urlencode($type);            
+        exit;
+    }
+
+}
 if ($role == 'user') {
-    $userQuery = "SELECT 
+    $userQuery = "
+    SELECT 
         users.name,
         users.id AS user_id,
         users.mobile,
@@ -33,12 +47,29 @@ if ($role == 'user') {
     JOIN categories ON servicer_profiles.category_id = categories.id
     WHERE service_requests.user_id = '$user_id'
         AND service_requests.status = '$status'
-        GROUP BY users.id, service_requests.id, categories.title;
-    
-    ";
+    GROUP BY
+        users.id,
+        users.name,
+        users.mobile,
+        servicer_profiles.address,
+        servicer_profiles.experience,
+        servicer_profiles.biography,
+        servicer_profiles.profile_image,
+        categories.title,
+        service_requests.id,
+        service_requests.status,
+        service_requests.message,
+        service_requests.confirmation_code,
+        service_requests.created_at,
+        service_requests.updated_at,
+        service_requests.completed_at
+    ORDER BY service_requests.created_at DESC; 
+";
+
 } else {
 
-    $userQuery = "SELECT 
+    $userQuery = "
+    SELECT 
         users.name,
         users.id AS user_id,
         users.mobile,
@@ -54,9 +85,13 @@ if ($role == 'user') {
     JOIN user_profiles ON service_requests.user_id = user_profiles.user_id
     JOIN users ON user_profiles.user_id = users.id
     WHERE service_requests.servicer_id = '$user_id'
-        AND service_requests.status = '$status';
-        
-    ";
+    AND (
+        ('$status' = 'pending' AND service_requests.status IN ('pending', 'cancel'))
+        OR ('$status' = service_requests.status)
+    )
+    ORDER BY service_requests.created_at DESC;
+";
+
 }
 $requests = mysqli_query($connection,  $userQuery);
 
@@ -121,123 +156,117 @@ $requests = mysqli_query($connection,  $userQuery);
                     <?php
                     while ($request = mysqli_fetch_assoc($requests)) {
                     ?>
-                        <?php
-                          if($_SESSION['role'] == 'servicer')
-                          { ?>
+                        <div class="col-lg-6 col-md-12 col-12 col-sm-12 mb-4">
 
-                            <div class="col-lg-6 col-md-6 col-12 col-sm-12">
-                            <div class="card" style="height: 250px;">
-                                <div class="">
 
-                                    <div class="px-3 d-flex justify-content-between py-1 bg-warning">
-                                        <div>
-                                            <h4><?php echo $request['name'] ?></h4>
-                                            <span class="fw-bold"><i class="fa-solid fa-mobile-retro"></i> <?php echo $request['mobile'] ?></span> <br>
-                                            <span><i class="fa-solid fa-location-dot"></i> <?php echo $request['address'] ?></span> <br>
-                                            <span class=""><i class="fa-solid fa-calendar-days"></i> Requested Date: <?php echo $request['created_at'] ?></span>
+                            <?php if ($_SESSION['role'] == 'servicer') { ?>
+                                <div class="card" style="height: 250px;">
+                                    <div class="">
+
+                                    <div class="px-3 d-flex justify-content-between py-1 <?php echo ($request['status'] == 'cancel') ? 'bg-danger' : 'bg-warning'; ?>">
+                                            <div>
+                                                <h4><?php echo $request['name'] ?>  <?php echo $request['status'] ?></h4>
+                                                <span class="fw-bold"><i class="fa-solid fa-mobile-retro"></i> <?php echo $request['mobile'] ?></span> <br>
+                                                <span><i class="fa-solid fa-location-dot"></i> <?php echo $request['address'] ?></span> <br>
+                                                <span class=""><i class="fa-solid fa-calendar-days"></i> Requested Date: <?php
+                                                                                                                            // Assuming $request['created_at'] contains a valid timestamp or date string
+                                                                                                                                                        $timestamp = strtotime($request['created_at']);
+                                                                                                                                                        $formattedDate = date('d-F-Y', $timestamp);
+                                                                                                                                                        echo $formattedDate;
+                                                                                                                                                        ?></span> <br>
+
+                                            </div>
+
+                                            <div>
+                                                <img src="frontend/image/profile/<?php echo $request['profile_image'] ?>" alt="" style="width:100px;height:100px;float:right">
+                                            </div>
+
 
                                         </div>
 
-                                        <div>
-                                            <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="" style="width:100px;height:100px;float:right">
-                                        </div>
-                                        
 
                                     </div>
 
+                                    <p class="px-3 pt-2" style="text-align: justify;"><?php echo $request['message'] ?></p>
 
                                 </div>
+                                <?php if($request['status'] != 'completed') {?>
+                               <div class="d-flex gap-2 justify-content-end">
+                                <form action="request.php" method="POST">
+                                    <input type="hidden" name="request_id" value="<?php echo $request['request_id'] ?>"> 
+                                    <input type="hidden" name="type" value="<?php echo $_GET['status'] ?>">
+                                    <button class="btn btn-sm btn-danger" type="submit" name="cancelRequest">Click here for Cancel</button>
+                                </form>
                                 
-                                <p class="px-3 pt-2" style="text-align: justify;"><?php echo $request['message'] ?></p>
-                                
-                            </div>
-                             <button class="btn btn-sm btn-dark fw-bold fs-6 float-end">Click here for accept</button>
-                        </div>
-                         <?php }  else
-                         { ?>
-                        
-                        <div class="col-lg-6 col-md-6 col-12 col-sm-12">
-                            <div class="card" style="height: 250px;">
-                                <div class="">
+                                <a href="" class="btn btn-sm btn-success float-end">Click here for Accept</a>
+                               </div>
+                             <?php } ?>
+                            <?php } else { ?>
+                                <div class="card" style="height: 250px;">
+                                    <div class="">
 
-                                    <div class="px-3 d-flex justify-content-between py-1 bg-warning">
-                                        <div>
-                                            <h4><?php echo $request['name'] ?></h4>
-                                            <span class="fw-bold"><i class="fa-solid fa-mobile-retro"></i> <?php echo $request['mobile'] ?></span> <br>
-                                            <span><i class="fa-solid fa-location-dot"></i> <?php echo $request['address'] ?></span> <br>
-                                            <span class=""><i class="fa-solid fa-calendar-days"></i> Requested Date: <?php echo $request['created_at'] ?></span>
+                                    <div class="px-3 d-flex justify-content-between py-1 <?php echo ($request['status'] == 'cancel') ? 'bg-danger' : 'bg-warning'; ?>">
+                                            <div>
+                                                <h4><?php echo $request['name'] ?> (<?php echo $request['title'] ?>) <?php echo $request['status'] ?></h4>
+                                                <span></span>
+                                                <span class="fw-bold"><i class="fa-solid fa-mobile-retro"></i> <?php echo $request['mobile'] ?></span> <br>
+                                                <span><i class="fa-solid fa-location-dot"></i> <?php echo $request['address'] ?></span> <br>
+                                                <span><i class="fas fa-star"></i> Rating: <?php echo $request['average_rating'] ?>/5</span> <br>
+                                                <span class=""><i class="fa-solid fa-calendar-days"></i> Requested Date: <?php
+                                                                                                                            // Assuming $request['created_at'] contains a valid timestamp or date string
+                                                                                                                                                        $timestamp = strtotime($request['created_at']);
+                                                                                                                                                        $formattedDate = date('d-F-Y', $timestamp);
+                                                                                                                                                        echo $formattedDate;
+                                                                                                                                                        ?></span> <br>
+                                                                                                         
+
+
+                                            </div>
+
+                                            <div>
+                                                <img src="frontend/image/profile/<?php echo $request['profile_image'] ?>" alt="" style="width:100px;height:100px;float:right">
+                                              
+                                            </div>
+
 
                                         </div>
 
-                                        <div>
-                                            <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="" style="width:100px;height:100px;float:right">
-                                        </div>
-                                        
 
                                     </div>
 
-
+                                    <p class="px-3 pt-2" style="text-align: justify;"><?php echo $request['message'] ?></p>
+                                    
+                                    
                                 </div>
-                                
-                                <p class="px-3 pt-2" style="text-align: justify;"><?php echo $request['message'] ?></p>
-                                
-                            </div>
-                             <button class="btn btn-sm btn-dark fw-bold fs-6 float-end">Click here for accept</button>
-                        </div>
-                        <?php } ?>
+                                <?php if($request['status'] != 'completed') {?>
+                                <a href="" class="btn btn-sm btn-success float-end">Click here for Cancel</a>
+                             <?php } ?>
 
-                        
-                        
-                       
+                            <?php } ?>
+
+                        </div>
+
+
+
+
+
+
+
+
+                    <?php } ?>
+
+
+
                 </div>
 
 
 
-                <!-- modal request -->
-                <!-- Modal -->
 
-                <div class="modal fade" id="request<?php echo $servicer['user_id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header bg-warning">
-                                <h5 class="modal-title" id="exampleModalLabel">Request for Serivce</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="servicer.php" method="POST">
-                                    <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id'] ?>">
-                                    <input type="hidden" name="servicer_id" value="<?php echo $servicer['user_id'] ?>">
-                                    <div class="form-group mx-auto">
-                                        <label for="exampleTextarea " class="fw-bold fs-4 mb-3 text-center">Message</label>
-                                        <textarea class="form-control border-3 border-warning" id="exampleTextarea" rows="3" name="message"></textarea>
-                                    </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary btn-sm" name="requestBtn">Submit</button>
-                            </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- end of modal -->
-
-            <?php } ?>
 
 
 
             </div>
-
-
-
-
-
-
-
-        </div>
-        <!-- container -->
+            <!-- container -->
         </div>
     </section>
 
