@@ -16,8 +16,8 @@ if (isset($_POST['requestBtn'])) {
         header("Location: servicer.php?message=" . urlencode($message). "&type=" . urlencode('All'));
         exit;
     } else {
-        $confirmationCode = sprintf('%06d', mt_rand(0, 999999));
-        $servicerQuery = "INSERT INTO `service_requests`(`user_id`, `servicer_id`, `message`, `confirmation_code`, `status`) VALUES ('$user_id','$servicer_id','$message','$confirmationCod','pending')";
+        $confirmationCode = mt_rand(100000, 999999);
+        $servicerQuery = "INSERT INTO `service_requests`(`user_id`, `servicer_id`, `message`, `confirmation_code`, `status`) VALUES ('$user_id','$servicer_id','$message','$confirmationCode','pending')";
         $request = mysqli_query($connection, $servicerQuery);
 
         if ($request) {
