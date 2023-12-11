@@ -125,9 +125,7 @@ if (session_status() == PHP_SESSION_NONE) {
                             <li class="nav-item px-3">
                                 <a class="nav-link" href="profile.php">   <i class="fas fa-user profile-icon"></i> Profile</a>
                             </li>
-                            <li class="nav-item px-3">
-                                <a class="nav-link" href="profile.php">   <i class="fas fa-user profile-icon"></i> Request List</a>
-                            </li>
+                            
                             <li class="nav-item px-3">
                                 <a class="nav-link text-danger" href="logout.php">  <i class="fas fa-sign-out-alt logout-icon"></i>  Logout</a>
                             </li>

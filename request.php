@@ -1,7 +1,10 @@
 <?php
 session_start(); // Start the session
 include('config.php');
-
+if(!isset($_SESSION['user_id']))
+{
+    header("Location: login.php");
+}
 
 $user_id = $_SESSION['user_id'];
 $role = $_SESSION['role'];
@@ -315,12 +318,12 @@ $requests = mysqli_query($connection,  $userQuery);
                                                                                                                             $formattedDate = date('d-F-Y', $timestamp);
                                                                                                                             echo $formattedDate;
                                                                                                                             ?></span> <br>
-                                                <span class="<?php echo ($request['status'] == 'accepted' || $request['status'] == 'cancel') ? 'd-block' : 'd-none'; ?>"><i class="fa-solid fa-calendar <?php echo ($request['status'] == 'cancel') ? 'text-danger' : 'text-primary'; ?>"></i> <?php echo ($request['status'] == 'cancel') ? 'Cancel' : 'Accepted'; ?> Date: <?php
-                                                                                                                            // Assuming $request['created_at'] contains a valid timestamp or date string
+                                                <span class="<?php echo ($request['status'] == 'accepted' || $request['status'] == 'cancel' || $request['status'] == 'completed') ? 'd-block' : 'd-none'; ?>"><i class="fa-solid fa-calendar <?php echo ($request['status'] == 'cancel') ? 'text-danger' : 'text-primary'; ?>"></i> <?php echo ($request['status'] == 'cancel') ? 'Cancel' : 'Accepted'; ?> Date: <?php
+                                                                                                                         
                                                                                                                             $timestamp = strtotime($request['updated_at']);
                                                                                                                             $formattedDate = date('d-F-Y', $timestamp);
                                                                                                                             echo $formattedDate;
-                                                                                                                            ?></span> <br>
+                                                                                                                            ?></span> 
                                                 <span class="<?php echo ($request['status'] == 'completed') ? 'd-block' : 'd-none'; ?>"><i class="fa-solid fa-calendar-check text-success"></i> Completed Date: <?php
                                                                                                                             // Assuming $request['created_at'] contains a valid timestamp or date string
                                                                                                                             $timestamp = strtotime($request['completed_at']);
