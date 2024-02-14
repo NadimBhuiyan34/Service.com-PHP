@@ -71,6 +71,12 @@
       <span>Advertisements</span>
     </a>
   </li><!-- End Contact Page Nav -->
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="advertise.php">
+    <i class="far fa-dollar-sign"></i>
+      <span>FAQS</span>
+    </a>
+  </li><!-- End Contact Page Nav -->
 </ul>
 
 </aside><!-- End Sidebar-->

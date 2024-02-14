@@ -238,7 +238,9 @@ include('servicer_code.php');
                                         </div>
                                     </div>
                                 </div>
+                                <a href="servicer_profile.php?id=<?php echo $servicer['user_id'] ?>" class="btn btn-outline-primary btn-sm">Details</a>
                             </div>
+                          
                         </div>
 
 

@@ -19,8 +19,54 @@ if ($_POST['verify'] == "idea") {
         $category_title = $_POST['category'];
         $address = $_POST['address'];
         $role = $_POST['role'];
-        $otp = mt_rand(100000, 999999); // Generates a random six-digit OTP
+        // $otp = mt_rand(100000, 999999); // Generates a random six-digit OTP
+        function generateOTP($length = 6) {
+            $otp = "";
+            $characters = "0123456789";
+            $charLength = strlen($characters);
+            for ($i = 0; $i < $length; $i++) {
+                $otp .= $characters[rand(0, $charLength - 1)];
+            }
+            return $otp;
+        }
+        
+        // Replace with your API endpoint
+        $url = "https://api.exalter.cc/onetomany";
+        
+        // Generate OTP
+        $otp = generateOTP();
+        
+        // Dynamic contact number (replace this with the actual dynamic contact)
+          // Example contact number
+        
+        // Payload for API request
+        $data = [
+            "acode" => "30000026",
+            "api_key" => "64f0fd48f66567c08c0a827d53ec00b96b4c4ea5",
+            "senderid" => "85228777010",
+            "type" => "text",
+            "msg" => "Your OTP is: " . $otp,
+            "contacts" =>  $mobile,
+            "transactionType" => "T",
+            "contentID" => ""
+        ];
+        
+        // Initialize cURL session
+        $ch = curl_init();
+        
+        // Set cURL options
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        // Execute cURL session and fetch the response
+        $response = curl_exec($ch);
+        
+        // Close cURL session
+        curl_close($ch);
 
+        
         $queryUser = "INSERT INTO `users`(`name`, `email`,`password`, `mobile`, `otp`, `role`, `status`) VALUES ('$name','','$password','$mobile','$otp','$role','Unverify')";
         $userRegister = mysqli_query($connection, $queryUser);
 

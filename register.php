@@ -186,7 +186,8 @@ background: linear-gradient(to right, #f7b733, #90a9ce)">
                 <h3>Welcome</h3>
                 <h4>Find Services On-the-Go</h4>
                 <p>Connect with Providers at Your Own Pace.</p>
-                <input type="submit" name="" value="Login" /><br />
+                <a href="login.php" class="btn btn-sm btn-warning px-5 fw-bold fs-5">Login</a>
+                <!-- <input type="submit" name="" value="Login" /><br /> -->
             </div>
             <div class="col-md-9 register-right">
                <div class="<?php echo ($_GET['role'] === 'otp') ? 'd-none' : ''; ?>">

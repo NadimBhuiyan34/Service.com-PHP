@@ -160,13 +160,13 @@ background: linear-gradient(to right, #f7e333, rgb(148, 156, 179))">
 
                     <div class="form-outline mb-4">
                       <label class="form-label" for="mobile">Mobile Number</label>
-                      <input type="text" id="mobile" name="mobile" class="form-control" placeholder="Phone number" />
+                      <input type="text" id="mobile" name="mobile" class="form-control" placeholder="Phone number" required />
 
                     </div>
 
                     <div class="form-outline mb-4">
                       <label class="form-label" for="password">Password</label>
-                      <input type="password" id="password" name="password" class="form-control" />
+                      <input type="password" id="password" name="password" class="form-control" required />
 
                     </div>
 
