@@ -151,8 +151,7 @@ if ($_POST['verify'] == "otp") {
             'message' => "otp is wrong",
         ];
     }
-
-
+    
     header('Content-Type: application/json');
     echo json_encode($data);
 }
