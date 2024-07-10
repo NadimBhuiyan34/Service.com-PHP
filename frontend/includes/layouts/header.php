@@ -3,7 +3,7 @@
 ?>
 
 <header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-white" style="position: fixed;top:0;z-index:1000;width:100%">
+  <nav class="navbar navbar-expand-lg navbar-light  " style="position: fixed;top:0;z-index:1000;width:100%">
     <div class="container">
       <a class="navbar-brand" href="/">
         <img src="https://otp799999.000webhostapp.com/frontend/image/The-search.png" alt="" style="width:100px;height:75px">

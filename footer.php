@@ -10,7 +10,10 @@
        
     </a>
 </div>
-<address class="text-white">
+
+</div>
+                 <div class="col-md-4 col-sm-6">
+                 <address class="text-white">
     <p><i class="fa-solid fa-location-dot fa-lg pr-2"></i> The Search.
         House # 206 (1st Floor), Road # 02
         Baridhara DOHS, Dhaka-1206.</p>
@@ -20,15 +23,9 @@
     <p><i class="fa-regular fa-envelope fa-lg"></i> search@gmail.com</p>
 
 </address>
-</div>
-                 <div class="col-md-4 col-sm-6">
-                     <form class="newsletter">
-                         <input type="text" placeholder="Email Address">
-                         <!-- {{-- <button class="newsletter_submit_btn" type="submit"><i class="fa fa-paper-plane"></i></button> --}} -->
-                     </form>
 
                  </div>
-                 <div class="col-md-4 col-sm-6">
+                 <!-- <div class="col-md-4 col-sm-6">
                      <div class="col-md-12">
                          <div class="standard_social_links">
                              <div>
@@ -57,18 +54,12 @@
                      <div class="col-md-12">
                          <h3 style="text-align: right;">Stay Connected</h3>
                      </div>
-                 </div>
+                 </div> -->
              </div>
          </div>
        
 
-         <div class="row">
-
-             <div class="container-fluid">
-                 <div class="copyright fw-bold"> Copyright 2024 | All Rights Reserved by The Search</div>
-             </div>
-
-         </div>
+         
      </div>
 
  </footer>

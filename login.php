@@ -28,14 +28,14 @@ if (isset($_POST['loginBtn'])) {
 
             
               $message = "Your account is inactive please contact with admin";
-              header("Location: login.php?message=" . urlencode($message));            
+              header("Location: login.php?error=" . urlencode($message));            
               exit; 
 
           }else if($user['password'] === $password && $user['status'] == 'Pending')
           {
 
             $message = "Your account is pending please contact with admin";
-            header("Location: login.php?message=" . urlencode($message));            
+            header("Location: login.php?error=" . urlencode($message));            
             exit;
               
           }
@@ -56,14 +56,14 @@ if (isset($_POST['loginBtn'])) {
       } else {
 
            $message = "Your password is incorrect";
-            header("Location: login.php?message=" . urlencode($message));            
+            header("Location: login.php?error=" . urlencode($message));            
             exit;
           
       }
   } else {
 
             $message = "Mobile number does not exist";
-            header("Location: login.php?message=" . urlencode($message));            
+            header("Location: login.php?error=" . urlencode($message));            
             exit;
       
   }
@@ -100,7 +100,7 @@ if (isset($_POST['otpVerify'])) {
      
   } else {
       $message = "OTP is wrong";
-      header("Location: login.php?id=" . urlencode($id). "&otp=" . urlencode('unverify'). "&mobile=" . urlencode($lastThreeDigits) . "&message=" . urlencode($message));
+      header("Location: login.php?id=" . urlencode($id). "&otp=" . urlencode('unverify'). "&mobile=" . urlencode($lastThreeDigits) . "&error=" . urlencode($message));
       exit;
   }
 }
@@ -190,10 +190,9 @@ background: linear-gradient(to right, #f7e333, rgb(148, 156, 179))">
               </div>
               <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
                 <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                  <h4 class="mb-4">We are more than just a company</h4>
-                  <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                  <img src="https://www.sme-news.co.uk/wp-content/uploads/2021/11/Login.jpg" alt="" class="img-fluid" style="">
+                  <h4 class="mb-4"></h4>
+                  <p class="small mb-0"></p>
                 </div>
               </div>
             </div>

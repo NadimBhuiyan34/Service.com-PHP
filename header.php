@@ -9,8 +9,8 @@ if (session_status() == PHP_SESSION_NONE) {
  
 ?>
 <header class="fw-bold background-container" style="position: fixed; top: 30px; width: 100%; z-index: 1000;">
-    <nav class="navbar navbar-expand-lg mx-auto rounded-5" style="width: 80%; background-color:hwb(0 0% 100% / 0.981)">
-        <div class="container rounded-4" style="background-color:rgb(255, 176, 40)">
+    <nav class="navbar navbar-expand-lg mx-auto rounded-5" style="width: 80%; background-color:hwb(0 18% 80% / 0.981)">
+        <div class="container rounded-4" style="background-color:rgb(255, 194, 40)">
 
           <div class="" style="background-color:white;">
             <img src="frontend/image/The-search.png" class="px-2" alt="" style="width:150px;height:80px">
@@ -70,7 +70,12 @@ if (session_status() == PHP_SESSION_NONE) {
                         <li class="nav-item px-3">
                                 <a class="nav-link" href="request.php?status=completed">Completed</a>
                             </li>
+                            <li class="nav-item px-3">
+                                <a class="nav-link" href="request.php?status=cancel">Cancel</a>
+                            </li>
                         </ul>
+                       
+                        
 
                     </li>
                     <?php } }?>

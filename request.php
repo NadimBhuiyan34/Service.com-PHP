@@ -90,11 +90,9 @@ if ($role == 'user') {
     LEFT JOIN reviews ON servicer_profiles.user_id = reviews.servicer_id
     JOIN categories ON servicer_profiles.category_id = categories.id
     WHERE service_requests.user_id = '$user_id'
-    AND (
-        ('$status' = 'pending' AND service_requests.status IN ('pending', 'cancel'))
-        OR ('$status' = service_requests.status)
-    )
-    GROUP BY
+    AND service_requests.status = '$status'
+       
+     GROUP BY
         users.id,
         users.name,
         users.mobile,
@@ -131,11 +129,7 @@ if ($role == 'user') {
     JOIN user_profiles ON service_requests.user_id = user_profiles.user_id
     JOIN users ON user_profiles.user_id = users.id
     WHERE service_requests.servicer_id = '$user_id'
-    AND (
-        ('$status' = 'pending' AND service_requests.status IN ('pending', 'cancel'))
-        OR ('$status' = service_requests.status)
-    )
-    ORDER BY service_requests.created_at DESC;
+    AND service_requests.status = '$status' ORDER BY service_requests.created_at DESC;
 ";
 }
 $requests = mysqli_query($connection,  $userQuery);
@@ -181,8 +175,8 @@ $requests = mysqli_query($connection,  $userQuery);
     <!-- alert message -->
     <?php include_once "frontend/includes/layouts/message/alert.php" ?>
     <!-- end alert message -->
-    <section>
-        <img class="contactus d-none d-lg-block d-xl-block" src="https://www.antraajaal.in/images/background/services2.jpg" alt="" style="height:400px;width:100%">
+    <section style="margin-top: 150px;">
+        <!-- <img class="contactus d-none d-lg-block d-xl-block" src="https://www.antraajaal.in/images/background/services2.jpg" alt="" style="height:400px;width:100%"> -->
 
         <div class="d-xl-none d-lg-none mt-5 border-2 border-danger" style="background-color: hsl(23, 77%, 48%);">
             <h2 class="text-center p-2 text-white">Service Request</h2>
@@ -201,14 +195,14 @@ $requests = mysqli_query($connection,  $userQuery);
                     <?php
                     while ($request = mysqli_fetch_assoc($requests)) {
                     ?>
-                        <div class="col-lg-6 col-md-12 col-12 col-sm-12 mb-4">
+                        <div class="col-lg-6 col-md-12 col-12 col-sm-12 mb-4 text-white">
 
 
                             <?php if ($_SESSION['role'] == 'servicer') { ?>
                                 <div class="card" style="height: 250px;">
                                     <div class="">
 
-                                        <div class="px-3 d-flex justify-content-between py-1 bg-warning">
+                                        <div class="px-3 d-flex justify-content-between py-1 text-white" style="background-color: rgb(3, 27, 89);">
                                             <div>
                                                 <h4><?php echo $request['name'] ?></h4>
                                                 <span class="fw-bold"><i class="fa-solid fa-mobile-retro"></i> <?php echo $request['mobile'] ?></span> <br>
@@ -302,11 +296,11 @@ $requests = mysqli_query($connection,  $userQuery);
                                 <?php } ?>
                             <?php } else { ?>
                                 <!-- user view -->
-                                <div class="card" style="height: 300px;">
+                                <div class="card rounded-3" style="height: 300px;">
                                     <div class="">
 
-                                        <div class="px-3 d-flex justify-content-between py-1 bg-warning">
-                                            <div>
+                                        <div class="px-3 d-flex justify-content-between py-1 rounded-3 " style="background-color: rgba(5, 40, 40, 0.815);">
+                                            <div class="text-white">
                                                 <h4><?php echo $request['name'] ?> (<?php echo $request['title'] ?>)</h4>
                                                 <span></span>
                                                 <span class="fw-bold"><i class="fa-solid fa-mobile-retro"></i> <?php echo $request['mobile'] ?></span> <br>
@@ -329,8 +323,8 @@ $requests = mysqli_query($connection,  $userQuery);
                                                                                                                             $timestamp = strtotime($request['completed_at']);
                                                                                                                             $formattedDate = date('d-F-Y', $timestamp);
                                                                                                                             echo $formattedDate;
-                                                                                                                            ?></span> <br>
-                          <span><?php echo $request['confirmation_code'] ?></span> <br>                                                                                                   
+                                                                                                                            ?></span>
+                          <span><i class="fa-solid fa-key"></i> ConfirmationCode: <?php echo $request['confirmation_code'] ?></span> <br>                                                                                                   
 
 
 

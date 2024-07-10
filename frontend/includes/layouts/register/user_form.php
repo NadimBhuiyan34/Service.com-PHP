@@ -26,7 +26,7 @@
                                     <div class="form-group">
                                         <label for="city" class="form-label">City*</label>
                                         <select class="form-select" aria-label="Default select example" name="city" id="city" required>
-                                            <option selected>Select City</option>
+
                                             <option value="Dhaka">Dhaka</option>
                                             <option value="Chittagong">Chittagong</option>
                                             <option value="Rajshahi">Rajshahi</option>
@@ -35,7 +35,7 @@
                                     <div class="form-group">
                                         <label for="area" class="form-label">Area*</label>
                                         <select class="form-select" aria-label="Default select example" name="area" id="area" required>
-                                            <option selected>Select Area</option>
+                                            
 
                                             <option value="Tejgaon">Tejgaon</option>
                                             <option value="Dhanmondi">Dhanmondi</option>
@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="profile" class="form-label">Profile Image</label>
-                                        <input type="file" class="form-control" id="profile" name="profile">
+                                        <input type="file" class="form-control" id="profile" name="profile" required>
                                     </div>
                                     <input type="submit" class="btnRegister"  value="Registration" name="registerUser" />
                                     

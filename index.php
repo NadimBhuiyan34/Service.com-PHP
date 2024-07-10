@@ -79,8 +79,7 @@ $servicers = mysqli_query($connection, $servicerQuery);
   <div class="row">
     <div class=" text-center w-100">
       <div class="bg-image h-100">
-        <h1 class="text-dark" style="padding-top: 50px;"><strong>Find Services On-the-Go</strong></h1>
-        <h4 class="text-danger">Connect with Servicers at Your Own Pace.</h4>
+        
 
         <div class="row justify-content-center pt-2" style="padding-bottom:100px;">
           <div class="col-md-4 col-10">
@@ -105,12 +104,7 @@ $servicers = mysqli_query($connection, $servicerQuery);
 
               </div>
             <?php } ?>
-            <div class="input-group mb-3 input-group-lg">
-
-              <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-              <button class="btn btn-danger" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
-
-            </div>
+            
           </div>
         </div>
 
@@ -118,57 +112,50 @@ $servicers = mysqli_query($connection, $servicerQuery);
     </div>
   </div>
 
+
+
+  <!-- main div -->
  
 
-
   <div class="container">
-
-    <div class="row mt-3">
+  <h2>Quality Services at Your Fingertips</h2>
+  <hr>
+    <div class="row mt-3" id="categoryContainer">
       <?php
       $query = "SELECT * FROM categories WHERE status = 'Active' ORDER BY id DESC";
       $categories = mysqli_query($connection, $query);
       while ($category = mysqli_fetch_assoc($categories)) {
       ?>
-
-        <div class="col-4 col-md-2 text-center border bg-white  rounded-3">
+        <div class="col-4 col-md-2 text-center border bg-white rounded-3 category-item">
           <div class="p-2">
             <a href="servicer.php?type=<?php echo $category['id'] ?>">
               <img src="admin/public/category/<?php echo $category['banner_image']; ?>" alt="" style="width:100px;height:100px">
-
-
             </a>
             <span class="d-block d-md-inline fw-bold d-md-block"><?php echo $category['title'] ?></span>
-
           </div>
         </div>
-
       <?php
       }
       ?>
     </div>
-    
-    <!-- servicer container -->
+
     <div class="container mt-5">
-      <h1>Servicer</h1>
+      <h2>Find Your Servicer</h2>
       <hr>
-      <!-- end row -->
-      <div class="row">
+      <div class="row" id="servicerContainer">
         <?php
         while ($servicer = mysqli_fetch_assoc($servicers)) {
         ?>
-          <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+          <div class="col-lg-3 col-md-4 col-12 col-sm-6 servicer-item">
             <div class="text-center card-box rounded-3" style="height: 500px;">
               <div class="member-card pt-2 pb-2">
-
                 <div class="thumb-lg member-thumb mx-auto">
                   <img src="frontend/image/profile/<?php echo $servicer['profile_image'] ?>" class="rounded-circle img-thumbnail" alt="profile-image">
                 </div>
-
                 <div class="">
                   <h4><?php echo $servicer['name'] ?></h4>
                   <p class="text-muted"> <span> </span><span class="fw-bold text-dark"><?php echo $servicer['category_title'] ?> Servicer</span></p>
                 </div>
-
                 <ul class="social-links list-inline rounded-2 p-2 bg-warning">
                   <i class="fa-solid fa-mobile-retro"></i> <span class="fw-bold"><?php echo $servicer['mobile'] ?></span> <br>
                   <i class="fa-solid fa-location-dot"></i> <?php echo $servicer['address'] ?> <br>
@@ -183,34 +170,24 @@ $servicers = mysqli_query($connection, $servicerQuery);
                 <?php
                 }
                 ?>
-
-
-
-
-
                 <?php
                 $id = $servicer['user_id'];
                 $query = "
-                                     SELECT
-                                        status,
-                                        COUNT(*) AS status_count
-                                     FROM
-                                         service_requests
-                                     WHERE
-                                         servicer_id = '$id'
-                                         AND status IN ('pending', 'accepted', 'completed')
-                                     GROUP BY
-                                         status;
-                                 ";
-
-                // Execute the query
+                                SELECT
+                                    status,
+                                    COUNT(*) AS status_count
+                                FROM
+                                    service_requests
+                                WHERE
+                                    servicer_id = '$id'
+                                    AND status IN ('pending', 'accepted', 'completed')
+                                GROUP BY
+                                    status;
+                            ";
                 $result = mysqli_query($connection, $query);
-
-                // Initialize counts for each status type
                 $pendingCount = 0;
                 $acceptedCount = 0;
                 $completedCount = 0;
-                // Fetch and update counts based on the status type
                 while ($row = mysqli_fetch_assoc($result)) {
                   switch ($row['status']) {
                     case 'pending':
@@ -224,7 +201,6 @@ $servicers = mysqli_query($connection, $servicerQuery);
                       break;
                   }
                 }
-
                 ?>
                 <div class="mt-4">
                   <div class="row">
@@ -252,11 +228,6 @@ $servicers = mysqli_query($connection, $servicerQuery);
               <a href="servicer_profile.php?id=<?php echo $servicer['user_id'] ?>" class="btn btn-outline-primary btn-sm">Details</a>
             </div>
           </div>
-
-
-          <!-- modal request -->
-          <!-- Modal -->
-
           <div class="modal fade" id="request<?php echo $servicer['user_id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -269,7 +240,7 @@ $servicers = mysqli_query($connection, $servicerQuery);
                     <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id'] ?>">
                     <input type="hidden" name="servicer_id" value="<?php echo $servicer['user_id'] ?>">
                     <div class="form-group mx-auto">
-                      <label for="exampleTextarea " class="fw-bold fs-4 mb-3 text-center">Message</label>
+                      <label for="exampleTextarea" class="fw-bold fs-4 mb-3 text-center">Message</label>
                       <textarea class="form-control border-3 border-warning" id="exampleTextarea" rows="3" name="message"></textarea>
                     </div>
                 </div>
@@ -281,102 +252,9 @@ $servicers = mysqli_query($connection, $servicerQuery);
               </div>
             </div>
           </div>
-
-
-          <!-- end of modal -->
-
         <?php } ?>
-
-
-
-      </div>
-
-
-
-
-
-
-
-    </div>
-    <!-- first content -->
-    <div class="mt-5">
-      <h3 class="mb-3">For Your Home</h3>
-      <div class="d-flex overflow-auto justify-content-between gap-1">
-        <div class="col-6 col-md-4 col-xl-4">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/thumbs/1583777507_gasstove/burnerrepair_270x180.webp" alt="" class="img-fluid">
-
-          <h5>Gas Stove/Burner Services</h5>
-        </div>
-        <div class="col-6 col-md-4 col-xl-4">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/thumbs/1619428672_plumbingsanitaryservices_270x180.webp" alt="" class="img-fluid">
-
-          <h5>Plumbing & Sanitary Services</h5>
-        </div>
-        <div class="col-6 col-md-4 col-xl-4">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/thumbs/1612862065_paintingservices_270x180.webp" alt="" class="img-fluid">
-
-          <h5>Painting Services</h5>
-        </div>
-        <div class="col-6 col-md-4 col-xl-4">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/thumbs/1617855940_homecleaning_270x180.webp" alt="" class="img-fluid">
-
-          <h5>Home Cleaning</h5>
-        </div>
       </div>
     </div>
-    <!-- Second Content -->
-    <div class="" style="margin-top: 150px;">
-      <h3 class="mb-3">Trending</h3>
-      <div class="d-flex overflow-auto justify-content-between gap-1">
-        <div class="col-6 col-md-4 col-xl-4">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/thumbs/1583777507_gasstove/burnerrepair_270x180.webp" alt="" class="img-fluid">
-
-          <h5>Gas Stove/Burner Services</h5>
-        </div>
-        <div class="col-6 col-md-4 col-xl-4">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/thumbs/1619428672_plumbingsanitaryservices_270x180.webp" alt="" class="img-fluid">
-
-          <h5>Plumbing & Sanitary Services</h5>
-        </div>
-        <div class="col-6 col-md-4 col-xl-4">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/thumbs/1612862065_paintingservices_270x180.webp" alt="" class="img-fluid">
-
-          <h5>Painting Services</h5>
-        </div>
-        <div class="col-6 col-md-4 col-xl-4">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/thumbs/1617855940_homecleaning_270x180.webp" alt="" class="img-fluid">
-
-          <h5>Home Cleaning</h5>
-        </div>
-      </div>
-    </div>
-    <!-- Third Content -->
-    <div class="" style="margin-top: 150px;">
-      <h3 class="mb-3">Reconmended</h3>
-      <div class="d-flex overflow-auto justify-content-between gap-1">
-        <div class="col-6 col-md-4 col-xl-4">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/thumbs/1583777507_gasstove/burnerrepair_270x180.webp" alt="" class="img-fluid">
-
-          <h5>Gas Stove/Burner Services</h5>
-        </div>
-        <div class="col-6 col-md-4 col-xl-4">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/thumbs/1619428672_plumbingsanitaryservices_270x180.webp" alt="" class="img-fluid">
-
-          <h5>Plumbing & Sanitary Services</h5>
-        </div>
-        <div class="col-6 col-md-4 col-xl-4">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/thumbs/1612862065_paintingservices_270x180.webp" alt="" class="img-fluid">
-
-          <h5>Painting Services</h5>
-        </div>
-        <div class="col-6 col-md-4 col-xl-4">
-          <img src="https://s3.ap-south-1.amazonaws.com/cdn-shebaxyz/images/categories_images/thumbs/1617855940_homecleaning_270x180.webp" alt="" class="img-fluid">
-
-          <h5>Home Cleaning</h5>
-        </div>
-      </div>
-    </div>
-
   </div>
 
 
@@ -385,6 +263,40 @@ $servicers = mysqli_query($connection, $servicerQuery);
 
   include_once("footer.php");
   ?>
+<script>
+document.getElementById('button-addon2').addEventListener('click', function() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    
+    // Filter categories
+    const categories = document.querySelectorAll('.category-item');
+    categories.forEach(category => {
+        const title = category.querySelector('span').textContent.toLowerCase();
+        if (title.includes(searchTerm)) {
+            category.style.display = 'block';
+        } else {
+            category.style.display = 'none';
+        }
+    });
+
+    // Filter servicers
+    const servicers = document.querySelectorAll('.servicer-item');
+    servicers.forEach(servicer => {
+        const name = servicer.querySelector('h4').textContent.toLowerCase();
+        if (name.includes(searchTerm)) {
+            servicer.style.display = 'block';
+        } else {
+            servicer.style.display = 'none';
+        }
+    });
+});
+
+// Optional: Trigger search on enter key press
+document.getElementById('searchInput').addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+        document.getElementById('button-addon2').click();
+    }
+});
+</script>
 
   <!-- js -->
   <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>

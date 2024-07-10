@@ -330,15 +330,15 @@ if(isset($_POST['changePassword']))
   </style>
 </head>
 
-<body style="background-color: rgb(224, 241, 253);">
+<body class="" style="background-color: rgb(224, 241, 253);">
     <!-- header -->
 
 
 
 
     <?php include_once("header.php"); ?>
-    <section>
-        <img class="contactus d-none d-lg-block d-xl-block" src="https://community.khoros.com/t5/image/serverpage/image-id/164425iE641E9340947FE57/image-size/large/is-moderation-mode/true?v=v2&px=999" alt="" style="height:400px;width:100%">
+    <section style="margin-top: 150px;" class="container">
+        <!-- <img class="contactus d-none d-lg-block d-xl-block" src="https://community.khoros.com/t5/image/serverpage/image-id/164425iE641E9340947FE57/image-size/large/is-moderation-mode/true?v=v2&px=999" alt="" style="height:400px;width:100%"> -->
 
         <div class="d-xl-none d-lg-none mt-5 border-2 border-danger" style="background-color: hsl(23, 77%, 48%);">
             <h2 class="text-center p-2 text-white">Profile</h2>
@@ -349,7 +349,7 @@ if(isset($_POST['changePassword']))
   <?php include_once "frontend/includes/layouts/message/alert.php" ?>
   <!-- end alert message -->
 
-    <main id="main" class="main mt-5 mb-5">
+    <main id="main container" class="main mt-5 mb-5">
 
       <?php
        if($_SESSION['role'] == 'user')

@@ -20,14 +20,14 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="profile" class="form-label">Profile Image</label>
-                                        <input type="file" class="form-control" id="profile" name="profile">
+                                        <input type="file" class="form-control" id="profile" name="profile" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="category_id" class="form-label">Work Category*</label>
                                         <select class="form-select" aria-label="Default select example" name="category_id" id="category_id" required>
-                                            <option selected>Select Category</option>
+                                          
                                             <?php
                                             $query = "SELECT id, title FROM categories WHERE status = 'Active' ORDER BY id DESC;
                                                     ";
@@ -41,7 +41,7 @@
                                     <div class="form-group">
                                         <label for="city" class="form-label">City*</label>
                                         <select class="form-select" aria-label="Default select example" name="city" id="city" required>
-                                            <option selected>Select City</option>
+                                            
                                             <option value="Dhaka">Dhaka</option>
                                             <option value="Chittagong">Chittagong</option>
                                             <option value="Rajshahi">Rajshahi</option>
@@ -50,7 +50,7 @@
                                     <div class="form-group">
                                         <label for="area" class="form-label">Area*</label>
                                         <select class="form-select" aria-label="Default select example" name="area" id="area" required>
-                                            <option selected>Select Area</option>
+                                           
 
                                             <option value="Tejgaon">Tejgaon</option>
                                             <option value="Dhanmondi">Dhanmondi</option>
@@ -66,11 +66,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="address" class="form-label">Address</label>
-                                        <input type="text" class="form-control" id="address" name="address">
+                                        <input type="text" class="form-control" id="address" name="address" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="experience" class="form-label">Work Experience</label>
-                                        <input type="number" class="form-control" id="experience" name="experience">
+                                        <input type="number" class="form-control" id="experience" name="experience" required>
                                     </div>
                                  
                                 </div>

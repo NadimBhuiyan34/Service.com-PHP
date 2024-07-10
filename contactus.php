@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <section id="">
             <!-- Slider -->
 
-            <img class="contactus d-none d-lg-block d-xl-block" src="https://www.hurstbourne.org/wp-content/uploads/2018/06/contact-us_image.jpg" alt="" style="height:400px;width:100%">
+            <!-- <img class="contactus d-none d-lg-block d-xl-block" src="https://www.hurstbourne.org/wp-content/uploads/2018/06/contact-us_image.jpg" alt="" style="height:400px;width:100%"> -->
 
             <div class="d-xl-none d-lg-none mt-5 border-2 border-danger" style="background-color: hsl(23, 77%, 48%);">
                 <h2 class="text-center p-2 text-white">Contact Us</h2>

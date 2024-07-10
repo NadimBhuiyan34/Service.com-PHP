@@ -1,4 +1,4 @@
-<section class="section profile ">
+<section class="section profile container">
     <div class="row">
         <div class="col-xl-4">
 
@@ -33,10 +33,7 @@
                         <li class="nav-item">
                             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
                         </li>
-
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Request Details</button>
-                        </li>
+                      
 
                         <li class="nav-item">
                             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>

@@ -1,6 +1,7 @@
 <?php
 session_start(); // Start the session
 include('config.php');
+ 
 // request submit
 if (isset($_POST['requestBtn'])) {
 
@@ -8,28 +9,35 @@ if (isset($_POST['requestBtn'])) {
     $servicer_id = $_POST['servicer_id'];
     $message = $_POST['message'];
 
-    $checkSql = "SELECT * FROM `service_requests` WHERE user_id = '$user_id ' AND servicer_id = '$servicer_id' AND status = 'pending'";
+    // Enable error reporting
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-    $result = mysqli_query($connection, $checkSql);
+    try {
+        // Check if there's an existing pending request
+        $checkSql = "SELECT * FROM `service_requests` WHERE user_id = '$user_id' AND servicer_id = '$servicer_id' AND status = 'pending'";
+        $result = mysqli_query($connection, $checkSql);
 
-    if (mysqli_num_rows($result) > 0) {
-        $message = "Request Allready Submitted";
-        header("Location: servicer_profile.php?message=" . urlencode($message) . "&id=" . urldecode($servicer_id));
-        exit;
-    } else {
-        $confirmationCode = mt_rand(100000, 999999);
-        $servicerQuery = "INSERT INTO `service_requests`(`user_id`, `servicer_id`, `message`, `confirmation_code`, `status`) VALUES ('$user_id','$servicer_id','$message','$confirmationCode','pending')";
-        $request = mysqli_query($connection, $servicerQuery);
-
-        if ($request) {
-            $message = "Request Submitted Successfully";
-            header("Location: servicer_profile.php?message=" . urlencode($message) . "&id=" . urldecode($servicer_id));
+        if (mysqli_num_rows($result) > 0) {
+            $message = "Request Already Submitted";
+            header("Location: servicer_profile.php?error=" . urlencode($message) . "&id=" . urlencode($servicer_id));
             exit;
         } else {
-            $message = "Something is wrong";
-            header("Location: servicer_profile.php?message=" . urlencode($message) . "&id=" . urlencode($servicer_id));
-            exit;
+            $confirmationCode = mt_rand(100000, 999999);
+            $servicerQuery = "INSERT INTO `service_requests`(`user_id`, `servicer_id`, `message`, `confirmation_code`, `status`) VALUES ('$user_id', '$servicer_id', '$message', '$confirmationCode', 'pending')";
+            $request = mysqli_query($connection, $servicerQuery);
+
+            if ($request) {
+                $message = "Request Submitted Successfully";
+                header("Location: servicer_profile.php?message=" . urlencode($message) . "&id=" . urlencode($servicer_id));
+                exit;
+            } else {
+                throw new Exception("Error executing query: " . mysqli_error($connection));
+            }
         }
+    } catch (Exception $e) {
+        $message = "Something is wrong: " . $e->getMessage();
+        header("Location: servicer_profile.php?error=" . urlencode($message) . "&id=" . urlencode($servicer_id));
+        exit;
     }
 }
 //  review btn
@@ -197,8 +205,8 @@ $relatedServicers = mysqli_query($connection,  $relatedQuery);
     <!-- alert message -->
     <?php include_once "frontend/includes/layouts/message/alert.php" ?>
     <!-- end alert message -->
-    <section>
-        <img class="contactus d-none d-lg-block d-xl-block" src="https://images6.fanpop.com/image/photos/39600000/Sparkle-Stars-Profile-Banner-smile19-39654242-946-250.jpg" alt="" style="height:400px;width:100%">
+    <section style="margin-top: 80px;">
+        <!-- <img class="contactus d-none d-lg-block d-xl-block" src="https://images6.fanpop.com/image/photos/39600000/Sparkle-Stars-Profile-Banner-smile19-39654242-946-250.jpg" alt="" style="height:400px;width:100%"> -->
 
         <div class="d-xl-none d-lg-none mt-5 border-2 border-danger" style="background-color: hsl(23, 96%, 82%);">
             <h2 class="text-center p-2 text-white">Servicer Profile</h2>
@@ -206,8 +214,8 @@ $relatedServicers = mysqli_query($connection,  $relatedQuery);
         <!-- end slider -->
     </section>
 
-    <section class="section about-section gray-bg" id="about">
-        <div class="container rounded-5 p-3" style="background-color: rgba(255, 255, 255, 0.962);">
+    <section class="section about-section shadow-2" id="about">
+        <div class="container rounded-5 p-3" style="background-color: #fffffff5;">
             <div class="row align-items-center flex-row-reverse">
                 <div class="col-lg-6 d-block d-md-none d-lg-none">
                     <div class="about-avatar">
@@ -232,9 +240,9 @@ $relatedServicers = mysqli_query($connection,  $relatedQuery);
                 <div class="col-lg-6">
                     <div class="about-text go-to">
                         <h3 class="dark-color"><?php echo $servicer['name'] ?></h3>
-                        <h6 class="theme-color lead"><?php echo $servicer['category_title'] ?> Servicer</h6>
+                        <h6 class="text-primary lead"><?php echo $servicer['category_title'] ?> Servicer</h6>
 
-                        <div class="row about-list mx-auto">
+                        <div class="row  mx-auto">
                             <div class="col-md-6 col-6">
                                 <div class="media">
                                     <label>Name</label>
@@ -287,11 +295,11 @@ $relatedServicers = mysqli_query($connection,  $relatedQuery);
                             ?>
 
 
-                                <a href="<?php echo isset($_SESSION['user_id']) ? '#exampleModal' . $servicer['user_id'] : 'login.php'; ?>" class="btn btn-primary px-5  fs-5 btn-rounded waves-effect w-md waves-light " <?php echo isset($_SESSION['user_id']) ? 'data-bs-toggle="modal"' : ''; ?>>
+                                <a href="<?php echo isset($_SESSION['user_id']) ? '#exampleModal' . $servicer['user_id'] : 'login.php'; ?>" class="btn btn-primary btn-sm text-center " <?php echo isset($_SESSION['user_id']) ? 'data-bs-toggle="modal"' : ''; ?>>
                                     Review
                                 </a>
 
-                                <a href="<?php echo isset($_SESSION['user_id']) ? '#request' . $servicer['user_id'] : 'login.php'; ?>" class="btn btn-success px-3  fs-5 btn-rounded waves-effect w-md waves-light " <?php echo isset($_SESSION['user_id']) ? 'data-bs-toggle="modal"' : ''; ?>>
+                                <a href="<?php echo isset($_SESSION['user_id']) ? '#request' . $servicer['user_id'] : 'login.php'; ?>" class="btn btn-success btn-sm  " <?php echo isset($_SESSION['user_id']) ? 'data-bs-toggle="modal"' : ''; ?>>
                                     Request Now
                                 </a>
                             <?php
@@ -448,7 +456,7 @@ $relatedServicers = mysqli_query($connection,  $relatedQuery);
         <!-- review -->
 
 
-        <div class="container  mb-100 w-100">
+        <div class="container  mb-100 w-100 mt-3">
             <div class="row">
                 <div class="col-12">
 
@@ -566,7 +574,7 @@ $relatedServicers = mysqli_query($connection,  $relatedQuery);
                     <?php
                     while ($servicer = mysqli_fetch_assoc($relatedServicers)) {
                     ?>
-                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                        <div class="col-lg-3 col-md-4 col-12 col-sm-6 shadow-2">
                             <div class="text-center card-box rounded-3" style="height: 500px;">
                                 <div class="member-card pt-2 pb-2">
 

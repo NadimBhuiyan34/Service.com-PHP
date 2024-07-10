@@ -15,7 +15,7 @@ if (isset($_POST['requestBtn'])) {
 
     if (mysqli_num_rows($result) > 0) {
         $message = "Request Allready Submitted";
-        header("Location: servicer.php?message=" . urlencode($message). "&type=" . urlencode('All'));
+        header("Location: servicer.php?error=" . urlencode($message) . "&type=" . urlencode('All'));
         exit;
     } else {
         $confirmationCode = mt_rand(100000, 999999);
@@ -24,11 +24,11 @@ if (isset($_POST['requestBtn'])) {
 
         if ($request) {
             $message = "Request Submitted Successfully";
-            header("Location: servicer.php?message=" . urlencode($message). "&type=" . urlencode('All'));
+            header("Location: servicer.php?message=" . urlencode($message) . "&type=" . urlencode('All'));
             exit;
         } else {
             $message = "Something is wrong";
-            header("Location: servicer.php?message=" . urlencode($message). "&type=" . urlencode('All'));
+            header("Location: servicer.php?error=" . urlencode($message) . "&type=" . urlencode('All'));
             exit;
         }
     }
@@ -76,7 +76,7 @@ include('servicer_code.php');
     <?php include_once "frontend/includes/layouts/message/alert.php" ?>
     <!-- end alert message -->
     <section>
-        <img class="contactus d-none d-lg-block d-xl-block" src="https://www.antraajaal.in/images/background/services2.jpg" alt="" style="height:400px;width:100%">
+        <!-- <img class="contactus d-none d-lg-block d-xl-block" src="https://www.antraajaal.in/images/background/services2.jpg" alt="" style="height:400px;width:100%"> -->
 
         <div class="d-xl-none d-lg-none mt-5 border-2 border-danger" style="background-color: hsl(23, 77%, 48%);">
             <h2 class="text-center p-2 text-white">All Servicer</h2>
@@ -84,54 +84,34 @@ include('servicer_code.php');
         <!-- end slider -->
     </section>
 
-    <section class="container mt-5 mx-auto">
-        <form action="servicer.php" method="POST" class="mx-auto">
+    <section class="container " >
 
-            <div class="d-flex <?php echo isset($_POST['search']) ? 'justify-content-center' : 'justify-content-right'; ?>  gap-4 flex-column flex-xl-row flex-md-row flex-lg-row  p-3 rounded-3 pt-2 shadow-3 mx-auto" style="background-color: rgb(9, 1, 1);;">
-                <div class="text-center mt-3 <?php echo isset($_POST['search']) ? 'd-none' : ''; ?> ">
-                    <h3 class="text-white"><i class="fa-solid fa-users-gear"></i> Find <span class=""><?php echo $type_text ?></span> Servicer</h3>
-                </div>
 
-                
-                <div>
-                    <label for="" class="text-center fw-bold text-white pb-2">Area</label>
-                    <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to area..." name="area" value="<?php echo (isset($_POST['area'])) ? htmlspecialchars($_POST['area']) : ''; ?>">
-
-                    <datalist id="datalistOptions">
-                        <option value="Tejgaon">Tejgaon</option>
-                        <option value="Dhanmondi">Dhanmondi</option>
-                        <option value="Banani">Banani</option>
-                        <option value="Gulshan">Gulshan</option>
-                        <option value="Baridhara">Baridhara</option>
-                        <option value="Khilgaon">Khilgaon</option>
-                        <option value="Mirpur">Mirpur</option>
-                        <option value="Uttara">Uttara</option>
-                        <option value="Banasree">Banasree</option>
-                        <option value="Aftabnagar">Aftabnagar</option>
-                    </datalist>
-                </div>
-                <div>
-                    <label for="" class="text-center fw-bold text-white pb-2">Category</label>
-                    <input class="form-control" list="datalistOptionscategory" id="exampleDataList" placeholder="Type to category..." name="category" value="<?php echo (isset($_POST['category'])) ? htmlspecialchars($_POST['category']) : ''; ?>">
-                    <datalist id="datalistOptionscategory">
-
-                        <?php
-                        $query = "SELECT id, title FROM categories WHERE status = 'Active' ORDER BY id DESC;
-                                                    ";
-                        $categories = mysqli_query($connection, $query);
-                        while ($category = mysqli_fetch_assoc($categories)) {
-                        ?>
-                            <option><?php echo $category['title'] ?></option>
-                        <?php } ?>
-                    </datalist>
-                </div>
-                <div class="my-auto text-center">
-                    <button class="btn btn-warning mt-xl-4 mt-lg-4 mt-md-4" type="submit" name="search">Search</button>
-                </div>
+        <div class="d-flex <?php echo isset($_POST['search']) ? 'justify-content-between' : 'justify-content-between'; ?>  gap-4 flex-column flex-xl-row flex-md-row flex-lg-row  p-3 rounded-3 pt-2 shadow-3 mx-auto " style="background-color: rgb(11, 75, 180);margin-top:170px"  >
+            <div class="text-center mt-3 <?php echo isset($_POST['search']) ? 'd-none' : ''; ?> ">
+                <h3 class="text-white"><i class="fa-solid fa-users-gear"></i> Find <span class=""><?php echo $type_text ?></span> Servicer</h3>
             </div>
-        </form>
+
+            <div class="w-100">
+                <div class="row justify-content-center mt-4">
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            <input type="text" id="search" class="form-control" placeholder="Search Here ">
+                            <button class="btn btn-warning" type="button">Search</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Your PHP-generated content goes here -->
+            </div>
+
+
+
 
         </div>
+
+
+         
 
     </section>
 
@@ -145,19 +125,16 @@ include('servicer_code.php');
                     <?php
                     while ($servicer = mysqli_fetch_assoc($servicers)) {
                     ?>
-                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                        <div class="col-lg-3 col-md-4 col-12 col-sm-6 servicer" data-id="<?php echo $servicer['user_id']; ?>">
                             <div class="text-center card-box rounded-3" style="height: 500px;">
                                 <div class="member-card pt-2 pb-2">
-
                                     <div class="thumb-lg member-thumb mx-auto">
                                         <img src="frontend/image/profile/<?php echo $servicer['profile_image'] ?>" class="rounded-circle img-thumbnail" alt="profile-image">
                                     </div>
-
-                                    <div class="">
+                                    <div>
                                         <h4><?php echo $servicer['name'] ?></h4>
-                                        <p class="text-muted"> <span> </span><span class="fw-bold text-dark"><?php echo $servicer['category_title'] ?> Servicer</span></p>
+                                        <p class="text-muted"><span></span><span class="fw-bold text-dark"><?php echo $servicer['category_title'] ?> Servicer</span></p>
                                     </div>
-
                                     <ul class="social-links list-inline rounded-2 p-2 bg-warning">
                                         <i class="fa-solid fa-mobile-retro"></i> <span class="fw-bold"><?php echo $servicer['mobile'] ?></span> <br>
                                         <i class="fa-solid fa-location-dot"></i> <?php echo $servicer['address'] ?> <br>
@@ -172,29 +149,22 @@ include('servicer_code.php');
                                     <?php
                                     }
                                     ?>
-
-
-
-
-
                                     <?php
                                     $id = $servicer['user_id'];
                                     $query = "
-                                     SELECT
-                                        status,
-                                        COUNT(*) AS status_count
-                                     FROM
-                                         service_requests
-                                     WHERE
-                                         servicer_id = '$id'
-                                         AND status IN ('pending', 'accepted', 'completed')
-                                     GROUP BY
-                                         status;
-                                 ";
-
+                    SELECT
+                        status,
+                        COUNT(*) AS status_count
+                    FROM
+                        service_requests
+                    WHERE
+                        servicer_id = '$id'
+                        AND status IN ('pending', 'accepted', 'completed')
+                    GROUP BY
+                        status;
+                ";
                                     // Execute the query
                                     $result = mysqli_query($connection, $query);
-
                                     // Initialize counts for each status type
                                     $pendingCount = 0;
                                     $acceptedCount = 0;
@@ -213,7 +183,6 @@ include('servicer_code.php');
                                                 break;
                                         }
                                     }
-
                                     ?>
                                     <div class="mt-4">
                                         <div class="row">
@@ -231,7 +200,7 @@ include('servicer_code.php');
                                             </div>
                                             <div class="col-4">
                                                 <div class="mt-3">
-                                                    <h4> <?php echo $completedCount ?></h4>
+                                                    <h4><?php echo $completedCount ?></h4>
                                                     <p class="mb-0 text-muted">Completed</p>
                                                 </div>
                                             </div>
@@ -240,9 +209,7 @@ include('servicer_code.php');
                                 </div>
                                 <a href="servicer_profile.php?id=<?php echo $servicer['user_id'] ?>" class="btn btn-outline-primary btn-sm">Details</a>
                             </div>
-                          
                         </div>
-
 
                         <!-- modal request -->
                         <!-- Modal -->
@@ -283,25 +250,22 @@ include('servicer_code.php');
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
                         <?php
-                        
-                        if(isset($_GET['type']))
-                        {
+
+                        if (isset($_GET['type'])) {
                             $type = $_GET['type'];
                             for ($i = 1; $i <= $totalPages; $i++) {
                                 echo '<li class="page-item ' . ($page == $i ? 'active' : '') . '">
                     <a class="page-link" href="?page=' . $i . '&type=' . $type . '">' . $i . '</a>
                 </li>';
                             }
-                        }
-                        else
-                        {
+                        } else {
                             for ($i = 1; $i <= $totalPages; $i++) {
                                 echo '<li class="page-item ' . ($page == $i ? 'active' : '') . '">
-                    <a class="page-link" href="?page=' . $i .'">' . $i . '</a>
+                    <a class="page-link" href="?page=' . $i . '">' . $i . '</a>
                 </li>';
                             }
                         }
-                      
+
                         ?>
                     </ul>
                 </nav>
@@ -324,6 +288,24 @@ include('servicer_code.php');
 
     include_once("footer.php");
     ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('search').addEventListener('input', function() {
+                let searchValue = this.value.trim().toLowerCase();
+                let servicers = document.querySelectorAll('.servicer');
+
+                servicers.forEach(function(servicer) {
+                    let name = servicer.querySelector('h4').textContent.trim().toLowerCase();
+                    let category = servicer.querySelector('.fw-bold.text-dark').textContent.trim().toLowerCase();
+                    let address = servicer.querySelector('.fa-solid.fa-location-dot').nextSibling.textContent.trim().toLowerCase(); // Adjust selector to target address text
+                    let displayStyle = (name.includes(searchValue) || category.includes(searchValue) || address.includes(searchValue)) ? 'block' : 'none';
+                    servicer.style.display = displayStyle;
+                });
+            });
+        });
+    </script>
+
+
 
     <!-- js -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>

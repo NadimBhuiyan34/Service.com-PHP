@@ -9,23 +9,7 @@ if ( isset($_POST['registerUser']) || isset($_POST['registerServicer'])) {
 //    profile image handle
  
     // Check if the file was uploaded without errors
-    if (isset($_FILES["profile"]) && $_FILES["profile"]["error"] == UPLOAD_ERR_OK) {
-        // Specify the directory where you want to store the uploaded file
-        $targetDir = "frontend/image/profile/";
-    
-        // Get the file extension
-        $fileExtension = pathinfo($_FILES["profile"]["name"], PATHINFO_EXTENSION);
-    
-        // Generate a unique name for the file
-        $profileName = "profile_" . time() . "." . $fileExtension;
-    
-        $targetFilePath = $targetDir . $profileName;
-        move_uploaded_file($_FILES["profile"]["tmp_name"], $targetFilePath);
-    } else {
-        // Handle the case where no file is uploaded or an error occurred
-        $profileName = "profile.png"; // You can set a default or handle this case based on your requirements
-    }
-    
+  
  
 // end profile image
     $query = "SELECT id FROM users WHERE mobile = $mobile";
@@ -34,7 +18,7 @@ if ( isset($_POST['registerUser']) || isset($_POST['registerServicer'])) {
 
         $message = "This mobile is already exists";
         // Redirect to the index.php page with the message
-        header("Location: register.php?message=" . urlencode($message) . "&role=" . urlencode($role));
+        header("Location: register.php?error=" . urlencode($message) . "&role=" . urlencode($role));
         exit;
 
     } else {
@@ -52,21 +36,49 @@ if ( isset($_POST['registerUser']) || isset($_POST['registerServicer'])) {
         $otp = mt_rand(100000, 999999); // Generates a random six-digit OTP
         if($_POST['password'] !== $_POST['confirm_password'])
         {
-            $message = "Passwords do not match";
+            $message = "Passwords does not match";
         
-           header("Location: register.php?message=" . urlencode($message) . "&role=" . urlencode($role));
+           header("Location: register.php?error=" . urlencode($message) . "&role=" . urlencode($role));
            
            exit; 
         }
 
         $queryUser = "INSERT INTO `users`(`name`, `email`,`password`, `mobile`, `otp`, `role`, `status`) VALUES ('$name','','$password','$mobile','$otp','$role','Unverify')";
         $userRegister = mysqli_query($connection, $queryUser);
-
+         
+        if($userRegister)
+        {
+            if (isset($_FILES["profile"]) && $_FILES["profile"]["error"] == UPLOAD_ERR_OK) {
+                // Specify the directory where you want to store the uploaded file
+                $targetDir = "frontend/image/profile/";
+            
+                // Get the file extension
+                $fileExtension = pathinfo($_FILES["profile"]["name"], PATHINFO_EXTENSION);
+            
+                // Generate a unique name for the file
+                $profileName = "profile_" . time() . "." . $fileExtension;
+            
+                $targetFilePath = $targetDir . $profileName;
+                move_uploaded_file($_FILES["profile"]["tmp_name"], $targetFilePath);
+            } else {
+                // Handle the case where no file is uploaded or an error occurred
+                $profileName = "profile.png"; // You can set a default or handle this case based on your requirements
+            }
+            
+        }
+        else
+        {
+            $message = "Something is wrong";
+        
+            header("Location: register.php?error=" . urlencode($message) . "&role=" . urlencode($role));
+            
+            exit; 
+        }
         $query = "SELECT id FROM users WHERE mobile = '$mobile'";
         $result = mysqli_query($connection, $query);
         $row = mysqli_fetch_assoc($result);
         $id = $row['id'];
-
+            
         if ($role == "servicer") {
             $biography = $_POST['biography'];
             $experience = $_POST['experience'];
@@ -78,7 +90,7 @@ if ( isset($_POST['registerUser']) || isset($_POST['registerServicer'])) {
             } else {
                 $message = "Something is wrong";
         
-                header("Location: register.php?message=" . urlencode($message) . "&role=" . urlencode($role));
+                header("Location: register.php?error=" . urlencode($message) . "&role=" . urlencode($role));
                 exit; 
             }
         } else {
@@ -90,7 +102,7 @@ if ( isset($_POST['registerUser']) || isset($_POST['registerServicer'])) {
             } else {
                 $message = "Something is wrong";
         
-                header("Location: register.php?message=" . urlencode($message) . "&role=" . urlencode($role));
+                header("Location: register.php?error=" . urlencode($message) . "&role=" . urlencode($role));
                 exit; 
             }
         }
@@ -131,7 +143,7 @@ if (isset($_POST['otpVerify'])) {
        
     } else {
         $message = "OTP is wrong";
-        header("Location: register.php?id=" . urlencode($id). "&role=" . urlencode('otp'). "&mobile=" . urlencode('123'). "&message=" . urlencode($message));
+        header("Location: register.php?id=" . urlencode($id). "&role=" . urlencode('otp'). "&mobile=" . urlencode('123'). "&error=" . urlencode($message));
         exit;
     }
 }
