@@ -55,7 +55,7 @@ if (isset($_POST['loginBtn'])) {
           }
       } else {
 
-           $message = "Your password is incorrect";
+            $message = "Your password is incorrect";
             header("Location: login.php?error=" . urlencode($message));            
             exit;
           
